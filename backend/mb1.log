@@ -1,0 +1,4 @@
+{"level":"info","message":"[mb:5000] mountebank v2.8.1 now taking orders - point your browser to http://localhost:5000/ for help","timestamp":"2022-12-04T21:18:14.853Z"}
+{"level":"info","message":"[mb:5000] POST /imposters","timestamp":"2022-12-04T21:18:14.867Z"}
+{"level":"info","message":"[http:5001] Open for business...","timestamp":"2022-12-04T21:18:14.873Z"}
+{"level":"info","message":"[http:5001] ::1:49306 => GET /","timestamp":"2022-12-04T21:19:58.934Z"}

@@ -1,0 +1,33 @@
+{"level":"info","message":"[mb:2525] mountebank v2.8.1 now taking orders - point your browser to http://localhost:2525/ for help","timestamp":"2022-12-01T00:59:18.622Z"}
+{"level":"info","message":"[mb:2525] PUT /imposters","timestamp":"2022-12-01T00:59:18.744Z"}
+{"level":"info","message":"[http:3000] Open for business...","timestamp":"2022-12-01T00:59:18.751Z"}
+{"level":"info","message":"[mb:2525] GET /images/book.jpg","timestamp":"2022-12-01T00:59:33.788Z"}
+{"level":"info","message":"[http:3000] ::1:52982 => GET /","timestamp":"2022-12-01T00:59:37.808Z"}
+{"level":"info","message":"[http:3000] no predicate match, using default response","timestamp":"2022-12-01T00:59:37.812Z"}
+{"level":"info","message":"[http:3000] ::1:52983 => GET /favicon.ico","timestamp":"2022-12-01T00:59:38.096Z"}
+{"level":"info","message":"[http:3000] no predicate match, using default response","timestamp":"2022-12-01T00:59:38.100Z"}
+{"level":"info","message":"[http:3000] ::1:53024 => GET /?q=Baccarani","timestamp":"2022-12-01T00:59:47.948Z"}
+{"level":"info","message":"[http:3000] ::1:53025 => GET /favicon.ico","timestamp":"2022-12-01T00:59:48.049Z"}
+{"level":"info","message":"[http:3000] no predicate match, using default response","timestamp":"2022-12-01T00:59:48.051Z"}
+{"level":"info","message":"[http:3000] ::1:53102 => GET /?q=Sumit","timestamp":"2022-12-01T01:00:06.470Z"}
+{"level":"info","message":"[http:3000] ::1:53103 => GET /favicon.ico","timestamp":"2022-12-01T01:00:06.605Z"}
+{"level":"info","message":"[http:3000] no predicate match, using default response","timestamp":"2022-12-01T01:00:06.607Z"}
+{"level":"info","message":"[http:3000] ::1:53193 => GET /","timestamp":"2022-12-01T01:00:29.544Z"}
+{"level":"info","message":"[http:3000] no predicate match, using default response","timestamp":"2022-12-01T01:00:29.545Z"}
+{"level":"info","message":"[http:3000] ::1:53265 => GET /?q=Baccarani","timestamp":"2022-12-01T01:00:46.425Z"}
+{"level":"info","message":"[http:3000] ::1:53305 => GET /?q=Sumit","timestamp":"2022-12-01T01:00:55.143Z"}
+{"level":"info","message":"[http:3000] ::1:53315 => GET /?q=Sumi","timestamp":"2022-12-01T01:00:57.184Z"}
+{"level":"info","message":"[http:3000] no predicate match, using default response","timestamp":"2022-12-01T01:00:57.185Z"}
+{"level":"info","message":"[http:3000] ::1:53334 => GET /?q=Sumit","timestamp":"2022-12-01T01:01:01.094Z"}
+{"level":"info","message":"[http:3000] ::1:53370 => GET /?q=Baccarani","timestamp":"2022-12-01T01:01:08.429Z"}
+{"level":"info","message":"[http:3000] ::1:53388 => GET /?q=Baccarani","timestamp":"2022-12-01T01:01:12.280Z"}
+{"level":"info","message":"[mb:2525] GET /images/book.jpg","timestamp":"2022-12-01T01:02:14.855Z"}
+{"level":"info","message":"[mb:2525] GET /images/book.jpg","timestamp":"2022-12-01T01:02:16.729Z"}
+{"level":"info","message":"[http:3000] ::1:54549 => GET /?q=Baccarani","timestamp":"2022-12-01T01:05:51.035Z"}
+{"level":"info","message":"[http:3000] ::1:54925 => GET /","timestamp":"2022-12-01T01:07:21.499Z"}
+{"level":"info","message":"[http:3000] no predicate match, using default response","timestamp":"2022-12-01T01:07:21.501Z"}
+{"level":"info","message":"[http:3000] ::1:55070 => GET /","timestamp":"2022-12-01T01:07:56.748Z"}
+{"level":"info","message":"[http:3000] no predicate match, using default response","timestamp":"2022-12-01T01:07:56.749Z"}
+{"level":"info","message":"[http:3000] ::1:55137 => GET /?q=Baccarani","timestamp":"2022-12-01T01:08:13.217Z"}
+{"level":"info","message":"[http:3000] ::1:59513 => GET /","timestamp":"2022-12-01T18:46:29.870Z"}
+{"level":"info","message":"[http:3000] no predicate match, using default response","timestamp":"2022-12-01T18:46:29.874Z"}
