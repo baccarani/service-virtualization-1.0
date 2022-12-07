@@ -1,4 +1,12 @@
-{"level":"info","message":"[mb:5000] mountebank v2.8.1 now taking orders - point your browser to http://localhost:5000/ for help","timestamp":"2022-12-04T21:18:14.853Z"}
-{"level":"info","message":"[mb:5000] POST /imposters","timestamp":"2022-12-04T21:18:14.867Z"}
-{"level":"info","message":"[http:5001] Open for business...","timestamp":"2022-12-04T21:18:14.873Z"}
-{"level":"info","message":"[http:5001] ::1:49306 => GET /","timestamp":"2022-12-04T21:19:58.934Z"}
+{"level":"info","message":"[mb:5000] mountebank v2.8.1 now taking orders - point your browser to http://localhost:5000/ for help","timestamp":"2022-12-07T21:50:05.632Z"}
+{"level":"info","message":"[mb:5000] POST /imposters","timestamp":"2022-12-07T21:50:05.647Z"}
+{"level":"info","message":"[http:5001] Open for business...","timestamp":"2022-12-07T21:50:05.652Z"}
+{"level":"info","message":"[mb:5000] POST /imposters","timestamp":"2022-12-07T21:50:05.658Z"}
+{"level":"info","message":"[http:5002] Open for business...","timestamp":"2022-12-07T21:50:05.660Z"}
+{"level":"info","message":"[http:5002] ::1:49175 => GET /customers/5","timestamp":"2022-12-07T21:50:50.592Z"}
+{"level":"info","message":"[http:5002] ::1:49176 => GET /customers/6","timestamp":"2022-12-07T21:51:03.897Z"}
+{"level":"info","message":"[http:5002] ::1:49177 => GET /customers/3","timestamp":"2022-12-07T21:51:24.711Z"}
+{"level":"info","message":"[http:5002] ::1:49189 => GET /customers/5","timestamp":"2022-12-07T21:53:53.892Z"}
+{"level":"info","message":"[http:5002] ::1:49190 => GET /customers/6","timestamp":"2022-12-07T21:53:59.268Z"}
+{"level":"info","message":"[http:5002] ::1:49191 => GET /customers/3","timestamp":"2022-12-07T21:54:04.015Z"}
+{"level":"info","message":"[http:5002] ::1:49201 => GET /customers/5","timestamp":"2022-12-07T21:54:43.882Z"}
