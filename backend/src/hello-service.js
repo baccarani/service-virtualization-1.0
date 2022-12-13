@@ -29,7 +29,8 @@ function addService() {
     const imposter = {
         port: settings.hello_service_port,
         protocol: 'http',
-        stubs: stubs
+        stubs: stubs,
+        name: 'hello service'
     };
 
     return mbHelper.postImposter(imposter);

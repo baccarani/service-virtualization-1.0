@@ -1,14 +1,25 @@
-{"level":"info","message":"[mb:5000] mountebank v2.8.1 now taking orders - point your browser to http://localhost:5000/ for help","timestamp":"2022-12-08T14:37:46.399Z"}
-{"level":"info","message":"[mb:5000] POST /imposters","timestamp":"2022-12-08T14:37:46.424Z"}
-{"level":"info","message":"[http:5001] Open for business...","timestamp":"2022-12-08T14:37:46.432Z"}
-{"level":"info","message":"[mb:5000] POST /imposters","timestamp":"2022-12-08T14:37:46.440Z"}
-{"level":"info","message":"[http:5002] Open for business...","timestamp":"2022-12-08T14:37:46.444Z"}
-{"level":"info","message":"[http:5001] ::ffff:127.0.0.1:57885 => GET /","timestamp":"2022-12-08T14:37:52.636Z"}
-{"level":"info","message":"[http:5001] ::ffff:127.0.0.1:57954 => GET /","timestamp":"2022-12-08T14:38:00.046Z"}
-{"level":"info","message":"[http:5001] ::ffff:127.0.0.1:57975 => GET /","timestamp":"2022-12-08T14:38:02.171Z"}
-{"level":"info","message":"[http:5001] ::ffff:127.0.0.1:57976 => GET /favicon.ico","timestamp":"2022-12-08T14:38:02.361Z"}
-{"level":"info","message":"[http:5001] no predicate match, using default response","timestamp":"2022-12-08T14:38:02.362Z"}
-{"level":"info","message":"[http:5001] ::ffff:127.0.0.1:58372 => GET /","timestamp":"2022-12-08T14:38:49.993Z"}
-{"level":"info","message":"[http:5001] ::ffff:127.0.0.1:58411 => GET /","timestamp":"2022-12-08T14:38:54.531Z"}
-{"level":"info","message":"[http:5001] ::ffff:127.0.0.1:58436 => GET /","timestamp":"2022-12-08T14:38:57.609Z"}
-{"level":"info","message":"[http:5001] ::ffff:127.0.0.1:58841 => GET /","timestamp":"2022-12-08T14:39:44.402Z"}
+{"level":"info","message":"[mb:5000] mountebank v2.8.1 now taking orders - point your browser to http://localhost:5000/ for help","timestamp":"2022-12-12T17:36:20.455Z"}
+{"level":"info","message":"[mb:5000] POST /imposters","timestamp":"2022-12-12T17:36:20.470Z"}
+{"level":"info","message":"[http:5001 hello service] Open for business...","timestamp":"2022-12-12T17:36:20.476Z"}
+{"level":"info","message":"[mb:5000] POST /imposters","timestamp":"2022-12-12T17:36:20.482Z"}
+{"level":"info","message":"[http:5002 customer service] Open for business...","timestamp":"2022-12-12T17:36:20.484Z"}
+{"level":"info","message":"[http:5002 customer service] ::1:62714 => GET /customers/6","timestamp":"2022-12-12T17:47:22.940Z"}
+{"level":"info","message":"[http:5002 customer service] ::1:62927 => GET /customers/5","timestamp":"2022-12-12T17:48:13.177Z"}
+{"level":"info","message":"[mb:5000] GET /images/book.jpg","timestamp":"2022-12-13T16:29:56.882Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2022-12-13T16:30:36.522Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2022-12-13T16:33:25.021Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2022-12-13T16:36:49.844Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2022-12-13T16:36:49.910Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2022-12-13T16:37:09.580Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2022-12-13T16:37:09.644Z"}
+{"level":"info","message":"[http:5002 customer service] ::1:64730 => GET /customers/5","timestamp":"2022-12-13T16:37:11.251Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2022-12-13T16:38:14.980Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2022-12-13T16:38:14.986Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2022-12-13T16:38:45.885Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2022-12-13T16:38:45.897Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2022-12-13T16:38:55.475Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2022-12-13T16:38:55.522Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2022-12-13T16:39:26.806Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2022-12-13T16:39:26.913Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2022-12-13T16:39:32.238Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2022-12-13T16:39:32.248Z"}

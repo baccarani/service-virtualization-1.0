@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Post } from './post.model';
 import { PostService } from './post.service';
+import { Imposter } from './models/imposter';
 
 @Component({
   selector: 'app-root',
@@ -13,19 +14,27 @@ export class AppComponent implements OnInit {
   loadedPosts: Post[] = [];
   isFetching = false;
 
+  
+
+
+
+
   constructor(private http: HttpClient, private postService: PostService) { }
 
   ngOnInit() {
     this.fetchPosts();
+      
   }
 
   onMountebank(mountebankData) {
 
   }
 
-  onMountebankTest() {
+  onMountebankTest(path: string, customerID: number) {
     this.http
-      .get('http://127.0.0.1:5001')
+      // .get('http://localhost:5002/' + path + '/' + customerID)
+      .get(`http://localhost:5002/${path}/${customerID}`)
+      // .get(`http://localhost:5000/imposters`)
       .subscribe(data => {
         console.log(data);
       })

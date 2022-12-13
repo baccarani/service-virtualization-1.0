@@ -1,0 +1,25 @@
+<h3>Dependency Management Tool</h3><br>
+<button class="btn btn-success">Add Dependency</button>
+<hr>
+<table class="table table-striped">  
+    <thead>  
+        <tr>  
+          <th>Dependency Name</th>  
+          <th>Protocol</th>  
+          <th>Port</th>  
+          <th># of Requests</th>
+          <th>View</th>
+          <th>Edit</th>    
+        </tr>  
+    </thead>  
+    <tbody>  
+      <tr *ngFor="let imposter of imposterObject">  
+        <td><a href="google.ca"></a>{{ imposter.name }}</td>  
+        <td>{{ imposter.protocol }}</td>  
+        <td>{{ imposter.port }}</td>  
+        <td>{{ imposter.numberOfRequests }}</td>
+        <td><button class="btn btn-primary">View</button></td>  
+        <td><button class="btn btn-default">Edit</button></td>      
+      </tr>  
+    </tbody>  
+  </table>

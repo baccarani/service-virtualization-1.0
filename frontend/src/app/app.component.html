@@ -1,6 +1,18 @@
 <div class="container">
   <div class="row">
+    <div class="col-md-12">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- <div class="container">
+  <div class="row">
     <div class="col-xs-12 col-md-6 col-md-offset-3">
+      <h3>Mountebank Demo</h3>
       <form #mountebankForm="ngForm" (ngSubmit)="onMountebank(mountebankForm.value)">
         <div class="form-group">
           <label for="header">Header</label>
@@ -24,17 +36,26 @@
           ></textarea>
         </div>
         <button
-          class="btn btn-success"
+          class="btn btn-primary"
           type="submit"
           [disabled]="!mountebankForm.valid"
         >
           Mountebank
         </button>
+        |
+      <button class="btn btn-success" (click)="onMountebankTest('customers', 5)">
+        Mountebank
+      </button>
       </form>
     </div>
   </div>
-  <div class="row">
+  <hr> -->
+
+
+  
+  <!-- <div class="row">
     <div class="col-xs-12 col-md-6 col-md-offset-3">
+      <h3>HTTP Demo</h3> 
       <form #postForm="ngForm" (ngSubmit)="onCreatePost(postForm.value)">
         <div class="form-group">
           <label for="title">Title</label>
@@ -81,10 +102,6 @@
       >
         Clear Posts
       </button>
-      |
-      <button class="btn btn-success" (click)="onMountebankTest()">
-        Mountebank
-      </button>
     </div>
   </div>
   <div class="row">
@@ -99,4 +116,4 @@
       <p *ngIf="isFetching">Loading...</p>
     </div>
   </div>
-</div>
+</div> -->
