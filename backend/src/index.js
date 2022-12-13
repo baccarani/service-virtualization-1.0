@@ -1,7 +1,14 @@
 const mb = require('mountebank');
 const settings = require('./settings');
-const helloService = require('./hello-service');
-const customerService = require('./customer-service');
+const idpService = require('./idp-service');
+const dihService = require('./dih-service');
+const workday = require('./workday-service');
+const servicenow = require('./servicenow-service');
+const infinityconnect = require('./infinityconnect-service');
+const datalake = require('./datalake-service');
+
+
+
 
 
 const mbServerInstance = mb.create({
@@ -14,8 +21,14 @@ const mbServerInstance = mb.create({
 
 
     mbServerInstance.then(function() {
-        helloService.addService();
-        customerService.addService();
+        idpService.addService();
+        dihService.addService();
+        workday.addService();
+        servicenow.addService();
+        infinityconnect.addService();
+        datalake.addService();
+
+
     });
 
 

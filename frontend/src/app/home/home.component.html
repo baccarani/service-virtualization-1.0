@@ -1,4 +1,4 @@
-<h3>Dependency Management Tool</h3><br>
+<h3>Environment Dependency Manager</h3><br>
 <button class="btn btn-success">Add Dependency</button>
 <hr>
 <table class="table table-striped">  
@@ -19,7 +19,13 @@
         <td>{{ imposter.port }}</td>  
         <td>{{ imposter.numberOfRequests }}</td>
         <td><button class="btn btn-primary" (click)="onViewImposter(imposter.port)">View</button></td>  
-        <td><button class="btn btn-default">Edit</button></td>      
+        <td><button class="btn btn-default">Edit</button></td>    
+        <!-- <td>{{ imposter | json }}</td> -->
+  
       </tr>  
     </tbody>  
   </table>
+
+  <hr>
+
+
