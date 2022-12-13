@@ -22,4 +22,15 @@ export class HomeComponent implements OnInit {
       })
   }
 
+  onViewImposter(data) {
+    console.log(data);
+
+    this.http
+    .get(`http://localhost:5000/imposters/${data}`)
+      .subscribe(data => {
+        console.log(data);
+      })
+
+  }
+
 }
