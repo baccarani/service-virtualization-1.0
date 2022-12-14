@@ -18,14 +18,23 @@
         <td>{{ imposter.protocol }}</td>  
         <td>{{ imposter.port }}</td>  
         <td>{{ imposter.numberOfRequests }}</td>
-        <td><button class="btn btn-primary" (click)="onViewImposter(imposter.port)">View</button></td>  
-        <td><button class="btn btn-default">Edit</button></td>    
-        <!-- <td>{{ imposter | json }}</td> -->
-  
+        <td><button 
+            class="btn btn-primary" 
+            (click)="onViewImposter(imposter.port)"
+            >View</button></td>  
+        <td><button 
+            class="btn btn-default"
+            >Edit</button></td>    
       </tr>  
     </tbody>  
   </table>
-
   <hr>
+  <div style="font-weight: bold;">
+    Dependency Request Stub: 
+    {{ viewDependency.name }}
+  </div>
+  <br><br>
+  <pre>{{ viewDependency | json }}</pre>
 
+  
 

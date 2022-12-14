@@ -7,7 +7,10 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  imposterObject: any = [];  
+  imposterObject: any = [];
+  viewDependency: any = ""; 
+  viewDependencyName: string = "";  
+  
 
 
   constructor(private http: HttpClient) { }
@@ -23,14 +26,12 @@ export class HomeComponent implements OnInit {
   }
 
   onViewImposter(data) {
-    console.log(data);
-
     this.http
     .get(`http://localhost:5000/imposters/${data}`)
       .subscribe(data => {
-        console.log(data);
+        this.viewDependency = data;
+        this.viewDependencyName = this.viewDependency.name
       })
-
   }
 
 }

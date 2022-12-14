@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { Post } from './post.model';
-import { PostService } from './post.service';
+import { Post } from './models/post.model';
+import { PostService } from './services/post.service';
 import { Imposter } from './models/imposter';
 
 @Component({
