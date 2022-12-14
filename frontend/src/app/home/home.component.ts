@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { AddDependencyComponent } from '../add-dependency/add-dependency.component';
+
 
 @Component({
   selector: 'app-home',
@@ -14,7 +17,7 @@ export class HomeComponent implements OnInit {
   
 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private matDialogModule: MatDialog) { }
 
   ngOnInit(): void {
 
@@ -36,11 +39,13 @@ export class HomeComponent implements OnInit {
   }
 
   onAddImposter() {
-    this.http
-    .post(`http://localhost:5000/imposters`, this.data)
-    .subscribe(responseData => {
-      console.log(responseData);
-  });
+    this.matDialogModule.open(AddDependencyComponent);
+
+  //   this.http
+  //   .post(`http://localhost:5000/imposters`, this.data)
+  //   .subscribe(responseData => {
+  //     console.log(responseData);
+  // });
   }
 
 }
