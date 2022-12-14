@@ -9,7 +9,8 @@ import { HttpClient } from '@angular/common/http';
 export class HomeComponent implements OnInit {
   imposterObject: any = [];
   viewDependency: any = ""; 
-  viewDependencyName: string = "";  
+  viewDependencyName: string = "";
+  data = {protocol: "https", port: 5010};  
   
 
 
@@ -32,6 +33,14 @@ export class HomeComponent implements OnInit {
         this.viewDependency = data;
         this.viewDependencyName = this.viewDependency.name
       })
+  }
+
+  onAddImposter() {
+    this.http
+    .post(`http://localhost:5000/imposters`, this.data)
+    .subscribe(responseData => {
+      console.log(responseData);
+  });
   }
 
 }

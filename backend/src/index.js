@@ -6,9 +6,7 @@ const workday = require('./workday-service');
 const servicenow = require('./servicenow-service');
 const infinityconnect = require('./infinityconnect-service');
 const datalake = require('./datalake-service');
-
-
-
+const cors = require('cors');
 
 
 const mbServerInstance = mb.create({
