@@ -20,16 +20,13 @@ export class HomeComponent implements OnInit {
   constructor(private http: HttpClient, private matDialogModule: MatDialog, private imposterService: ImposterService) { }
 
   ngOnInit(): void {
-
     this.imposterService.onGetImposter()
     .subscribe(data => {
       this.imposterObject = data;
     })
-
   }
 
   onViewImposter(data) {
-
     this.imposterService.onViewImposter(data).subscribe(responseData => {
       this.viewDependency = responseData;
       this.viewDependencyName = this.viewDependency.name

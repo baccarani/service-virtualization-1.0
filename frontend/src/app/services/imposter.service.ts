@@ -1,13 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
 import { map } from "rxjs/operators";
 
 
 @Injectable()
 export class ImposterService {
     private imposterArray: any = [];
-    imposterChanged = new Subject<any>();
 
 
     constructor(private http: HttpClient) { }
@@ -36,6 +34,7 @@ export class ImposterService {
             .subscribe(data => {
                 this.imposterArray.splice(index, 1);
             })
+
     }
 
 

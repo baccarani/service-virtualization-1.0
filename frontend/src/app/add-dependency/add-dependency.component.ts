@@ -9,6 +9,7 @@ import { ImposterService } from '../services/imposter.service';
   styleUrls: ['./add-dependency.component.css']
 })
 export class AddDependencyComponent implements OnInit {
+  protocols = ['http', 'https']
 
   constructor(private http: HttpClient, private matDialogRef: MatDialogRef<AddDependencyComponent>, private imposterService: ImposterService) { }
 

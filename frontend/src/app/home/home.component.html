@@ -1,42 +1,34 @@
-<h3>Environment Dependency Manager</h3>
+<h1>Environment Dependency Manager</h1>
 <br>
 <button class="btn btn-success" (click)="onAddImposter()">Add Dependency</button>
 <hr>
-<table class="table table-striped">  
-    <thead>  
-        <tr>  
-          <th>Name</th>  
-          <th>Protocol</th>  
-          <th>Port</th>  
-          <th># of Requests</th>
-          <th>View</th>
-          <th>Delete </th>    
-        </tr>  
-    </thead>  
-    <tbody>  
-      <tr *ngFor="let imposter of imposterObject; let i = index">  
-        <td>{{ imposter.name }}</td>  
-        <td>{{ imposter.protocol }}</td>  
-        <td>{{ imposter.port }}</td>  
-        <td>{{ imposter.numberOfRequests }}</td>
-        <td><button 
-            class="btn btn-primary" 
-            (click)="onViewImposter(imposter.port)"
-            >View</button></td>  
-        <td><button 
-            class="btn btn-default"
-            (click)="onDeleteImposter(imposter.port, i)"
-            >Delete</button></td>    
-      </tr>  
-    </tbody>  
-  </table>
-  <hr>
-  <div style="font-weight: bold;">
-    Request Stub: 
-    {{ viewDependency.name }}
-  </div>
-  <br><br>
-  <pre>{{ viewDependency | json }}</pre>
-
-  
-
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Protocol</th>
+      <th>Port</th>
+      <th># of Requests</th>
+      <th>Delete </th>
+      <th>View</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let imposter of imposterObject; let i = index">
+      <td>{{ imposter.name }}</td>
+      <td>{{ imposter.protocol }}</td>
+      <td>{{ imposter.numberOfRequests }}</td>
+      <td>{{ imposter.port }}</td>
+      <td><button class="btn btn-default" (click)="onDeleteImposter(imposter.port, i)">Delete</button></td>
+      <td><button class="btn btn-primary" (click)="onViewImposter(imposter.port)">View</button></td>
+    </tr>
+  </tbody>
+</table>
+<hr>
+<br>
+<div style="font-weight: bold;">
+  Request Stub:
+  {{ viewDependency.name }}
+</div>
+<br><br>
+<pre>{{ viewDependency | json }}</pre>

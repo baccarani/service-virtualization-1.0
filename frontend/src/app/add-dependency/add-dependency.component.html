@@ -1,10 +1,10 @@
-<div>
+<div >
     <h3>Add Dependency</h3>
     <p>Fill in the below form to add your dependency.</p>
     <br>
-    <div class="container">
+    <div class="container" style="max-width: 400px;">
         <div class="row">
-            <div class="col-xs-12 col-md-6 col-md-offset-3">
+            <div class="col-xs-12">
                 <form #addDependencyForm="ngForm" (ngSubmit)="onAddDependency(addDependencyForm.value)">
                     <div class="form-group">
                         <label for="name">Name</label>
@@ -14,21 +14,18 @@
                         <label for="port">Port</label>
                         <input type="number" class="form-control" id="port" required ngModel name="port" />
                     </div>
-                    <div class="form-group">
-                        <label for="protocol">Protocol</label>
-                        <input type="text" class="form-control" id="protocol" required ngModel name="protocol" />
+                    <label for="protocol">Protocol</label>
+                    <div class="radio" *ngFor="let protocol of protocols">
+                        <label>
+                            <input 
+                            type="radio"
+                            name="protocol"
+                            ngModel
+                            [value]="protocol">
+                            {{ protocol }}
+                        </label>
                     </div>
-                    <!-- <div class="form-group">
-          <label for="body">Body</label>
-          <textarea
-            class="form-control"
-            id="body"
-            required
-            ngModel
-            name="body"
-          ></textarea>
-        </div> -->
-                    <br><br>
+                    <br>
                     <button class="btn btn-success" type="submit" [disabled]="!addDependencyForm.valid"
                         style="margin-right: 10px;">
                         Add
@@ -38,5 +35,4 @@
                 </form>
             </div>
         </div>
-
     </div>
