@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
@@ -8,7 +9,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class AddDependencyComponent implements OnInit {
 
-  constructor(private matDialogRef: MatDialogRef<AddDependencyComponent>) { }
+  constructor(private http: HttpClient, private matDialogRef: MatDialogRef<AddDependencyComponent>) { }
 
   ngOnInit(): void {
   }
@@ -16,10 +17,19 @@ export class AddDependencyComponent implements OnInit {
 
   closeModal() {
     this.matDialogRef.close();
+
   }
 
 
   onAddDependency(data) {
+    console.log(data);
+    this.http
+      .post(`http://localhost:5000/imposters`, data)
+      .subscribe(responseData => {
+        console.log(responseData);
+      });
+      this.matDialogRef.close();
+
 
   }
 

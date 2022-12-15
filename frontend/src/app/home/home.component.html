@@ -10,7 +10,7 @@
           <th>Port</th>  
           <th># of Requests</th>
           <th>View</th>
-          <th>Edit </th>    
+          <th>Delete </th>    
         </tr>  
     </thead>  
     <tbody>  
@@ -25,7 +25,8 @@
             >View</button></td>  
         <td><button 
             class="btn btn-default"
-            >Edit</button></td>    
+            (click)="onDeleteImposter(imposter.port)"
+            >Delete</button></td>    
       </tr>  
     </tbody>  
   </table>

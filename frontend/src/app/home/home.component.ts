@@ -40,12 +40,13 @@ export class HomeComponent implements OnInit {
 
   onAddImposter() {
     this.matDialogModule.open(AddDependencyComponent);
+  }
 
-  //   this.http
-  //   .post(`http://localhost:5000/imposters`, this.data)
-  //   .subscribe(responseData => {
-  //     console.log(responseData);
-  // });
+  onDeleteImposter(data) {
+    this.http
+    .delete(`http://localhost:5000/imposters/${data}`)
+      .subscribe(data => {
+      })
   }
 
 }
