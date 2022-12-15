@@ -6,15 +6,15 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 
 import { AppComponent } from './app.component';
-import { ImposterDetailComponent } from './imposter-detail/imposter-detail.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddDependencyComponent } from './add-dependency/add-dependency.component';
+import { ImposterService } from './services/imposter.service';
 
 
 @NgModule({
-  declarations: [AppComponent, ImposterDetailComponent, HomeComponent, AddDependencyComponent],
+  declarations: [AppComponent, HomeComponent, AddDependencyComponent],
   imports: [BrowserModule, 
     FormsModule, 
     HttpClientModule,
@@ -22,7 +22,7 @@ import { AddDependencyComponent } from './add-dependency/add-dependency.componen
     BrowserAnimationsModule,
     MatDialogModule 
   ],
-  providers: [],
+  providers: [ImposterService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

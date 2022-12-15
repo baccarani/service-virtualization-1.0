@@ -14,7 +14,7 @@
         </tr>  
     </thead>  
     <tbody>  
-      <tr *ngFor="let imposter of imposterObject">  
+      <tr *ngFor="let imposter of imposterObject; let i = index">  
         <td>{{ imposter.name }}</td>  
         <td>{{ imposter.protocol }}</td>  
         <td>{{ imposter.port }}</td>  
@@ -25,7 +25,7 @@
             >View</button></td>  
         <td><button 
             class="btn btn-default"
-            (click)="onDeleteImposter(imposter.port)"
+            (click)="onDeleteImposter(imposter.port, i)"
             >Delete</button></td>    
       </tr>  
     </tbody>  

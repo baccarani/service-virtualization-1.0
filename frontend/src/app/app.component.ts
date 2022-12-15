@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { Post } from './models/post.model';
-import { PostService } from './services/post.service';
-import { Imposter } from './models/imposter';
 
 @Component({
   selector: 'app-root',
@@ -11,64 +7,14 @@ import { Imposter } from './models/imposter';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  loadedPosts: Post[] = [];
-  isFetching = false;
-
-  
 
 
 
+  constructor(private http: HttpClient) { }
 
-  constructor(private http: HttpClient, private postService: PostService) { }
-
-  ngOnInit() {
-    this.fetchPosts();
-      
-  }
-
-  onMountebank(mountebankData) {
-
-  }
-
-  onMountebankTest(path: string, customerID: number) {
-    this.http
-      // .get('http://localhost:5002/' + path + '/' + customerID)
-      .get(`http://localhost:5002/${path}/${customerID}`)
-      // .get(`http://localhost:5000/imposters`)
-      .subscribe(data => {
-        console.log(data);
-      })
-  }
+  ngOnInit() { }
 
 
-  onCreatePost(postData: Post) {
-    // Send Http request
-    this.postService.createAndStorePost(postData.title, postData.content);
-
-  }
-
-  onFetchPosts() {
-    // Send Http request
-    this.fetchPosts();
-
-
-  }
-
-  onClearPosts() {
-    // Send Http request
-    this.postService.clearPosts().subscribe(() => {
-      this.loadedPosts = [];
-    });
-  }
-
-  private fetchPosts() {
-    this.isFetching = true;
-    this.postService.fetchPost().subscribe(posts => {
-      this.isFetching = false;
-      this.loadedPosts = posts;
-    });
-
-  }
 
 }
 
