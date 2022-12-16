@@ -11,6 +11,8 @@ import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddDependencyComponent } from './add-dependency/add-dependency.component';
 import { ImposterService } from './services/imposter.service';
+import { StoreModule } from '@ngrx/store';
+import { imposterReducer } from './store/imposter.reducer';
 
 
 @NgModule({
@@ -20,7 +22,8 @@ import { ImposterService } from './services/imposter.service';
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatDialogModule 
+    MatDialogModule,
+    StoreModule.forRoot({imposter: imposterReducer}) 
   ],
   providers: [ImposterService],
   bootstrap: [AppComponent]

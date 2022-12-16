@@ -24,7 +24,8 @@
     "rxjs": "^6.6.3",
     "rxjs-compat": "^6.0.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.11.4"
+    "zone.js": "~0.11.4",
+    "@ngrx/store": "^14.3.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^14.2.7",

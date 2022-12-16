@@ -42,7 +42,11 @@ export class ImposterService {
         this.http
             .post(`http://localhost:5000/imposters`, data)
             .subscribe(responseData => {
-                this.imposterArray.push(responseData);
+                this.imposterArray.push(responseData)
+
+                this.imposterArray.sort((a, b) => {
+                    return a.port - b.port;
+                });
             });
     }
 }
