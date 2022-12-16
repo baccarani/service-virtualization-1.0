@@ -12,8 +12,8 @@ import { ImposterService } from '../services/imposter.service';
 })
 export class HomeComponent implements OnInit {
   imposterObject: any[] = [];
-  viewDependency: any = "";
-  viewDependencyName: string = "";
+  viewDependency: any = '';
+  viewDependencyName: string = '';
 
 
 
@@ -21,15 +21,15 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.imposterService.onGetImposter()
-    .subscribe(data => {
-      this.imposterObject = data;
-    })
+      .subscribe(data => {
+        this.imposterObject = data;
+      })
   }
 
   onViewImposter(data) {
     this.imposterService.onViewImposter(data).subscribe(responseData => {
       this.viewDependency = responseData;
-      this.viewDependencyName = this.viewDependency.name
+      this.viewDependencyName = this.viewDependency.name;
     })
   }
 
@@ -39,6 +39,8 @@ export class HomeComponent implements OnInit {
 
   onDeleteImposter(port, index) {
     this.imposterService.onDeleteImposter(port, index);
+    this.viewDependency = '';
+    this.viewDependencyName = '';
   }
 
 }

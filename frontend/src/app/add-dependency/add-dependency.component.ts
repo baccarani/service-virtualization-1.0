@@ -24,7 +24,7 @@ export class AddDependencyComponent implements OnInit {
 
 
   onAddDependency(data) {
-    this.imposterService.onAddImposter(data)
+    this.imposterService.onAddImposter(data);
     this.matDialogRef.close();
 
 
