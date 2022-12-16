@@ -11,7 +11,7 @@ import { ImposterService } from '../services/imposter.service';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  imposterObject: any[] = [];
+  imposterArray: any[] = [];
   viewDependency: any = '';
   viewDependencyName: string = '';
 
@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.imposterService.onGetImposter()
       .subscribe(data => {
-        this.imposterObject = data;
+        this.imposterArray = data;
       })
   }
 
