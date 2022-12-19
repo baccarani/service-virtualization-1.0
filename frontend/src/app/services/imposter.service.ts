@@ -5,13 +5,7 @@ import { map } from "rxjs/operators";
 
 @Injectable()
 export class ImposterService {
-    private imposterArray: any = this.http
-        .get(`http://localhost:5000/imposters`)
-        .pipe(map((responseData) => {
-            this.imposterArray = responseData;
-            this.imposterArray = this.imposterArray.imposters;
-            return this.imposterArray;
-        }));
+    private imposterArray: any = null;
 
 
     constructor(private http: HttpClient) { }
@@ -19,7 +13,13 @@ export class ImposterService {
 
 
     onGetImposter() {
-        return this.imposterArray;
+        return this.imposterArray = this.http
+        .get(`http://localhost:5000/imposters`)
+        .pipe(map((responseData) => {
+            this.imposterArray = responseData;
+            this.imposterArray = this.imposterArray.imposters;
+            return this.imposterArray;
+        }));;
     }
 
     onViewImposter(data) {
@@ -34,16 +34,14 @@ export class ImposterService {
             .subscribe(data => {
                 this.imposterArray.splice(index, 1);
             })
-
     }
 
-
+0
     onAddImposter(data) {
         this.http
             .post(`http://localhost:5000/imposters`, data)
             .subscribe(responseData => {
-                this.imposterArray.push(responseData)
-
+                this.imposterArray.push(responseData);
                 this.imposterArray.sort((a, b) => {
                     return a.port - b.port;
                 });

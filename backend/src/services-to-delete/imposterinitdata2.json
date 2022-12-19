@@ -1,0 +1,102 @@
+{
+    "imposters": [
+      {
+        "protocol": "http",
+        "port": 5002,
+        "name": "DIH2",
+        "numberOfRequests": 0,
+        "_links": {
+          "self": {
+            "href": "http://localhost:5000/imposters/5002"
+          },
+          "stubs": {
+            "href": "http://localhost:5000/imposters/5002/stubs"
+          }
+        }
+      },
+      {
+        "protocol": "http",
+        "port": 5003,
+        "name": "Workday",
+        "numberOfRequests": 0,
+        "_links": {
+          "self": {
+            "href": "http://localhost:5000/imposters/5003"
+          },
+          "stubs": {
+            "href": "http://localhost:5000/imposters/5003/stubs"
+          }
+        }
+      },
+      {
+        "protocol": "http",
+        "port": 5004,
+        "name": "ServiceNow",
+        "numberOfRequests": 0,
+        "_links": {
+          "self": {
+            "href": "http://localhost:5000/imposters/5004"
+          },
+          "stubs": {
+            "href": "http://localhost:5000/imposters/5004/stubs"
+          }
+        }
+      },
+      {
+        "protocol": "http",
+        "port": 5005,
+        "name": "Infinity Connect",
+        "numberOfRequests": 0,
+        "_links": {
+          "self": {
+            "href": "http://localhost:5000/imposters/5005"
+          },
+          "stubs": {
+            "href": "http://localhost:5000/imposters/5005/stubs"
+          }
+        }
+      },
+      {
+        "protocol": "http",
+        "port": 5006,
+        "name": "Datalake",
+        "numberOfRequests": 0,
+        "_links": {
+          "self": {
+            "href": "http://localhost:5000/imposters/5006"
+          },
+          "stubs": {
+            "href": "http://localhost:5000/imposters/5006/stubs"
+          }
+        }
+      },
+      {
+        "protocol": "http",
+        "port": 6001,
+        "name": "IDP Test 2",
+        "numberOfRequests": 0,
+        "_links": {
+          "self": {
+            "href": "http://localhost:5000/imposters/6001"
+          },
+          "stubs": {
+            "href": "http://localhost:5000/imposters/6001/stubs"
+          }
+        }
+      },
+      {
+        "protocol": "http",
+        "port": 6002,
+        "name": "IDP Test 3",
+        "numberOfRequests": 0,
+        "_links": {
+          "self": {
+            "href": "http://localhost:5000/imposters/6002"
+          },
+          "stubs": {
+            "href": "http://localhost:5000/imposters/6002/stubs"
+          }
+        }
+      }
+    ]
+  }

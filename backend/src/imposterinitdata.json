@@ -1,0 +1,56 @@
+{
+    "imposters": [
+        {
+        "port": 6001,
+        "protocol": "http",
+        "stubs": [
+            {
+                "predicates": [ {
+                    "equals": {
+                        "method": "GET",
+                        "path": "/"
+                    }
+                }],
+                "responses": [
+                    {
+                        "is": {
+                            "statusCode": 200,
+                            "headers": {
+                                "Content-Type": "application/json"
+                            },
+                            "body": { "message": "hello world" }
+                        }
+                    }
+                ]
+            }
+        ],
+        "name": "IDP Test 2"
+    },
+    {
+        "port": 6002,
+        "protocol": "http",
+        "stubs": [
+            {
+                "predicates": [ {
+                    "equals": {
+                        "method": "GET",
+                        "path": "/"
+                    }
+                }],
+                "responses": [
+                    {
+                        "is": {
+                            "statusCode": 200,
+                            "headers": {
+                                "Content-Type": "application/json"
+                            },
+                            "body": { "message": "hello world 2" }
+                        }
+                    }
+                ]
+            }
+        ],
+        "name": "IDP Test 3"
+    }
+]
+}

@@ -17,8 +17,8 @@
     <tr *ngFor="let imposter of imposterArray; let i = index">
       <td>{{ imposter.name }}</td>
       <td>{{ imposter.protocol }}</td>
-      <td>{{ imposter.numberOfRequests }}</td>
       <td>{{ imposter.port }}</td>
+      <td>{{ imposter.numberOfRequests }}</td>
       <td><button class="btn btn-default" (click)="onDeleteImposter(imposter.port, i)">Delete</button></td>
       <td><button class="btn btn-primary" (click)="onViewImposter(imposter.port)">View</button></td>
     </tr>
