@@ -1,11 +1,59 @@
-<div >
-    <h3>Add Dependency</h3>
+<div>
+    <h1>Add Dependency</h1>
     <p>Fill in the below form to add your dependency.</p>
     <br>
     <div class="container" style="max-width: 400px;">
         <div class="row">
             <div class="col-xs-12">
-                <form #addDependencyForm="ngForm" (ngSubmit)="onAddDependency(addDependencyForm.value)">
+                <form (ngSubmit)="onSubmit(form.value)" #form="ngForm">
+                    <div>
+                        <label>Name:</label>
+                        <input type="text" name="name" ngModel required class="form-control">
+                    </div><br>
+                    <div class="form-group">
+                        <label>Port:</label>
+                        <input type="number" name="port" ngModel required class="form-control">
+                    </div>
+                    <div>
+                        <label>Protocol:</label>
+                        <select name="protocol" ngModel required class="form-control">
+                            <option value="http">HTTP</option>
+                            <option value="https">HTTPS</option>
+                        </select>
+                    </div><br>
+                    <div>
+                        <label>Method:</label>
+                        <select name="method" ngModel required class="form-control">
+                            <option value="GET">GET</option>
+                            <option value="POST">POST</option>
+                            <option value="PUT">PUT</option>
+                            <option value="DELETE">DELETE</option>
+                        </select>
+                    </div><br>
+                    <div>
+                        <label>Path:</label>
+                        <input type="text" name="path" ngModel required class="form-control">
+                    </div><br>
+                    <div>
+                        <label>Status Code:</label>
+                        <input type="number" name="statusCode" ngModel required class="form-control">
+                    </div><br>
+                    <div>
+                        <label>Headers:</label>
+                        <textarea name="headers" ngModel required class="form-control"></textarea>
+                    </div><br>
+                    <div>
+                        <label>Body:</label>
+                        <textarea name="body" ngModel required class="form-control"></textarea>
+                    </div><br><br>
+                    <button class="btn btn-success" type="submit" [disabled]="!form.valid" style="margin-right: 10px;">
+                        Add
+                    </button>
+                    <button class="btn btn-default" type="button" (click)="closeModal()">
+                        Close
+                    </button>
+                </form>
+                <!-- <form #addDependencyForm="ngForm" (ngSubmit)="onAddDependency(addDependencyForm.value)">
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name" ngModel name="name" />
@@ -17,27 +65,27 @@
                     <label for="protocol">Protocol</label>
                     <div class="radio" *ngFor="let protocol of protocols">
                         <label>
-                            <input 
-                            type="radio"
-                            name="protocol"
-                            ngModel
-                            required
-                            [value]="protocol">
+                            <input type="radio" name="protocol" ngModel required [value]="protocol">
                             {{ protocol }}
                         </label>
-                    </div><br>
-                    <!-- <div class="form-group">
-                        <label for="port">Stubs</label>
-                        <input type="text" class="form-control" id="stubs" required ngModel name="stubs" />
                     </div>
-                    <br> -->
+                    <div class="form-group">
+                        <label for="port">Method</label>
+                        <div class="radio" *ngFor="let method of methods">
+                            <label>
+                                <input type="radio" name="method" ngModel required [value]="method">
+                                {{ method }}
+                            </label>
+                        </div>
+                    </div>
+                    <br>
                     <button class="btn btn-success" type="submit" [disabled]="!addDependencyForm.valid"
                         style="margin-right: 10px;">
                         Add
                     </button>
                     <button class="btn btn-default" type="button" (click)="closeModal()">
                         Close</button>
-                </form>
+                </form> -->
             </div>
         </div>
     </div>

@@ -1,7 +1,128 @@
-{"level":"info","message":"[mb:5000] mountebank v2.8.1 now taking orders - point your browser to http://localhost:5000/ for help","timestamp":"2023-01-24T23:47:58.373Z"}
-{"level":"info","message":"[mb:5000] PUT /imposters","timestamp":"2023-01-24T23:47:58.409Z"}
-{"level":"info","message":"[http:6001 IDP Test 2] Open for business...","timestamp":"2023-01-24T23:47:58.418Z"}
-{"level":"info","message":"[http:6002 IDP Test 3] Open for business...","timestamp":"2023-01-24T23:47:58.418Z"}
-{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-24T23:47:58.742Z"}
-{"level":"info","message":"[mb:5000] OPTIONS /imposters","timestamp":"2023-01-24T23:48:10.187Z"}
-{"level":"info","message":"[mb:5000] POST /imposters","timestamp":"2023-01-24T23:48:10.196Z"}
+{"level":"info","message":"[mb:5000] mountebank v2.8.1 now taking orders - point your browser to http://localhost:5000/ for help","timestamp":"2023-01-24T23:49:49.094Z"}
+{"level":"info","message":"[mb:5000] PUT /imposters","timestamp":"2023-01-24T23:49:49.110Z"}
+{"level":"info","message":"[http:6001 IDP Test 2] Open for business...","timestamp":"2023-01-24T23:49:49.116Z"}
+{"level":"info","message":"[http:6002 IDP Test 3] Open for business...","timestamp":"2023-01-24T23:49:49.117Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-24T23:49:49.918Z"}
+{"level":"info","message":"[mb:5000] OPTIONS /imposters","timestamp":"2023-01-24T23:49:56.873Z"}
+{"level":"info","message":"[mb:5000] POST /imposters","timestamp":"2023-01-24T23:49:56.884Z"}
+{"level":"error","message":"[mb:5000] error creating imposter: {\"code\":\"EADDRINUSE\",\"errno\":-48,\"syscall\":\"listen\",\"address\":\"::\",\"port\":22,\"message\":\"listen EADDRINUSE: address already in use :::22\",\"name\":\"Error\",\"stack\":\"Error: listen EADDRINUSE: address already in use :::22\\n    at Server.setupListenHandle [as _listen2] (node:net:1330:16)\\n    at listenInCluster (node:net:1378:12)\\n    at Server.listen (node:net:1465:7)\\n    at /Users/BPHA/Documents/GitHub/mountebank-1.0/backend/node_modules/mountebank/src/models/http/baseHttpServer.js:172:20\\n    at new Promise (<anonymous>)\\n    at create (/Users/BPHA/Documents/GitHub/mountebank-1.0/backend/node_modules/mountebank/src/models/http/baseHttpServer.js:158:16)\\n    at Object.createServer (/Users/BPHA/Documents/GitHub/mountebank-1.0/backend/node_modules/mountebank/src/models/protocols.js:35:34)\\n    at /Users/BPHA/Documents/GitHub/mountebank-1.0/backend/node_modules/mountebank/src/models/imposter.js:177:22\\n    at new Promise (<anonymous>)\\n    at Object.create (/Users/BPHA/Documents/GitHub/mountebank-1.0/backend/node_modules/mountebank/src/models/imposter.js:171:12)\"}","timestamp":"2023-01-24T23:49:56.888Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-24T23:50:42.653Z"}
+{"level":"info","message":"[mb:5000] OPTIONS /imposters","timestamp":"2023-01-24T23:50:51.836Z"}
+{"level":"info","message":"[mb:5000] POST /imposters","timestamp":"2023-01-24T23:50:51.847Z"}
+{"level":"info","message":"[http:2 test 2] Open for business...","timestamp":"2023-01-24T23:50:51.850Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/2","timestamp":"2023-01-24T23:51:00.807Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-24T23:52:24.525Z"}
+{"level":"info","message":"[mb:5000] OPTIONS /imposters","timestamp":"2023-01-24T23:52:29.783Z"}
+{"level":"info","message":"[mb:5000] POST /imposters","timestamp":"2023-01-24T23:52:29.792Z"}
+{"level":"info","message":"[http:3 test 3] Open for business...","timestamp":"2023-01-24T23:52:29.793Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/3","timestamp":"2023-01-24T23:52:32.271Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-24T23:56:28.337Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-24T23:56:36.878Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T00:00:42.561Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T00:00:45.488Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/3","timestamp":"2023-01-25T00:16:07.871Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/3","timestamp":"2023-01-25T00:16:16.351Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/6001","timestamp":"2023-01-25T00:16:18.091Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/3","timestamp":"2023-01-25T00:16:18.534Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T00:17:31.562Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/2","timestamp":"2023-01-25T00:17:35.028Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/3","timestamp":"2023-01-25T00:17:37.418Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/2","timestamp":"2023-01-25T00:17:38.311Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/3","timestamp":"2023-01-25T00:17:39.878Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/2","timestamp":"2023-01-25T01:25:11.522Z"}
+{"level":"info","message":"[http:2 test 2] ::1:56885 => GET /","timestamp":"2023-01-25T01:25:35.445Z"}
+{"level":"info","message":"[http:2 test 2] ::1:56967 => POST /","timestamp":"2023-01-25T01:25:48.610Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/3","timestamp":"2023-01-25T01:25:57.363Z"}
+{"level":"info","message":"[http:6001 IDP Test 2] ::1:57615 => POST /","timestamp":"2023-01-25T01:27:29.999Z"}
+{"level":"info","message":"[http:6001 IDP Test 2] no predicate match, using default response","timestamp":"2023-01-25T01:27:30.000Z"}
+{"level":"info","message":"[http:6001 IDP Test 2] ::1:57636 => GET /","timestamp":"2023-01-25T01:27:33.293Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/6001","timestamp":"2023-01-25T01:27:39.746Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/3","timestamp":"2023-01-25T01:27:46.407Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/2","timestamp":"2023-01-25T01:28:13.779Z"}
+{"level":"info","message":"[http:2 test 2] ::1:57986 => POST /customers/123","timestamp":"2023-01-25T01:28:29.005Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/2","timestamp":"2023-01-25T01:46:36.595Z"}
+{"level":"info","message":"[http:2 test 2] ::1:65065 => GET /","timestamp":"2023-01-25T01:47:41.728Z"}
+{"level":"info","message":"[http:2 test 2] ::1:65141 => POST /","timestamp":"2023-01-25T01:47:53.621Z"}
+{"level":"info","message":"[http:2 test 2] ::1:65202 => POST /customers/123","timestamp":"2023-01-25T01:48:03.838Z"}
+{"level":"info","message":"[http:3 test 3] ::1:65412 => POST /customers/123","timestamp":"2023-01-25T01:48:38.090Z"}
+{"level":"info","message":"[http:3 test 3] ::1:65444 => POST /customers/123","timestamp":"2023-01-25T01:48:43.016Z"}
+{"level":"info","message":"[http:3 test 3] ::1:65512 => GET /customers/123","timestamp":"2023-01-25T01:48:54.268Z"}
+{"level":"info","message":"[http:3 test 3] ::1:49175 => GET /customers/0","timestamp":"2023-01-25T01:49:00.884Z"}
+{"level":"info","message":"[http:3 test 3] ::1:49192 => GET /customers/1","timestamp":"2023-01-25T01:49:03.176Z"}
+{"level":"info","message":"[http:3 test 3] ::1:49206 => GET /customers","timestamp":"2023-01-25T01:49:05.116Z"}
+{"level":"info","message":"[http:3 test 3] ::1:62402 => GET /customers","timestamp":"2023-01-25T15:15:18.301Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T15:31:07.821Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/3","timestamp":"2023-01-25T15:31:10.396Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T15:38:42.862Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/2","timestamp":"2023-01-25T15:38:45.094Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T15:39:09.933Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T15:40:41.200Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T15:41:32.612Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T15:41:55.629Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T15:42:08.476Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T15:43:36.454Z"}
+{"level":"info","message":"[mb:5000] OPTIONS /imposters","timestamp":"2023-01-25T15:44:00.107Z"}
+{"level":"info","message":"[mb:5000] POST /imposters","timestamp":"2023-01-25T15:44:00.115Z"}
+{"level":"info","message":"[http:4 test get] Open for business...","timestamp":"2023-01-25T15:44:00.118Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/4","timestamp":"2023-01-25T15:44:02.745Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/3","timestamp":"2023-01-25T15:46:18.657Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/4","timestamp":"2023-01-25T15:46:19.171Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/3","timestamp":"2023-01-25T15:46:27.307Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/2","timestamp":"2023-01-25T15:46:28.185Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/3","timestamp":"2023-01-25T15:46:28.645Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/4","timestamp":"2023-01-25T15:46:29.355Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T15:49:51.591Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T15:50:07.540Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T15:50:40.686Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T15:50:51.733Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T15:51:10.438Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T15:51:22.945Z"}
+{"level":"info","message":"[mb:5000] OPTIONS /imposters","timestamp":"2023-01-25T15:51:48.272Z"}
+{"level":"info","message":"[mb:5000] POST /imposters","timestamp":"2023-01-25T15:51:48.280Z"}
+{"level":"info","message":"[http:55 test 5] Open for business...","timestamp":"2023-01-25T15:51:48.282Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/55","timestamp":"2023-01-25T15:51:53.200Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T15:52:52.223Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T15:53:02.152Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T15:53:03.832Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T15:53:28.739Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/4","timestamp":"2023-01-25T15:53:31.192Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/4","timestamp":"2023-01-25T15:53:32.901Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/55","timestamp":"2023-01-25T15:53:34.227Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/4","timestamp":"2023-01-25T15:53:34.912Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/55","timestamp":"2023-01-25T15:53:35.419Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/55","timestamp":"2023-01-25T15:54:42.166Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/55","timestamp":"2023-01-25T15:54:42.892Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/55","timestamp":"2023-01-25T15:55:17.433Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/55","timestamp":"2023-01-25T15:55:18.326Z"}
+{"level":"info","message":"[http:55 test 5] ::1:61016 => GET /","timestamp":"2023-01-25T15:55:23.806Z"}
+{"level":"info","message":"[http:55 test 5] ::1:61069 => GET /customers/123","timestamp":"2023-01-25T15:55:31.939Z"}
+{"level":"info","message":"[http:55 test 5] ::1:61093 => GET /customers/123","timestamp":"2023-01-25T15:55:35.343Z"}
+{"level":"info","message":"[http:55 test 5] ::1:61279 => GET /customers/123","timestamp":"2023-01-25T15:56:04.378Z"}
+{"level":"info","message":"[http:55 test 5] ::1:61321 => GET /customers/123","timestamp":"2023-01-25T15:56:10.970Z"}
+{"level":"info","message":"[http:55 test 5] ::1:61331 => GET /customers/123","timestamp":"2023-01-25T15:56:11.875Z"}
+{"level":"info","message":"[http:55 test 5] ::1:61340 => GET /customers/123","timestamp":"2023-01-25T15:56:12.962Z"}
+{"level":"info","message":"[http:55 test 5] ::1:61346 => GET /customers/123","timestamp":"2023-01-25T15:56:13.804Z"}
+{"level":"info","message":"[http:55 test 5] ::1:61497 => GET /customers/123","timestamp":"2023-01-25T15:56:38.468Z"}
+{"level":"info","message":"[http:55 test 5] ::1:61532 => GET /customers/123","timestamp":"2023-01-25T15:56:43.124Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/55/stubs/0","timestamp":"2023-01-25T15:56:49.316Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/55/stubs/0","timestamp":"2023-01-25T15:56:53.057Z"}
+{"level":"info","message":"[http:55 test 5] ::1:61623 => GET /customers/123","timestamp":"2023-01-25T15:56:56.387Z"}
+{"level":"info","message":"[http:55 test 5] ::1:61636 => GET /customers/123","timestamp":"2023-01-25T15:56:58.107Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T16:02:17.563Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T16:32:01.894Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T16:33:16.234Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T16:33:22.487Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T16:33:30.981Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T16:33:35.125Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T16:33:50.915Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T16:35:15.833Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T16:38:56.353Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T16:39:11.647Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T16:40:35.299Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T16:40:53.058Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T16:41:38.760Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T16:42:13.029Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T16:42:27.058Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T16:42:41.829Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T16:42:46.312Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T16:42:53.159Z"}
