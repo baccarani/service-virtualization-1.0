@@ -1,34 +1,38 @@
-<h1>Environment Dependency Manager</h1>
-<br>
-<button class="btn btn-success" (click)="onAddImposter()">Add Dependency</button>
-<hr>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Protocol</th>
-      <th>Port</th>
-      <th># of Requests</th>
-      <th>View</th>
-      <th>Delete</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let imposter of imposterArray; let i = index">
-      <td>{{ imposter.name }}</td>
-      <td>{{ imposter.protocol }}</td>
-      <td>{{ imposter.port }}</td>
-      <td>{{ imposter.numberOfRequests }}</td>
-      <td><button class="btn btn-primary" (click)="onViewImposter(imposter.port)">View</button></td>
-      <td><button class="btn btn-danger" (click)="onDeleteImposter(imposter.port, i)">Delete</button></td>
-    </tr>
-  </tbody>
-</table>
-<hr>
-<br>
-<div style="font-weight: bold;">
-  Request Stub:
-  {{ viewDependency.name }}
+<div style="margin: auto; width: 80%">
+  <h1 style="font-weight: bold; font-size: xx-large">Environment Dependency Manager</h1>
+  <p>Test your APIs without relying on external dependencies.</p>
+  <br>
+  <button class="btn btn-primary" (click)="onAddImposter()" style="display: inline-flex; align-items: center; padding-left: 0; padding-left: 5px;"><mat-icon style="padding-right: 30px; padding-left: 0;">add</mat-icon>Add Dependency</button>
+  <br><br>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Protocol</th>
+        <th>Port</th>
+        <th># of Requests</th>
+        <th>View</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let imposter of imposterArray; let i = index">
+        <td>{{ imposter.name }}</td>
+        <td>{{ imposter.protocol }}</td>
+        <td>{{ imposter.port }}</td>
+        <td>{{ imposter.numberOfRequests }}</td>
+        <!-- <td><button class="btn btn-primary" (click)="onViewImposter(imposter.port)">View</button></td> -->
+        <td><button class="btn btn-primary" (click)="onViewImposter(imposter.port)" style="display: inline-flex; align-items: center; padding-left: 0; padding-left: 7px;"><mat-icon style="padding-right: 30px; padding-left: 0;">visibility</mat-icon>View</button></td>
+        <td><button class="btn btn-danger" (click)="onDeleteImposter(imposter.port, i)" style="display: inline-flex; align-items: center; padding-left: 0; padding-left: 5px;"><mat-icon style="padding-right: 30px; padding-left: 0;">delete</mat-icon>Delete</button></td>
+        <!-- <td><button class="btn btn-danger" (click)="onDeleteImposter(imposter.port, i)">Delete</button></td> -->
+      </tr>
+    </tbody>
+  </table>
+  <br>
+  <div style="font-weight: bold;">
+    Request Stub:
+    {{ viewDependency.name }}
+  </div>
+  <br>
+  <pre>{{ viewDependency | json }}</pre>
 </div>
-<br>
-<pre>{{ viewDependency | json }}</pre>

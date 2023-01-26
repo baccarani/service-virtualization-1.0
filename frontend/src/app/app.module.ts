@@ -13,6 +13,7 @@ import { AddDependencyComponent } from './add-dependency/add-dependency.componen
 import { ImposterService } from './services/imposter.service';
 import { StoreModule } from '@ngrx/store';
 import { imposterReducer } from './store/imposter.reducer';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { imposterReducer } from './store/imposter.reducer';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatDialogModule,
+    MatIconModule,
     StoreModule.forRoot({imposter: imposterReducer}) 
   ],
   providers: [ImposterService],
