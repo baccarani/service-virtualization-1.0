@@ -2,7 +2,9 @@
   <h1 style="font-weight: bold; font-size: xx-large">Environment Dependency Manager</h1>
   <p>Test your APIs without relying on external dependencies.</p>
   <br>
-  <button class="btn btn-primary" (click)="onAddImposter()" style="display: inline-flex; align-items: center; padding-left: 0; padding-left: 5px;"><mat-icon style="padding-right: 30px; padding-left: 0;">add</mat-icon>Add Dependency</button>
+  <button class="btn btn-primary" (click)="onAddImposter()"
+    style="display: inline-flex; align-items: center; padding-left: 0; padding-left: 5px;"><mat-icon
+      style="padding-right: 30px; padding-left: 0;">add</mat-icon>Add Dependency</button>
   <br><br>
   <table class="table table-striped">
     <thead>
@@ -21,10 +23,13 @@
         <td>{{ imposter.protocol }}</td>
         <td>{{ imposter.port }}</td>
         <td>{{ imposter.numberOfRequests }}</td>
-        <!-- <td><button class="btn btn-primary" (click)="onViewImposter(imposter.port)">View</button></td> -->
-        <td><button class="btn btn-primary" (click)="onViewImposter(imposter.port)" style="display: inline-flex; align-items: center; padding-left: 0; padding-left: 7px;"><mat-icon style="padding-right: 30px; padding-left: 0;">visibility</mat-icon>View</button></td>
-        <td><button class="btn btn-danger" (click)="onDeleteImposter(imposter.port, i)" style="display: inline-flex; align-items: center; padding-left: 0; padding-left: 5px;"><mat-icon style="padding-right: 30px; padding-left: 0;">delete</mat-icon>Delete</button></td>
-        <!-- <td><button class="btn btn-danger" (click)="onDeleteImposter(imposter.port, i)">Delete</button></td> -->
+        <td><button class="btn btn-primary" (click)="onViewImposter(imposter.port)"
+            style="display: inline-flex; align-items: center; padding-left: 0; padding-left: 7px;"><mat-icon
+              style="padding-right: 30px; padding-left: 0; transform: scale(.8);">visibility</mat-icon>View</button>
+        </td>
+        <td><button class="btn btn-danger" (click)="onDeleteImposter(imposter.port, i)"
+            style="display: inline-flex; align-items: center; padding-left: 0; padding-left: 5px;"><mat-icon
+              style="padding-right: 30px; padding-left: 0; transform: scale(.8);">delete</mat-icon>Delete</button></td>
       </tr>
     </tbody>
   </table>
@@ -32,7 +37,10 @@
   <div style="font-weight: bold;">
     Request Stub:
     {{ viewDependency.name }}
+    <!-- <mat-icon style="float: right; transform: scale(.8); padding-right: 35px;">file_copy</mat-icon> -->
   </div>
   <br>
-  <pre>{{ viewDependency | json }}</pre>
+  <pre>
+    {{ viewDependency | json }}
+  </pre>
 </div>

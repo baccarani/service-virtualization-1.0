@@ -10,3 +10,14 @@
     height: 80vh;
     overflow-y: auto;
 }
+
+
+.inline-div {
+    display:inline-block;
+}
+.inline-txtarea {
+    resize: none;
+    border : 2px solid red;
+    height:125px;
+}
+

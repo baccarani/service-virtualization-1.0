@@ -49,27 +49,30 @@ export class ImposterService {
 
 
     createImposter(formValues) {
+        const headers = JSON.parse(formValues.headers);
+        const body = JSON.parse(formValues.body);
         const data = {
             port: formValues.port,
             protocol: formValues.protocol,
             name: formValues.name,
-            stubs: [{
-                responses: [{
-                    is: {
-                        statusCode: formValues.statusCode,
-                        headers: formValues.headers,
-                        body: formValues.body
-                    }
-                }],
-                predicates: [{
-                    and: [{
-                        equals: {
-                            method: formValues.method,
-                            path: formValues.path
+            stubs: [
+                {
+                    responses: [{
+                        is: {
+                            statusCode: formValues.statusCode,
+                            headers: headers,
+                            body: body
                         }
+                    }],
+                    predicates: [{
+                        and: [{
+                            equals: {
+                                method: formValues.method,
+                                path: formValues.path
+                            }
+                        }]
                     }]
                 }]
-            }]
         };
 
         this.http

@@ -1,4 +1,4 @@
-<div>
+<div style="max-height: 85vh; overflow-y: auto; overflow-x: hidden; padding-right: 10px;">
     <h1>Add Dependency</h1>
     <p>Fill in the below form to add your dependency.</p>
     <br>
@@ -40,11 +40,11 @@
                     </div><br>
                     <div>
                         <label>Headers:</label>
-                        <textarea name="headers" ngModel required class="form-control"></textarea>
+                        <textarea name="headers" ngModel required class="form-control" style="resize: none;"></textarea>
                     </div><br>
                     <div>
                         <label>Body:</label>
-                        <textarea name="body" ngModel required class="form-control"></textarea>
+                        <textarea name="body" ngModel required class="form-control" style="resize: none;"></textarea>
                     </div><br><br>
                     <button class="btn btn-primary" type="submit" [disabled]="!form.valid" style="margin-right: 10px;">
                         Add
