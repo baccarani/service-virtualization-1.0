@@ -55,3 +55,29 @@
 {"level":"info","message":"[mb:5000] POST /imposters","timestamp":"2023-01-25T23:51:47.301Z"}
 {"level":"info","message":"[https:3 test 3] Open for business...","timestamp":"2023-01-25T23:51:47.305Z"}
 {"level":"info","message":"[mb:5000] GET /imposters/3","timestamp":"2023-01-25T23:51:55.195Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/3","timestamp":"2023-01-25T23:53:37.157Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/2","timestamp":"2023-01-25T23:53:37.966Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/3","timestamp":"2023-01-25T23:53:40.880Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/2","timestamp":"2023-01-25T23:53:43.724Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/1","timestamp":"2023-01-25T23:53:45.401Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/2","timestamp":"2023-01-25T23:53:52.141Z"}
+{"level":"info","message":"[mb:5000] GET /","timestamp":"2023-01-25T23:54:34.089Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T23:54:42.155Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/3","timestamp":"2023-01-25T23:55:22.045Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/3/stubs","timestamp":"2023-01-25T23:55:41.984Z"}
+{"level":"info","message":"[mb:5000] PUT /imposters/3/stubs","timestamp":"2023-01-25T23:55:54.632Z"}
+{"level":"error","message":"[mb:5000] error changing stubs: [{\"code\":\"bad data\",\"message\":\"'stubs' is a required field\"}]","timestamp":"2023-01-25T23:55:54.633Z"}
+{"level":"info","message":"[mb:5000] POST /imposters/3/stubs","timestamp":"2023-01-25T23:56:05.812Z"}
+{"level":"error","message":"[mb:5000] error changing stubs: [{\"code\":\"bad data\",\"message\":\"must contain 'stub' field\"}]","timestamp":"2023-01-25T23:56:05.813Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/3/stubs","timestamp":"2023-01-25T23:56:10.102Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T23:56:34.902Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-25T23:57:44.481Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/3","timestamp":"2023-01-26T00:16:58.423Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-26T00:17:31.349Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/1","timestamp":"2023-01-26T00:17:36.265Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/2","timestamp":"2023-01-26T00:17:36.949Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/1","timestamp":"2023-01-26T00:17:37.561Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/3","timestamp":"2023-01-26T00:21:23.285Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-01-26T00:21:36.958Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/3","timestamp":"2023-01-26T00:21:40.234Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/3","timestamp":"2023-01-26T00:25:58.657Z"}

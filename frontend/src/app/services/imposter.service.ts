@@ -36,16 +36,16 @@ export class ImposterService {
     }
 
     0
-    onAddImposter(data) {
-        this.http
-            .post(`http://localhost:5000/imposters`, data)
-            .subscribe(responseData => {
-                this.imposterArray.push(responseData);
-                this.imposterArray.sort((a, b) => {
-                    return a.port - b.port;
-                });
-            });
-    }
+    // onAddImposter(data) {
+    //     this.http
+    //         .post(`http://localhost:5000/imposters`, data)
+    //         .subscribe(responseData => {
+    //             this.imposterArray.push(responseData);
+    //             this.imposterArray.sort((a, b) => {
+    //                 return a.port - b.port;
+    //             });
+    //         });
+    // }
 
 
     createImposter(formValues) {
@@ -71,8 +71,6 @@ export class ImposterService {
                 }]
             }]
         };
-
-        console.log('Imposter Service - ' + data)
 
         this.http
             .post(`http://localhost:5000/imposters`, data)
