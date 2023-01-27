@@ -6,8 +6,6 @@ Mountebank is the most capable open source service virtualization tool in existe
 
 Learn more at http://www.mbtest.org/.
 
-<hr>
-
 <p align="center">
 
 [![Mountebank demo using Node.js and Angular](https://img.youtube.com/vi/XGZdic48SAc/0.jpg)](https://www.youtube.com/watch?v=XGZdic48SAc)
