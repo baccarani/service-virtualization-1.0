@@ -6,7 +6,7 @@
 
 </p>
 
-^ YouTube Video Link - https://youtu.be/XGZdic48SAc
+View the YouTube Video Link at https://youtu.be/XGZdic48SAc.
 
 <hr>
 
