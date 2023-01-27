@@ -12,4 +12,4 @@ Learn more at http://www.mbtest.org/.
 
 </p>
 
-View the YouTube Video at https://youtu.be/XGZdic48SAc.
+Watch the YouTube Video at https://youtu.be/XGZdic48SAc.
