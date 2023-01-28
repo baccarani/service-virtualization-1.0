@@ -1,10 +1,13 @@
 <div style="margin: auto; width: 80%">
   <h1 style="font-weight: bold; font-size: xx-large">Environment Dependency Manager</h1>
-  <p>Test your APIs without relying on external dependencies.</p>
+  <p>Add dependencies to simulate requests/responses for integration development and testing.</p>
   <br>
   <button class="btn btn-primary" (click)="onAddImposter()"
-    style="display: inline-flex; align-items: center; padding-left: 0; padding-left: 5px;"><mat-icon
+    style="display: inline-flex; align-items: center; padding-left: 0; padding-left: 5px; margin-right: 15px;"><mat-icon
       style="padding-right: 30px; padding-left: 0;">add</mat-icon>Add Dependency</button>
+  <button class="btn btn-default" (click)="onCopyAll()"
+    style="display: inline-flex; align-items: center; padding-left: 0; padding-left: 5px;"><mat-icon
+      style="padding-right: 30px; padding-left: 0; transform: scale(.8);">{{iconName}}</mat-icon>{{copyAllButtonText}}</button>
   <br><br>
   <table class="table table-striped">
     <thead>

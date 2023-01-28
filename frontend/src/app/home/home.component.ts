@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { AddDependencyComponent } from '../add-dependency/add-dependency.component';
 import { ImposterService } from '../services/imposter.service';
 import { Store } from '@ngrx/store'
 import * as ImposterActions from '../store/imposter.actions'
+import { Clipboard } from '@angular/cdk/clipboard'
 
 @Component({
   selector: 'app-home',
@@ -15,13 +16,16 @@ export class HomeComponent implements OnInit {
   imposterArray: any[] = [];
   viewDependency: any = '';
   viewDependencyName: string = '';
-
+  isCopyAll = false;
+  copyAllButtonText = 'Copy All'
+  iconName = 'file_copy'
 
 
   constructor(private http: HttpClient,
     private matDialogModule: MatDialog,
     private imposterService: ImposterService,
-    private store: Store<{ imposter: {} }>) { }
+    private store: Store<{ imposter: {} }>,
+    private clipboard: Clipboard) { }
 
   ngOnInit(): void {
     // use store and dispatch to load imposters with http
@@ -54,6 +58,16 @@ export class HomeComponent implements OnInit {
     this.imposterService.onDeleteImposter(port, index);
     this.viewDependency = '';
     this.viewDependencyName = '';
+  }
+
+  onCopyAll() {
+    this.clipboard.copy(JSON.stringify(this.imposterArray));
+    this.copyAllButtonText = 'Copied!';
+    this.iconName = 'done';
+    setTimeout(() => {
+      this.copyAllButtonText = 'Copy All';
+      this.iconName = 'file_copy';
+    }, 2000);
   }
 
 }
