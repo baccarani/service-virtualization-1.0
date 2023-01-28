@@ -12,13 +12,30 @@ export class ImposterService {
 
 
     onGetImposter() {
-        return this.imposterArray = this.http
+        // return this.imposterArray = this.http
+        //     .get(`http://localhost:5000/imposters`)
+        //     .pipe(map((responseData) => {
+        //         this.imposterArray = responseData;
+        //         this.imposterArray = this.imposterArray.imposters;
+        //         return this.imposterArray;
+        //     }));;
+        let imposterArrayMaster = [];
+        this.imposterArray = this.http
             .get(`http://localhost:5000/imposters`)
             .pipe(map((responseData) => {
                 this.imposterArray = responseData;
                 this.imposterArray = this.imposterArray.imposters;
-                return this.imposterArray;
-            }));;
+                for (let index = 0; index < this.imposterArray.length; index++) {
+                    this.http.get(`http://localhost:5000/imposters/${this.imposterArray[index].port}`).subscribe(data => {
+                        imposterArrayMaster.push(data);
+                    })
+                }
+                return this.imposterArray = imposterArrayMaster;
+            }));
+
+
+        return this.imposterArray
+
     }
 
     onViewImposter(data) {
@@ -35,7 +52,7 @@ export class ImposterService {
             })
     }
 
-    0
+    
     // onAddImposter(data) {
     //     this.http
     //         .post(`http://localhost:5000/imposters`, data)
