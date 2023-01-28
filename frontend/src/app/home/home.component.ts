@@ -28,18 +28,17 @@ export class HomeComponent implements OnInit {
     private clipboard: Clipboard) { }
 
   ngOnInit(): void {
+    // use services to load data and state
+    this.imposterService.onGetImposter().subscribe(data => {
+      this.imposterArray = data;
+    })
+
     // use store and dispatch to load imposters with http
-    this.imposterService.onGetImposter()
-      .subscribe(data => {
-        console.log(data);
-        this.imposterArray = data;
-      })
     this.store.dispatch(new ImposterActions.AddImposter(this.imposterArray));
 
     // get initial state from ngrx
     let x = this.store.select('imposter');
     x.subscribe(data => {
-      console.log(data);
     })
   }
 
