@@ -17,8 +17,9 @@ export class HomeComponent implements OnInit {
   viewDependency: any = '';
   viewDependencyName: string = '';
   isCopyAll = false;
-  copyAllButtonText = 'Copy All'
-  iconName = 'file_copy'
+  copyAllButtonText = 'Copy All';
+  iconName = 'file_copy';
+  copyAllButtonColor = 'black';
 
 
   constructor(private http: HttpClient,
@@ -63,9 +64,11 @@ export class HomeComponent implements OnInit {
     this.clipboard.copy(JSON.stringify(this.imposterArray));
     this.copyAllButtonText = 'Copied!';
     this.iconName = 'done';
+    this.copyAllButtonColor = 'green';
     setTimeout(() => {
       this.copyAllButtonText = 'Copy All';
       this.iconName = 'file_copy';
+      this.copyAllButtonColor = 'black';
     }, 2000);
   }
 
