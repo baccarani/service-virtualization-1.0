@@ -1,16 +1,29 @@
-<div style="border: 1px solid #ccc; padding: 30px; border-radius: 10px; background-color: #f4f4f4;">
-    <div>
-        <label>Method:</label>
-        <select name="method" ngModel required class="form-control">
-            <option value="GET">GET</option>
-            <option value="POST">POST</option>
-            <option value="PUT">PUT</option>
-            <option value="DELETE">DELETE</option>
-        </select>
-    </div><br>
-    <div>
-        <label>Path:</label>
-        <input type="text" name="path" ngModel required class="form-control">
+<form [formGroup]="predicateForm" (ngSubmit)="onSubmit()">
+    <div style="border: 1px solid #ccc; border-radius: 10px; background-color: #f4f4f4;">
+        <div style="display: flex; justify-content: flex-end; padding-right: 5px; padding-top: 5px;">
+            <button mat-icon-button color="basic" (click)="onDelete()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+        <div style="padding-bottom: 30px; padding-left: 30px; padding-right: 30px;">
+            <div>
+                <label>Method:</label>
+                <select name="method" required class="form-control" formControlName="method">
+                    <option value="GET">GET</option>
+                    <option value="POST">POST</option>
+                    <option value="PUT">PUT</option>
+                    <option value="DELETE">DELETE</option>
+                </select>
+            </div><br>
+            <div>
+                <label>Path:</label>
+                <input type="text" name="path" required class="form-control" formControlName="path">
+            </div>
+            <div layout="row" style="padding-top: 30px;">
+                <button *ngIf="!showEdit" mat-raised-button color="white" class="hover-class"
+                    style="width: 100%;">Save</button>
+            </div>
+        </div>
     </div>
-</div>
+</form>
 <br><br>

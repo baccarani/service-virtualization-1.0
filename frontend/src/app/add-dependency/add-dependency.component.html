@@ -1,58 +1,74 @@
-<div class="col-xs-12" style="max-height: 85vh; overflow-y: auto; overflow-x: hidden;">
-    <h1 style="font-weight: bold;">Add Dependency</h1>
-    <p>Fill in the below form to add your dependency.</p>
-    <br>
-    <div class="container" style="max-width: 400px;">
-        <div class="row">
-            <div>
-                <form (ngSubmit)="onSubmit(form.value)" #form="ngForm">
-                    <h2>General Information</h2>
-                    <div>
-                        <label>Name:</label>
-                        <input type="text" name="name" ngModel required class="form-control">
-                    </div><br>
-                    <div class="form-group">
-                        <label>Port:</label>
-                        <input type="number" name="port" ngModel required class="form-control">
-                    </div>
-                    <div>
-                        <label>Protocol:</label>
-                        <select name="protocol" ngModel required class="form-control">
-                            <option value="http">HTTP</option>
-                            <option value="https">HTTPS</option>
-                        </select>
-                    </div><br>
-                    <hr>
-                    <div>
-                        <h2>Predicates</h2>
-                        <!-- <mat-icon style="cursor: pointer; margin-top: 5px; float: right;">add</mat-icon> -->
-                    </div>
-                    <div *ngFor="let predicate of predicates; let i = index">
-                        <app-predicates></app-predicates>
-                    </div>
-                    <a style="text-decoration: underline; cursor: pointer;" (click)="addPredicate()">Add Predicate</a>
-                    <br>
-                    <hr>
-                    <h2>Responses</h2>
-                    <div>
-                        <label>Status Code:</label>
-                        <input type="number" name="statusCode" ngModel required class="form-control">
-                    </div><br>
-                    <div>
-                        <label>Headers:</label>
-                        <textarea name="headers" ngModel required class="form-control" style="resize: none;"></textarea>
-                    </div><br>
-                    <div>
-                        <label>Body:</label>
-                        <textarea name="body" ngModel required class="form-control" style="resize: none;"></textarea>
-                    </div><br><br>
-                    <button class="btn btn-primary" type="submit" [disabled]="!form.valid" style="margin-right: 10px;">
-                        Add
-                    </button>
-                    <button class="btn btn-default" type="button" (click)="closeModal()">
-                        Close
-                    </button>
-                </form>
+<div style="max-height: 85vh; overflow-y: auto; overflow-x: hidden;">
+    <h1 style="font-weight: bold; display: flex; align-items: center; justify-content: space-between;">
+        Add Dependency
+        <button mat-icon-button class="close-button" (click)="closeModal()">
+            <mat-icon aria-label="Close modal">close</mat-icon>
+        </button>
+    </h1>
+    <div>
+        <p>Fill in the below form to add your dependency.</p>
+        <br>
+        <div class="container" style="max-width: 400px;">
+            <div class="row">
+                <div>
+                    <form (ngSubmit)="onSubmit(form.value)" #form="ngForm">
+                        <h2>General Information</h2>
+                        <div>
+                            <label>Name:</label>
+                            <input type="text" name="name" ngModel required class="form-control">
+                        </div><br>
+                        <div class="form-group">
+                            <label>Port:</label>
+                            <input type="number" name="port" ngModel required class="form-control">
+                        </div>
+                        <div>
+                            <label>Protocol:</label>
+                            <select name="protocol" ngModel required class="form-control">
+                                <option value="http">HTTP</option>
+                                <option value="https">HTTPS</option>
+                            </select>
+                        </div><br>
+                        <hr>
+                        <div>
+                            <h2>Predicates</h2>
+                            <!-- <mat-icon style="cursor: pointer; margin-top: 5px; float: right;">add</mat-icon> -->
+                        </div>
+                        <div *ngFor="let predicate of predicates; let i = index">
+                            <app-predicates (editUpdate)="editUpdate($event)"
+                                            (deleteUpdate)="deleteUpdate($event)"
+                                            [index]="i"
+                                            [predicate]="predicate">
+                            </app-predicates>
+                        </div>
+                        <a style="text-decoration: underline; cursor: pointer;" (click)="addPredicate()">Add
+                            Predicate</a>
+                        <br>
+                        <hr>
+                        <h2>Responses</h2>
+                        <div>
+                            <label>Status Code:</label>
+                            <input type="number" name="statusCode" ngModel required class="form-control">
+                        </div><br>
+                        <div>
+                            <label>Headers:</label>
+                            <textarea name="headers" ngModel required class="form-control"
+                                style="resize: none;"></textarea>
+                        </div><br>
+                        <div>
+                            <label>Body:</label>
+                            <textarea name="body" ngModel required class="form-control"
+                                style="resize: none;"></textarea>
+                        </div><br><br>
+                        <button class="btn btn-primary" type="submit" [disabled]="!form.valid"
+                            style="margin-right: 10px;">
+                            Add
+                        </button>
+                        <button class="btn btn-default" type="button" (click)="closeModal()">
+                            Close
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+</div>

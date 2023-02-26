@@ -14,6 +14,7 @@ export class AddDependencyComponent implements OnInit {
   methods = ['GET', 'POST', 'PUT']
   stubs = []
   predicates: Predicate[] = []
+  showEdit: boolean[] = [];
 
 
   constructor(private http: HttpClient, private matDialogRef: MatDialogRef<AddDependencyComponent>, private imposterService: ImposterService) { }
@@ -26,6 +27,12 @@ export class AddDependencyComponent implements OnInit {
     this.predicates = this.imposterService.onGetPredicates();
   }
 
+  predicateUpdate(form: any): void {
+    this.showEdit[form.index] = true;
+    this.predicates[form.index] = form.value;
+    // console.log(this.predicates);
+  }
+
 
   closeModal() {
     this.matDialogRef.close();
@@ -33,13 +40,34 @@ export class AddDependencyComponent implements OnInit {
 
 
   onSubmit(data) {
-    this.imposterService.createImposter(data);
+    this.imposterService.onCreateImposter(data);
     this.matDialogRef.close();
   }
 
   addPredicate() {
     this.imposterService.onAddPredicate({method: '', path: ''})
+    this.showEdit.push(false);
     this.predicates = this.imposterService.onGetPredicates();
+  }
+
+  deleteUpdate(index: any): void {
+    let tempPredicates: Predicate[] = [];
+    for (let i = 0; i < this.predicates.length; i++) {
+      if (i !== index) {
+        tempPredicates.push(this.predicates[i]);
+      }
+    }
+    this.predicates = tempPredicates;
+
+    let tempEdit: boolean[] = [];
+    for (let i = 0; i < this.showEdit.length; i++) {
+      if (i !== index) {
+        tempEdit.push(this.showEdit[i]);
+      }
+    }
+    this.showEdit = tempEdit;
+
+    this.imposterService.onDeletePredicate(index);
   }
 
 

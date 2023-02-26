@@ -11,18 +11,20 @@ export class ImposterService {
 
     constructor(private http: HttpClient) { }
 
-    
-
     onGetPredicates() {
         return this.predicates.slice();
     }
 
-    onAddPredicate({method, path}: Predicate) {
-        this.predicates.push({method, path});
+    onAddPredicate({ method, path }: Predicate) {
+        this.predicates.push({ method, path });
     }
 
     onResetPredicates() {
         this.predicates = [];
+    }
+
+    onDeletePredicate(index) {
+        this.predicates.splice(index, 1);
     }
 
     onGetImposter() {
@@ -35,38 +37,18 @@ export class ImposterService {
                 for (let index = 0; index < this.imposterArray.length; index++) {
                     this.http.get(`http://localhost:5000/imposters/${this.imposterArray[index].port}`).subscribe(data => {
                         imposterArray$.push(data);
-                        imposterArray$.sort((a,b) => a.port - b.port);
+                        imposterArray$.sort((a, b) => a.port - b.port);
                     })
                 }
                 return this.imposterArray = imposterArray$;
             }))
-            return this.imposterArray;
-
-
-        // let imposterArrayMaster = [];
-        // this.imposterArray = this.http
-        //     .get(`http://localhost:5000/imposters`)
-        //     .pipe(map((responseData) => {
-        //         this.imposterArray = responseData;
-        //         this.imposterArray = this.imposterArray.imposters;
-        //         for (let index = 0; index < this.imposterArray.length; index++) {
-        //             this.http.get(`http://localhost:5000/imposters/${this.imposterArray[index].port}`).subscribe(data => {
-        //                 imposterArrayMaster.push(data);
-        //             })
-        //         }
-        //         return this.imposterArray = imposterArrayMaster;
-        //     }));
-
-
-        // return this.imposterArray
-
+        return this.imposterArray;
     }
 
     onViewImposter(data) {
         return this.http
             .get(`http://localhost:5000/imposters/${data}`)
     }
-
 
     onDeleteImposter(port, index) {
         this.http
@@ -76,20 +58,7 @@ export class ImposterService {
             })
     }
 
-
-    // onAddImposter(data) {
-    //     this.http
-    //         .post(`http://localhost:5000/imposters`, data)
-    //         .subscribe(responseData => {
-    //             this.imposterArray.push(responseData);
-    //             this.imposterArray.sort((a, b) => {
-    //                 return a.port - b.port;
-    //             });
-    //         });
-    // }
-
-
-    createImposter(formValues) {
+    onCreateImposter(formValues) {
         const headers = JSON.parse(formValues.headers);
         const body = JSON.parse(formValues.body);
         const data = {

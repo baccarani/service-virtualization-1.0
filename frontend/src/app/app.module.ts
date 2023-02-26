@@ -13,8 +13,11 @@ import { AddDependencyComponent } from './add-dependency/add-dependency.componen
 import { ImposterService } from './services/imposter.service';
 import { StoreModule } from '@ngrx/store';
 import { imposterReducer } from './store/imposter.reducer';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { PredicatesComponent } from './predicates/predicates.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormService } from './services/form.service'; 
 
 
 @NgModule({
@@ -25,10 +28,12 @@ import { PredicatesComponent } from './predicates/predicates.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatDialogModule,
+    MatButtonModule,
     MatIconModule,
+    ReactiveFormsModule,
     StoreModule.forRoot({imposter: imposterReducer}) 
   ],
-  providers: [ImposterService],
+  providers: [ImposterService, FormService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
