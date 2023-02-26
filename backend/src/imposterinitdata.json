@@ -1,56 +1,120 @@
 {
     "imposters": [
         {
-        "port": 6001,
-        "protocol": "http",
-        "stubs": [
-            {
-                "predicates": [ {
-                    "equals": {
-                        "method": "GET",
-                        "path": "/"
-                    }
-                }],
-                "responses": [
-                    {
-                        "is": {
-                            "statusCode": 200,
-                            "headers": {
-                                "Content-Type": "application/json"
-                            },
-                            "body": { "message": "hello world" }
+            "port": 6001,
+            "protocol": "http",
+            "stubs": [
+                {
+                    "predicates": [
+                        {
+                            "equals": {
+                                "method": "GET",
+                                "path": "/"
+                            }
                         }
-                    }
-                ]
-            }
-        ],
-        "name": "Dependency 1"
-    },
-    {
-        "port": 6002,
-        "protocol": "http",
-        "stubs": [
-            {
-                "predicates": [ {
-                    "equals": {
-                        "method": "GET",
-                        "path": "/"
-                    }
-                }],
-                "responses": [
-                    {
-                        "is": {
-                            "statusCode": 200,
-                            "headers": {
-                                "Content-Type": "application/json"
-                            },
-                            "body": { "message": "hello world 2" }
+                    ],
+                    "responses": [
+                        {
+                            "is": {
+                                "statusCode": 200,
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "body": {
+                                    "message": "hello world"
+                                }
+                            }
                         }
-                    }
-                ]
-            }
-        ],
-        "name": "Dependency 2"
-    }
-]
+                    ]
+                }
+            ],
+            "name": "Dependency 1"
+        },
+        {
+            "port": 6002,
+            "protocol": "http",
+            "stubs": [
+                {
+                    "predicates": [
+                        {
+                            "equals": {
+                                "method": "GET",
+                                "path": "/"
+                            }
+                        }
+                    ],
+                    "responses": [
+                        {
+                            "is": {
+                                "statusCode": 200,
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "body": {
+                                    "message": "hello world 2"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ],
+            "name": "Dependency 2"
+        },
+        {
+            "port": 6003,
+            "protocol": "https",
+            "stubs": [
+                {
+                    "predicates": [
+                        {
+                            "equals": {
+                                "path": "/api/items",
+                                "method": "POST"
+                            }
+                        }
+                    ],
+                    "responses": [
+                        {
+                            "is": {
+                                "statusCode": 200,
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "body": {
+                                    "items": [
+                                        {
+                                            "id": 1,
+                                            "name": "Item 1"
+                                        },
+                                        {
+                                            "id": 2,
+                                            "name": "Item 2"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "when": {
+                                "query": {
+                                    "error": "true"
+                                }
+                            },
+                            "is": {
+                                "statusCode": 500,
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "body": {
+                                    "error": "Internal server error"
+                                }
+                            }
+                        }
+                    ],
+                    "responsesEnabled": true
+                }
+            ],
+            "name": "Dependency 3"
+        }
+    ]
 }

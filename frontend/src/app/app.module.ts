@@ -14,10 +14,11 @@ import { ImposterService } from './services/imposter.service';
 import { StoreModule } from '@ngrx/store';
 import { imposterReducer } from './store/imposter.reducer';
 import { MatIconModule } from '@angular/material/icon';
+import { PredicatesComponent } from './predicates/predicates.component';
 
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, AddDependencyComponent],
+  declarations: [AppComponent, HomeComponent, AddDependencyComponent, PredicatesComponent],
   imports: [BrowserModule, 
     FormsModule, 
     HttpClientModule,

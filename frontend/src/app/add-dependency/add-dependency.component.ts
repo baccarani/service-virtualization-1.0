@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { Predicate } from '../models/predicate';
 import { ImposterService } from '../services/imposter.service';
 
 @Component({
@@ -12,11 +13,18 @@ export class AddDependencyComponent implements OnInit {
   protocols = ['http', 'https', 'tcp']
   methods = ['GET', 'POST', 'PUT']
   stubs = []
+  predicates: Predicate[] = []
 
 
   constructor(private http: HttpClient, private matDialogRef: MatDialogRef<AddDependencyComponent>, private imposterService: ImposterService) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.imposterService.onResetPredicates()
+    if (this.imposterService.onGetPredicates().length === 0) {
+      this.imposterService.onAddPredicate({method: '', path: ''})
+    }
+    this.predicates = this.imposterService.onGetPredicates();
+  }
 
 
   closeModal() {
@@ -27,6 +35,11 @@ export class AddDependencyComponent implements OnInit {
   onSubmit(data) {
     this.imposterService.createImposter(data);
     this.matDialogRef.close();
+  }
+
+  addPredicate() {
+    this.imposterService.onAddPredicate({method: '', path: ''})
+    this.predicates = this.imposterService.onGetPredicates();
   }
 
 

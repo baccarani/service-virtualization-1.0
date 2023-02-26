@@ -1,15 +1,29 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from "rxjs/operators";
+import { Predicate } from '../models/predicate';
 
 @Injectable()
 export class ImposterService {
     private imposterArray: any = null;
+    private predicates: Predicate[] = [];
 
 
     constructor(private http: HttpClient) { }
 
+    
 
+    onGetPredicates() {
+        return this.predicates.slice();
+    }
+
+    onAddPredicate({method, path}: Predicate) {
+        this.predicates.push({method, path});
+    }
+
+    onResetPredicates() {
+        this.predicates = [];
+    }
 
     onGetImposter() {
         let imposterArray$ = [];
