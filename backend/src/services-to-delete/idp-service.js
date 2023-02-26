@@ -44,7 +44,6 @@ function addService() {
     };
 
     imposters.push(imposter, imposter2);
-    console.log(imposters)
     return mbHelper.postImposter(imposterJSON, "PUT");
     
 }

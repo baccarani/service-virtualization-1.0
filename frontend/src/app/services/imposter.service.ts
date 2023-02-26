@@ -61,38 +61,49 @@ export class ImposterService {
     onCreateImposter(formValues) {
         const headers = JSON.parse(formValues.headers);
         const body = JSON.parse(formValues.body);
+        const predicates = this.predicates.map((predicate) => {
+            return {
+                equals: {
+                    method: predicate.method,
+                    path: predicate.path,
+                },
+            };
+        });
         const data = {
             port: formValues.port,
             protocol: formValues.protocol,
             name: formValues.name,
             stubs: [
                 {
-                    responses: [{
-                        is: {
-                            statusCode: formValues.statusCode,
-                            headers: headers,
-                            body: body
-                        }
-                    }],
-                    predicates: [{
-                        and: [{
-                            equals: {
-                                method: formValues.method,
-                                path: formValues.path
-                            }
-                        }]
-                    }]
-                }]
+                    responses: [
+                        {
+                            is: {
+                                statusCode: formValues.statusCode,
+                                headers: headers,
+                                body: body,
+                            },
+                        },
+                    ],
+                    predicates: [
+                        {
+                            and: predicates,
+                        },
+                    ],
+                },
+            ],
         };
 
-        this.http
-            .post(`http://localhost:5000/imposters`, data)
-            .subscribe(responseData => {
+        this.http.post(`http://localhost:5000/imposters`, data).subscribe(
+            (responseData) => {
                 this.imposterArray.push(responseData);
                 this.imposterArray.sort((a, b) => {
                     return a.port - b.port;
                 });
-            });
+            },
+            (error) => {
+                console.error(error);
+            }
+        );
     }
 }
 

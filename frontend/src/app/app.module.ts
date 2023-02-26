@@ -17,7 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { PredicatesComponent } from './predicates/predicates.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormService } from './services/form.service'; 
+import { FormService } from './services/form.services'; 
 
 
 @NgModule({

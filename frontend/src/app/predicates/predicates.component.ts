@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Predicate } from '../models/predicate';
 import { ImposterService } from '../services/imposter.service';
 import { FormBuilder } from '@angular/forms';
-import { FormService } from '../services/form.service';
+import { FormService } from '../services/form.services'; 
 
 @Component({
   selector: 'app-predicates',
@@ -32,7 +32,11 @@ export class PredicatesComponent implements OnInit {
 
   ngOnInit(): void {
     this.predicateForm.setValue({ method: this.predicate.method, path: this.predicate.path });
+    this.predicateForm.valueChanges.subscribe(() => {
+      this.updatePredicates();
+    });
   }
+  
 
   onSubmit() {
   }
@@ -40,4 +44,21 @@ export class PredicatesComponent implements OnInit {
   onDelete() {
     this.deleteUpdate.emit(this.index);
   }
+
+  updatePredicates() {
+    const method = this.predicateForm.get('method').value;
+    const path = this.predicateForm.get('path').value;
+    this.predicate.method = method;
+    this.predicate.path = path;
+    const index = this.imposterService.onGetPredicates().findIndex(p => p.method === method && p.path === path);
+    if (index > -1) {
+      // Update existing predicate
+      this.imposterService.onGetPredicates()[index] = this.predicate;
+    } else {
+      // Add new predicate
+      this.imposterService.onGetPredicates().push(this.predicate);
+    }
+  }
+  
+  
 }
