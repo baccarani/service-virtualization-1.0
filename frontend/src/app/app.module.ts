@@ -17,11 +17,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { PredicatesComponent } from './predicates/predicates.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormService } from './services/form.services'; 
+import { FormService } from './services/form.services';
+import { HeaderComponent } from './header/header.component';
 
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, AddDependencyComponent, PredicatesComponent],
+  declarations: [AppComponent, HomeComponent, AddDependencyComponent, PredicatesComponent, HeaderComponent],
   imports: [BrowserModule, 
     FormsModule, 
     HttpClientModule,

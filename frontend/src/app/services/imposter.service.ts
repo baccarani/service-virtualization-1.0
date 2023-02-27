@@ -15,8 +15,8 @@ export class ImposterService {
         return this.predicates.slice();
     }
 
-    onAddPredicate({ method, path }: Predicate) {
-        this.predicates.push({ method, path });
+    onAddPredicate({ operator, method, path }: Predicate) {
+        this.predicates.push({ operator, method, path });
     }
 
     onResetPredicates() {
@@ -62,8 +62,10 @@ export class ImposterService {
         const headers = JSON.parse(formValues.headers);
         const body = JSON.parse(formValues.body);
         const predicates = this.predicates.map((predicate) => {
+            const operator = predicate.operator
+            console.log(operator);
             return {
-                equals: {
+                [operator]: {
                     method: predicate.method,
                     path: predicate.path,
                 },
@@ -84,15 +86,13 @@ export class ImposterService {
                             },
                         },
                     ],
-                    predicates: [
-                        {
-                            and: predicates,
-                        },
-                    ],
+                    predicates: [{
+                        and: predicates
+                    }],
                 },
             ],
         };
-
+        console.log(data);
         this.http.post(`http://localhost:5000/imposters`, data).subscribe(
             (responseData) => {
                 this.imposterArray.push(responseData);

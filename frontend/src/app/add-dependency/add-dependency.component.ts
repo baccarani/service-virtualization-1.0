@@ -22,7 +22,7 @@ export class AddDependencyComponent implements OnInit {
   ngOnInit(): void {
     this.imposterService.onResetPredicates()
     if (this.imposterService.onGetPredicates().length === 0) {
-      this.imposterService.onAddPredicate({method: '', path: ''})
+      this.imposterService.onAddPredicate({operator: '', method: '', path: ''})
     }
     this.predicates = this.imposterService.onGetPredicates();
   }
@@ -30,7 +30,6 @@ export class AddDependencyComponent implements OnInit {
   predicateUpdate(form: any): void {
     this.showEdit[form.index] = true;
     this.predicates[form.index] = form.value;
-    // console.log(this.predicates);
   }
 
 
@@ -45,7 +44,7 @@ export class AddDependencyComponent implements OnInit {
   }
 
   addPredicate() {
-    this.imposterService.onAddPredicate({method: '', path: ''})
+    this.imposterService.onAddPredicate({operator: '', method: '', path: ''})
     this.showEdit.push(false);
     this.predicates = this.imposterService.onGetPredicates();
   }
@@ -69,57 +68,5 @@ export class AddDependencyComponent implements OnInit {
 
     this.imposterService.onDeletePredicate(index);
   }
-
-
-  // onAddDependency(data) {
-
-  //   const method = data.method;
-
-  //   this.stubs = [{
-  //     "predicates": [
-  //       {
-  //         "equals": {
-  //           "method": method,
-  //           "path": "/customers/123"
-  //         }
-  //       }
-  //     ],
-  //     "responses": [
-  //       {
-  //         "is": {
-  //           "statusCode": 201,
-  //           "headers": {
-  //             "Location": "http://localhost:4545/customers/123",
-  //             "Content-Type": "application/xml"
-  //           },
-  //           "body": "<customer><email>customer@test.com</email></customer>"
-  //         }
-  //       },
-  //       {
-  //         "is": {
-  //           "statusCode": 400,
-  //           "headers": {
-  //             "Content-Type": "application/xml"
-  //           },
-  //           "body": "<error>email already exists</error>"
-  //         }
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     "responses": [
-  //       {
-  //         "is": { "statusCode": 404 }
-  //       }
-  //     ]
-  //   }
-  //   ];
-
-  //   data = { ...data, stubs: this.stubs };
-
-  //   this.imposterService.onAddImposter(data);
-  //   this.matDialogRef.close();
-
-  // }
 
 }

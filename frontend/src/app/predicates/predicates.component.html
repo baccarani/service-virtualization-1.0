@@ -9,6 +9,22 @@
         
         <div style="padding-bottom: 30px; padding-left: 30px; padding-right: 30px;">
             <div>
+                <label>Operator:</label>
+                <select name="operator" required class="form-control" formControlName="operator">
+                    <option value="equals">equals</option>
+                    <option value="deepEquals">deepEquals</option>
+                    <option value="contains">contains</option>
+                    <option value="startsWith">startsWith</option>
+                    <option value="endsWith">endsWith</option>
+                    <option value="matches">matches</option>
+                    <option value="exists">exists</option>
+                    <option value="not">not</option>
+                    <option value="or">or</option>
+                    <option value="and">and</option>
+                    <option value="inject">inject</option>
+                </select>
+            </div><br>
+            <div>
                 <label>Method:</label>
                 <select name="method" required class="form-control" formControlName="method">
                     <option value="GET">GET</option>

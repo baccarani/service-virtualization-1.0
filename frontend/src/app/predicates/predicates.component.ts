@@ -13,6 +13,7 @@ export class PredicatesComponent implements OnInit {
 
   @Input() index: number = 0;
   @Input() predicate: Predicate = {
+    operator: '',
     method: '',
     path: '',
   };
@@ -24,6 +25,7 @@ export class PredicatesComponent implements OnInit {
   @Output() deleteUpdate = new EventEmitter();
 
   predicateForm = this.formBuilder.group({
+    operator: [''],
     method: [''],
     path: ['']
   });
@@ -31,7 +33,7 @@ export class PredicatesComponent implements OnInit {
   constructor(private imposterService: ImposterService, private formBuilder: FormBuilder, private formService: FormService) { }
 
   ngOnInit(): void {
-    this.predicateForm.setValue({ method: this.predicate.method, path: this.predicate.path });
+    this.predicateForm.setValue({ operator: this.predicate.operator, method: this.predicate.method, path: this.predicate.path });
     this.predicateForm.valueChanges.subscribe(() => {
       this.updatePredicates();
     });
@@ -46,8 +48,10 @@ export class PredicatesComponent implements OnInit {
   }
 
   updatePredicates() {
+    const operator = this.predicateForm.get('operator').value;
     const method = this.predicateForm.get('method').value;
     const path = this.predicateForm.get('path').value;
+    this.predicate.operator = operator;
     this.predicate.method = method;
     this.predicate.path = path;
     const index = this.imposterService.onGetPredicates().findIndex(p => p.method === method && p.path === path);
