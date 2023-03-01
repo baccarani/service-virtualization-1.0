@@ -1,21 +1,9 @@
-{"level":"info","message":"[mb:5000] mountebank v2.8.1 now taking orders - point your browser to http://localhost:5000/ for help","timestamp":"2023-02-27T03:06:54.518Z"}
-{"level":"info","message":"[mb:5000] PUT /imposters","timestamp":"2023-02-27T03:06:54.532Z"}
-{"level":"info","message":"[http:6001 Dependency 1] Open for business...","timestamp":"2023-02-27T03:06:54.557Z"}
-{"level":"info","message":"[http:6002 Dependency 2] Open for business...","timestamp":"2023-02-27T03:06:54.557Z"}
-{"level":"info","message":"[https:6003 Dependency 3] Open for business...","timestamp":"2023-02-27T03:06:54.557Z"}
-{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-02-27T03:07:04.151Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/6001","timestamp":"2023-02-27T03:07:04.178Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/6002","timestamp":"2023-02-27T03:07:04.181Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/6003","timestamp":"2023-02-27T03:07:04.182Z"}
-{"level":"info","message":"[mb:5000] OPTIONS /imposters","timestamp":"2023-02-27T03:08:25.679Z"}
-{"level":"info","message":"[mb:5000] POST /imposters","timestamp":"2023-02-27T03:08:25.686Z"}
-{"level":"error","message":"[mb:5000] error creating imposter: [{\"code\":\"bad data\",\"message\":\"missing predicate\",\"source\":[{\"inject\":{\"method\":\"GET\",\"path\":\"/\"}},{\"equals\":{\"method\":\"POST\",\"path\":\"/test\"}},{\"and\":{\"method\":\"PUT\",\"path\":\"/move-money\"}},{\"or\":{\"method\":\"DELETE\",\"path\":\"/customers/123\"}},{\"\":{\"method\":\"\",\"path\":\"\"}}]}]","timestamp":"2023-02-27T03:08:25.689Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/6003","timestamp":"2023-02-27T03:09:06.389Z"}
-{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-02-27T03:09:24.483Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/6001","timestamp":"2023-02-27T03:09:24.629Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/6002","timestamp":"2023-02-27T03:09:24.634Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/6003","timestamp":"2023-02-27T03:09:24.636Z"}
-{"level":"info","message":"[mb:5000] OPTIONS /imposters","timestamp":"2023-02-27T03:10:20.442Z"}
-{"level":"info","message":"[mb:5000] POST /imposters","timestamp":"2023-02-27T03:10:20.452Z"}
-{"level":"error","message":"[mb:5000] error creating imposter: [{\"code\":\"bad data\",\"message\":\"missing predicate\",\"source\":[{\"equals\":{\"method\":\"GET\",\"path\":\"/\"}},{\"and\":{\"method\":\"POST\",\"path\":\"/test\"}},{\"or\":{\"method\":\"PUT\",\"path\":\"/move-money\"}},{\"inject\":{\"method\":\"DELETE\",\"path\":\"/customers/123\"}}]}]","timestamp":"2023-02-27T03:10:20.453Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/6003","timestamp":"2023-02-27T03:11:11.410Z"}
+{"level":"info","message":"[mb:5000] mountebank v2.8.1 now taking orders - point your browser to http://localhost:5000/ for help","timestamp":"2023-03-01T16:59:34.619Z"}
+{"level":"info","message":"[mb:5000] PUT /imposters","timestamp":"2023-03-01T16:59:34.632Z"}
+{"level":"info","message":"[http:6001 Dependency 1] Open for business...","timestamp":"2023-03-01T16:59:34.652Z"}
+{"level":"info","message":"[http:6002 Dependency 2] Open for business...","timestamp":"2023-03-01T16:59:34.652Z"}
+{"level":"info","message":"[https:6003 Dependency 3] Open for business...","timestamp":"2023-03-01T16:59:34.652Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-03-01T16:59:56.076Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/6001","timestamp":"2023-03-01T16:59:56.088Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/6002","timestamp":"2023-03-01T16:59:56.090Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/6003","timestamp":"2023-03-01T16:59:56.091Z"}

@@ -7,6 +7,7 @@ const imposterJSON = require('./imposterinitdata.json');
 
 const mbServerInstance = mb.create({
     port: settings.port,
+    origin: 'http://localhost:4200',
     pidfile: '../mb.pid',
     logfile: '../mb.log',
     protofile: '../protofile.json',
