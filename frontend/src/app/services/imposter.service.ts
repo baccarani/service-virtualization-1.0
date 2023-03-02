@@ -86,9 +86,7 @@ export class ImposterService {
                             },
                         },
                     ],
-                    predicates: [{
-                        and: predicates
-                    }],
+                    predicates: predicates
                 },
             ],
         };

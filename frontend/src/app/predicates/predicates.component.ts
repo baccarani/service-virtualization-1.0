@@ -24,6 +24,20 @@ export class PredicatesComponent implements OnInit {
   @Output() editUpdate = new EventEmitter();
   @Output() deleteUpdate = new EventEmitter();
 
+  operator = [
+    {id: 1, name: 'equals'},
+    {id: 2, name: 'deepEquals'},
+    {id: 3, name: 'contains'},
+    {id: 4, name: 'startsWith'},
+    {id: 5, name: 'endsWith'},
+    {id: 6, name: 'matches'},
+    {id: 7, name: 'exists'},
+    {id: 8, name: 'not'},
+    {id: 9, name: 'or'},
+    {id: 10, name: 'and'},
+    {id: 11, name: 'inject'}
+  ]
+
   predicateForm = this.formBuilder.group({
     operator: [''],
     method: [''],

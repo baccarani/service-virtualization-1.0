@@ -11,17 +11,7 @@
             <div>
                 <label>Operator:</label>
                 <select name="operator" required class="form-control" formControlName="operator">
-                    <option value="equals">equals</option>
-                    <option value="deepEquals">deepEquals</option>
-                    <option value="contains">contains</option>
-                    <option value="startsWith">startsWith</option>
-                    <option value="endsWith">endsWith</option>
-                    <option value="matches">matches</option>
-                    <option value="exists">exists</option>
-                    <option value="not">not</option>
-                    <option value="or">or</option>
-                    <option value="and">and</option>
-                    <option value="inject">inject</option>
+                    <option *ngFor="let o of operator" [value]="o.name">{{o.name}}</option>
                 </select>
             </div><br>
             <div>
