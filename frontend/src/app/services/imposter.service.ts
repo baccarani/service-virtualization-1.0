@@ -15,8 +15,8 @@ export class ImposterService {
         return this.predicates.slice();
     }
 
-    onAddPredicate({ operator, method, path }: Predicate) {
-        this.predicates.push({ operator, method, path });
+    onAddPredicate({ operator,  method, path, data, newOperator, query }: Predicate) {
+        this.predicates.push({ operator, method, path, data, newOperator, query });
     }
 
     onResetPredicates() {
@@ -62,14 +62,36 @@ export class ImposterService {
         const headers = JSON.parse(formValues.headers);
         const body = JSON.parse(formValues.body);
         const predicates = this.predicates.map((predicate) => {
-            const operator = predicate.operator
+            const operator = predicate.operator;
+            const query = JSON.parse(predicate.query);
             console.log(operator);
-            return {
-                [operator]: {
-                    method: predicate.method,
-                    path: predicate.path,
-                },
-            };
+            /**
+             * TODO: same for NOT opertor
+             */
+
+            if(operator === "or" || operator === "and"){
+                console.log(predicate.newOperator);
+                return {
+                    [operator]: [
+                        {
+                            [predicate.newOperator]: {
+                                method: predicate.method,
+                                path: predicate.path,
+                                data: predicate.data
+                            }
+                        }
+                    ]
+                }
+            }else {
+                return {
+                    [operator]: {
+                        method: predicate.method,
+                        path: predicate.path,
+                        data: predicate.data,
+                        query: query
+                    },
+                };
+            }
         });
         const data = {
             port: formValues.port,
@@ -104,6 +126,3 @@ export class ImposterService {
         );
     }
 }
-
-
-

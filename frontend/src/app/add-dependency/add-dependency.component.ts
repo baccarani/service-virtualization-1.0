@@ -22,7 +22,7 @@ export class AddDependencyComponent implements OnInit {
   ngOnInit(): void {
     this.imposterService.onResetPredicates()
     if (this.imposterService.onGetPredicates().length === 0) {
-      this.imposterService.onAddPredicate({operator: '', method: '', path: ''})
+      this.imposterService.onAddPredicate({operator: '', method: '', path: '', data: '', newOperator: '', query: ''})
     }
     this.predicates = this.imposterService.onGetPredicates();
   }
@@ -44,7 +44,7 @@ export class AddDependencyComponent implements OnInit {
   }
 
   addPredicate() {
-    this.imposterService.onAddPredicate({operator: '', method: '', path: ''})
+    this.imposterService.onAddPredicate({operator: '', method: '', path: '', data: '', newOperator: '', query: ''})
     this.showEdit.push(false);
     this.predicates = this.imposterService.onGetPredicates();
   }
