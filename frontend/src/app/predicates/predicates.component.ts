@@ -24,6 +24,9 @@ export class PredicatesComponent implements OnInit {
   @Output() editUpdate = new EventEmitter();
   @Output() deleteUpdate = new EventEmitter();
 
+  //test commit
+
+  
   operator = [
     {id: 1, name: 'equals'},
     {id: 2, name: 'deepEquals'},
