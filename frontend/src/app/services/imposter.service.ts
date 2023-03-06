@@ -7,6 +7,7 @@ import { Predicate } from '../models/predicate';
 export class ImposterService {
     private imposterArray: any = null;
     private predicates: Predicate[] = [];
+    newPredicate: []
 
 
     constructor(private http: HttpClient) { }

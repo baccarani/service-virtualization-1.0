@@ -44,6 +44,12 @@ export class PredicatesComponent implements OnInit {
     path: ['']
   });
 
+  predicates: Predicate[] = [{operator: '', method: '', path: ''}]
+
+  
+  notPredicateAndOrOperators: boolean = false;
+  showPredicatesAndOrOperators: boolean = false;
+
   constructor(private imposterService: ImposterService, private formBuilder: FormBuilder, private formService: FormService) { }
 
   ngOnInit(): void {
@@ -69,6 +75,15 @@ export class PredicatesComponent implements OnInit {
     this.predicate.method = method;
     this.predicate.path = path;
     const index = this.imposterService.onGetPredicates().findIndex(p => p.method === method && p.path === path);
+
+    if (operator === 'and' || operator === 'or') {
+      this.showPredicatesAndOrOperators = true;
+      this.notPredicateAndOrOperators = false;
+    } else {
+      this.notPredicateAndOrOperators = true;
+      this.showPredicatesAndOrOperators = false;
+    }
+
     if (index > -1) {
       // Update existing predicate
       this.imposterService.onGetPredicates()[index] = this.predicate;
