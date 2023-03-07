@@ -45,8 +45,8 @@ export class AddDependencyComponent implements OnInit {
 
   addPredicate() {
     this.imposterService.onAddPredicate({operator: '', method: '', path: ''})
-    this.showEdit.push(false);
     this.predicates = this.imposterService.onGetPredicates();
+    console.log(this.predicates)
   }
 
   deleteUpdate(index: any): void {

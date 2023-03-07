@@ -15,7 +15,7 @@
                     <option *ngFor="let o of operator" [value]="o.name">{{o.name}}</option>
                 </select>
             </div><br>
-            <div *ngIf="notPredicateAndOrOperators">
+            <div *ngIf="showPredicates">
                 <div>
                     <label>Method:</label>
                     <select name="method" required class="form-control" formControlName="method">
@@ -30,12 +30,16 @@
                     <input type="text" name="path" required class="form-control" formControlName="path">
                 </div>
             </div>
-            <div *ngIf="showPredicatesAndOrOperators">
+            <div *ngIf="showSubPredicates">
                 <br>
-                <div *ngFor="let predicate of predicates; let i = index">
-                    <app-predicates-and-or-operators [index]="i" [predicate]="predicate"></app-predicates-and-or-operators>
+                <div *ngFor="let subPredicate of subPredicates; let i = index">
+                    <app-sub-predicates 
+                            [index]="i" 
+                            [subPredicates]="subPredicates"
+                            (deleteSubPredicateUpdate)="deleteSubPredicateUpdate($event)"
+                    ></app-sub-predicates>
                 </div>
-                <a style="text-decoration: underline; cursor: pointer;" (click)="addPredicate()">Add Predicate</a>
+                <a style="text-decoration: underline; cursor: pointer;" (click)="addSubPredicate()">Add Sub Predicate</a>
             </div>
         </div>
     </div>

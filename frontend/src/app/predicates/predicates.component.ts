@@ -17,7 +17,6 @@ export class PredicatesComponent implements OnInit {
     method: '',
     path: '',
   };
-  predicateFormValue: any = [];
   @Input() showEdit: boolean = false;
 
   @Output() beneficiaryUpdate = new EventEmitter();
@@ -44,11 +43,10 @@ export class PredicatesComponent implements OnInit {
     path: ['']
   });
 
-  predicates: Predicate[] = [{operator: '', method: '', path: ''}]
-
+  subPredicates: Predicate[] = [];
   
-  notPredicateAndOrOperators: boolean = false;
-  showPredicatesAndOrOperators: boolean = false;
+  showPredicates: boolean = false;
+  showSubPredicates: boolean = false;
 
   constructor(private imposterService: ImposterService, private formBuilder: FormBuilder, private formService: FormService) { }
 
@@ -67,6 +65,18 @@ export class PredicatesComponent implements OnInit {
     this.deleteUpdate.emit(this.index);
   }
 
+  deleteSubPredicateUpdate(index) {
+    let tempPredicates: Predicate[] = [];
+    for (let i = 0; i < this.subPredicates.length; i++) {
+      if (i !== index) {
+        tempPredicates.push(this.subPredicates[i]);
+      }
+    }
+    this.subPredicates = tempPredicates;
+    this.imposterService.onDeleteSubPredicate(index);
+    this.subPredicates = this.imposterService.onGetPredicates();
+  }
+
   updatePredicates() {
     const operator = this.predicateForm.get('operator').value;
     const method = this.predicateForm.get('method').value;
@@ -77,11 +87,13 @@ export class PredicatesComponent implements OnInit {
     const index = this.imposterService.onGetPredicates().findIndex(p => p.method === method && p.path === path);
 
     if (operator === 'and' || operator === 'or') {
-      this.showPredicatesAndOrOperators = true;
-      this.notPredicateAndOrOperators = false;
+      this.showSubPredicates = true;
+      this.showPredicates = false;
+      this.subPredicates = this.imposterService.onGetSubPredicates(this.index, this.predicateForm.get('operator').value);
+      console.log(this.subPredicates)
     } else {
-      this.notPredicateAndOrOperators = true;
-      this.showPredicatesAndOrOperators = false;
+      this.showPredicates = true;
+      this.showSubPredicates = false;
     }
 
     if (index > -1) {
@@ -91,6 +103,11 @@ export class PredicatesComponent implements OnInit {
       // Add new predicate
       this.imposterService.onGetPredicates().push(this.predicate);
     }
+  }
+
+  addSubPredicate() {
+    this.imposterService.onAddSubPredicate(this.index, this.predicateForm.get('operator').value);
+    this.subPredicates = this.imposterService.onGetSubPredicates(this.index, this.predicateForm.get('operator').value);
   }
   
   

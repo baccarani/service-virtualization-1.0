@@ -19,7 +19,7 @@ import { PredicatesComponent } from './predicates/predicates.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormService } from './services/form.services';
 import { HeaderComponent } from './header/header.component';
-import { PredicatesAndOrOperatorsComponent } from './predicates/predicates-and-or-operators/predicates-and-or-operators.component';
+import { PredicatesAndOrOperatorsComponent } from './predicates/sub-predicates/sub-predicates.component';
 
 
 @NgModule({

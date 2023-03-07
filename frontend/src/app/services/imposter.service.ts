@@ -6,9 +6,8 @@ import { Predicate } from '../models/predicate';
 @Injectable()
 export class ImposterService {
     private imposterArray: any = null;
-    private predicates: Predicate[] = [];
-    newPredicate: []
-
+    private predicates = [];
+    private subPredicates = [];
 
     constructor(private http: HttpClient) { }
 
@@ -16,8 +15,27 @@ export class ImposterService {
         return this.predicates.slice();
     }
 
-    onAddPredicate({ operator, method, path }: Predicate) {
+    onGetSubPredicates(index, operator) {
+        console.log(index)
+        console.log(this.subPredicates[index])
+        if (this.subPredicates[index] === undefined) {
+            this.subPredicates[index] = ({[operator]: ''});
+            this.predicates[index] = { [operator]: this.subPredicates[index] };
+        }
+        console.log(this.subPredicates)
+        console.log(this.predicates)
+        return this.subPredicates.slice();
+    }
+
+    onAddPredicate({ operator, method, path }) {
         this.predicates.push({ operator, method, path });
+        console.log(this.predicates);
+    }
+
+    onAddSubPredicate(index, operator) {
+        this.subPredicates.push({ operator: '' });
+        this.predicates[index] = { [operator]: this.subPredicates };
+        console.log(this.predicates);
     }
 
     onResetPredicates() {
@@ -26,6 +44,10 @@ export class ImposterService {
 
     onDeletePredicate(index) {
         this.predicates.splice(index, 1);
+    }
+
+    onDeleteSubPredicate(index) {
+        this.subPredicates.splice(index, 1);
     }
 
     onGetImposter() {
@@ -65,12 +87,29 @@ export class ImposterService {
         const predicates = this.predicates.map((predicate) => {
             const operator = predicate.operator
             console.log(operator);
-            return {
-                [operator]: {
-                    method: predicate.method,
-                    path: predicate.path,
-                },
-            };
+            if(operator === "or" || operator === "and"){
+                console.log(predicate.newOperator);
+                return {
+                    [operator]: [
+                        {
+                            [predicate.newOperator]: {
+                                method: predicate.method,
+                                path: predicate.path,
+                                data: predicate.data
+                            }
+                        }
+                    ]
+                }
+            }else {
+                return {
+                    [operator]: {
+                        method: predicate.method,
+                        path: predicate.path,
+                        data: predicate.data,
+                        // query: query
+                    },
+                };
+            }
         });
         const data = {
             port: formValues.port,

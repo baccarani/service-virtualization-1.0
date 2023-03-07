@@ -1,0 +1,22 @@
+<form [formGroup]="subPredicateForm" (ngSubmit)="onSubmit()">
+    <div style="border: 1px solid #a4a4a4; border-radius: 10px; background-color: #dedede;">
+        <div
+            style="display: flex; justify-content: flex-start; align-items: center; padding-right: 5px; padding-top: 5px;">
+            <h3 style="margin-right: auto; padding-left: 15px; padding-top: 5px; font-weight: bold;">New Predicate</h3>
+            <button mat-icon-button color="basic" (click)="onDelete()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+        <div style="padding-bottom: 30px; padding-left: 30px; padding-right: 30px;">
+            <div>
+                <div>
+                    <label>Operator:</label>
+                    <select name="operator" required class="form-control" formControlName="operator">
+                        <option *ngFor="let o of operator" [value]="o.name">{{o.name}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<br><br>
