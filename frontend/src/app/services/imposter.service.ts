@@ -93,6 +93,21 @@ export class ImposterService {
                 };
             }
         });
+        //updating statusCode
+        let code;
+        switch(formValues.statusCode){
+            case 'Informational responses (100 to 199)': code = formValues.infoCode;
+            break;
+            case 'Successful responses (200 to 299)': code = formValues.successCode;
+            break;
+            case 'Redirection messages (300 to 399)': code = formValues.redirectCode;
+            break;
+            case 'Client error responses (400 to 499)': code = formValues.clientCode;
+            break;
+            case 'Server error responses (500 to 599)': code = formValues.serverCode;
+            break;
+        };
+
         const data = {
             port: formValues.port,
             protocol: formValues.protocol,
@@ -102,7 +117,7 @@ export class ImposterService {
                     responses: [
                         {
                             is: {
-                                statusCode: formValues.statusCode,
+                                statusCode: code,
                                 headers: headers,
                                 body: body,
                             },

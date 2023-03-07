@@ -1,17 +1,17 @@
-<div style="max-height: 85vh; overflow-y: auto; overflow-x: hidden;">
-    <h1 style="font-weight: bold; display: flex; align-items: center; justify-content: space-between;">
-        Add Dependency
-        <button mat-icon-button class="close-button" (click)="closeModal()">
-            <mat-icon aria-label="Close modal">close</mat-icon>
-        </button>
-    </h1>
-    <div>
-        <p>Fill in the below form to add your dependency.</p>
-        <br>
-        <div class="container" style="max-width: 400px;">
-            <div class="row">
-                <div>
-                    <form (ngSubmit)="onSubmit(form.value)" #form="ngForm">
+<!-- <div style="max-height: 85vh; overflow-y: auto; overflow-x: hidden;"> -->
+    <!-- <h1 style="font-weight: bold; display: flex; align-items: center; justify-content: space-between;"> -->
+        <!-- Add Dependency -->
+        <!-- <button mat-icon-button class="close-button" (click)="closeModal()"> -->
+            <!-- <mat-icon aria-label="Close modal">close</mat-icon> -->
+        <!-- </button> -->
+    <!-- </h1> -->
+    <!-- <div> -->
+        <!-- <p>Fill in the below form to add your dependency.</p> -->
+        <!-- <br> -->
+        <!-- <div class="container" style="max-width: 400px;"> -->
+            <!-- <div class="row"> -->
+                <!-- <div>
+                    <form  (ngSubmit)="onSubmit(form.value)" #form="ngForm">
                         <h2>General Information</h2>
                         <div>
                             <label>Name:</label>
@@ -19,7 +19,7 @@
                         </div><br>
                         <div class="form-group">
                             <label>Port:</label>
-                            <input type="number" name="port" ngModel required class="form-control">
+                            <input type="number" name="port" required class="form-control">
                         </div>
                         <div>
                             <label>Protocol:</label>
@@ -30,9 +30,9 @@
                         </div><br>
                         <hr>
                         <div>
-                            <h2>Predicates</h2>
+                            <h2>Predicates</h2> -->
                             <!-- <mat-icon style="cursor: pointer; margin-top: 5px; float: right;">add</mat-icon> -->
-                        </div>
+                        <!-- </div>
                         <div *ngFor="let predicate of predicates; let i = index">
                             <app-predicates (editUpdate)="editUpdate($event)"
                                             (deleteUpdate)="deleteUpdate($event)"
@@ -46,9 +46,38 @@
                         <hr>
                         <h2>Responses</h2>
                         <div>
-                            <label>Status Code:</label>
-                            <input type="number" name="statusCode" ngModel required class="form-control">
-                        </div><br>
+                            <label>Status Code:</label> -->
+                            <!-- <input type="number" name="statusCode" ngModel required class="form-control"> -->
+                            <!-- <select name="statusCode" class="form-control" ngModel  #code>
+                                <option value="select option">Please select an option</option>
+                                <option *ngFor="let opt of statusCode" [value]="opt">{{opt}}</option>
+                            </select> -->
+                            <!-- <div [hidden]="code.value == 'Informational responses (100 to 199)' ? false : true">
+                                <br><select name="infoRes" class="form-control">
+                                    <option *ngFor="let infoCode of informationRes">{{infoCode}}</option>
+                                </select>
+                            </div>
+                            <div [hidden]="code.value == 'Successful responses (200 to 299)' ? false : true">
+                                <br><select name="infoRes" class="form-control">
+                                    <option *ngFor="let successCode of successRes">{{successCode}}</option>
+                                </select>
+                            </div>
+                            <div [hidden]="code.value == 'Redirection messages (300 to 399)' ? false : true">
+                                <br><select name="infoRes" class="form-control">
+                                    <option *ngFor="let redirectCode of redirectionRes">{{redirectCode}}</option>
+                                </select>
+                            </div>
+                            <div [hidden]="code.value == 'Client error responses (400 to 499)' ? false : true">
+                                <br><select name="infoRes" class="form-control">
+                                    <option *ngFor="let clientCode of clientErrRes">{{clientCode}}</option>
+                                </select>
+                            </div>
+                            <div [hidden]="code.value == 'Server error responses (500 to 599)' ? false : true">
+                                <br><select name="infoRes" class="form-control">
+                                    <option *ngFor="let serverCode of serverErrRes">{{serverCode}}</option>
+                                </select>
+                            </div> -->
+                        <!-- </div><br>
                         <div>
                             <label>Headers:</label>
                             <textarea name="headers" ngModel required class="form-control"
@@ -68,4 +97,105 @@
             </div>
         </div>
     </div>
+</div> -->
+
+
+
+<div style="max-height: 85vh; overflow-y: auto; overflow-x: hidden;">
+    <h1 style="font-weight: bold; display: flex; align-items: center; justify-content: space-between;">
+        Add Dependency
+        <button mat-icon-button class="close-button" (click)="closeModal()">
+            <mat-icon aria-label="Close modal">close</mat-icon>
+        </button>
+    </h1>
+    <div>
+        <p>Fill in the below form to add your dependency</p>
+        <br>
+        <div class="container" style="max-width: 400px;">
+            <div class="row">
+                <form [formGroup]="dependencyForm" (ngSubmit)="onSubmit()">
+                    <h2>General Information</h2>
+                    <div>
+                        <label>Name:</label>
+                        <input type="text" name="name" required class="form-control" formControlName="name">
+                    </div><br>
+                    <div class="form-group">
+                        <label>Port:</label>
+                        <input type="number" name="port" required class="form-control" formControlName="port">
+                    </div><br>
+                    <div>
+                        <label>Protocol:</label>
+                        <select name="protocol" required class="form-control" formControlName="protocol">
+                            <option value="http">HTTP</option>
+                            <option value="https">HTTPS</option>
+                        </select>
+                    </div><br>
+                    <hr>
+                    <div>
+                        <h2>Predicates</h2>
+                        <!-- <mat-icon style="cursor: pointer; margin-top: 5px; float: right;">add</mat-icon> -->
+                    </div>
+                    <div *ngFor="let predicate of predicates; let i = index">
+                        <app-predicates (editUpdate)="editUpdate($event)"
+                                        (deleteUpdate)="deleteUpdate($event)"
+                                        [index]="i"
+                                        [predicate]="predicate">
+                        </app-predicates>
+                    </div>
+                    <a style="text-decoration: underline; cursor: pointer;" (click)="addPredicate()">Add
+                        Predicate</a>
+                    <br>
+                    <hr>
+                    <div>
+                        <label>Status Code:</label>
+                        <!-- <input type="number" name="statusCode" ngModel required class="form-control"> -->
+                        <select name="statusCode" class="form-control" formControlName="statusCode"  #code>
+                            <option value="select option">Please select an option</option>
+                            <option *ngFor="let opt of statusCode" [value]="opt">{{opt}}</option>
+                        </select>
+                        <div [hidden]="code.value == 'Informational responses (100 to 199)' ? false : true">
+                            <br><select name="infoRes" class="form-control" formControlName="infoCode">
+                                <option *ngFor="let infoCode of informationRes" [value]="infoCode">{{infoCode}}</option>
+                            </select>
+                        </div>
+                        <div [hidden]="code.value == 'Successful responses (200 to 299)' ? false : true">
+                            <br><select name="succRes" class="form-control" formControlName="successCode">
+                                <option *ngFor="let successCode of successRes" [value]="successCode">{{successCode}}</option>
+                            </select>
+                        </div>
+                        <div [hidden]="code.value == 'Redirection messages (300 to 399)' ? false : true">
+                            <br><select name="redRes" class="form-control" formControlName="redirectCode">
+                                <option *ngFor="let redirectCode of redirectionRes" [value]="redirectCode">{{redirectCode}}</option>
+                            </select>
+                        </div>
+                        <div [hidden]="code.value == 'Client error responses (400 to 499)' ? false : true">
+                            <br><select name="cliRes" class="form-control" formControlName="clientCode">
+                                <option *ngFor="let clientCode of clientErrRes" [value]="clientCode">{{clientCode}}</option>
+                            </select>
+                        </div>
+                        <div [hidden]="code.value == 'Server error responses (500 to 599)' ? false : true">
+                            <br><select name="serverRes" class="form-control" formControlName="serverCode">
+                                <option *ngFor="let serverCode of serverErrRes" [value]="serverCode">{{serverCode}}</option>
+                            </select>
+                        </div>
+                    </div><br>
+                    <div>
+                        <label>Headers:</label>
+                        <textarea name="headers" required class="form-control" formControlName="headers"
+                            style="resize: none;"></textarea>
+                    </div><br>
+                    <div>
+                        <label>Body:</label>
+                        <textarea name="body" required class="form-control" formControlName="body"
+                            style="resize: none;"></textarea>
+                    </div><br><br>
+                    <button class="btn btn-primary" type="submit" [disabled]="!dependencyForm.valid"
+                        style="margin-right: 10px; width: 100%;">
+                        Add
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+

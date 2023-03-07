@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Predicate } from '../models/predicate';
 import { ImposterService } from '../services/imposter.service';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { FormService } from '../services/form.services'; 
 
 @Component({
