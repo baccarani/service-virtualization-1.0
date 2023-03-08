@@ -90,7 +90,6 @@ export class PredicatesComponent implements OnInit {
       this.showSubPredicates = true;
       this.showPredicates = false;
       this.subPredicates = this.imposterService.onGetSubPredicates(this.index, this.predicateForm.get('operator').value);
-      console.log(this.subPredicates)
     } else {
       this.showPredicates = true;
       this.showSubPredicates = false;
