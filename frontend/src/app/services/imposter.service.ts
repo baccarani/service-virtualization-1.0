@@ -6,8 +6,8 @@ import { Predicate } from '../models/predicate';
 @Injectable()
 export class ImposterService {
     private imposterArray: any = null;
-    private predicates: Predicate[] = [];
-
+    private predicates = [];
+    private subPredicates = [];
 
     constructor(private http: HttpClient) { }
 
@@ -25,6 +25,10 @@ export class ImposterService {
 
     onDeletePredicate(index) {
         this.predicates.splice(index, 1);
+    }
+
+    onDeleteSubPredicate(index) {
+        this.subPredicates.splice(index, 1);
     }
 
     onGetImposter() {

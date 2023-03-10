@@ -23,7 +23,6 @@ export class PredicatesComponent implements OnInit {
     newOperator: '',
     query: ''
   };
-  predicateFormValue: any = [];
   @Input() showEdit: boolean = false;
 
   @Output() beneficiaryUpdate = new EventEmitter();
@@ -71,6 +70,11 @@ export class PredicatesComponent implements OnInit {
     query: ['']
   });
 
+  subPredicates: Predicate[] = [];
+  
+  showPredicates: boolean = false;
+  showSubPredicates: boolean = false;
+
   constructor(private imposterService: ImposterService, private formBuilder: FormBuilder, private formService: FormService) { }
 
   ngOnInit(): void {
@@ -86,6 +90,18 @@ export class PredicatesComponent implements OnInit {
 
   onDelete() {
     this.deleteUpdate.emit(this.index);
+  }
+
+  deleteSubPredicateUpdate(index) {
+    let tempPredicates: Predicate[] = [];
+    for (let i = 0; i < this.subPredicates.length; i++) {
+      if (i !== index) {
+        tempPredicates.push(this.subPredicates[i]);
+      }
+    }
+    this.subPredicates = tempPredicates;
+    this.imposterService.onDeleteSubPredicate(index);
+    this.subPredicates = this.imposterService.onGetPredicates();
   }
 
   updatePredicates() {

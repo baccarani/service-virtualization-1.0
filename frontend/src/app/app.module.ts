@@ -19,10 +19,11 @@ import { PredicatesComponent } from './predicates/predicates.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormService } from './services/form.services';
 import { HeaderComponent } from './header/header.component';
+import { PredicatesAndOrOperatorsComponent } from './predicates/sub-predicates/sub-predicates.component';
 
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, AddDependencyComponent, PredicatesComponent, HeaderComponent],
+  declarations: [AppComponent, HomeComponent, AddDependencyComponent, PredicatesComponent, HeaderComponent, PredicatesAndOrOperatorsComponent],
   imports: [BrowserModule, 
     FormsModule, 
     HttpClientModule,

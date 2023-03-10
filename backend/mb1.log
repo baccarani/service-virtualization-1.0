@@ -1,9 +1,15 @@
-{"level":"info","message":"[mb:5000] mountebank v2.8.1 now taking orders - point your browser to http://localhost:5000/ for help","timestamp":"2023-03-01T16:59:34.619Z"}
-{"level":"info","message":"[mb:5000] PUT /imposters","timestamp":"2023-03-01T16:59:34.632Z"}
-{"level":"info","message":"[http:6001 Dependency 1] Open for business...","timestamp":"2023-03-01T16:59:34.652Z"}
-{"level":"info","message":"[http:6002 Dependency 2] Open for business...","timestamp":"2023-03-01T16:59:34.652Z"}
-{"level":"info","message":"[https:6003 Dependency 3] Open for business...","timestamp":"2023-03-01T16:59:34.652Z"}
-{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-03-01T16:59:56.076Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/6001","timestamp":"2023-03-01T16:59:56.088Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/6002","timestamp":"2023-03-01T16:59:56.090Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/6003","timestamp":"2023-03-01T16:59:56.091Z"}
+{"level":"info","message":"[mb:5000] mountebank v2.8.1 now taking orders - point your browser to http://localhost:5000/ for help","timestamp":"2023-03-01T17:36:14.631Z"}
+{"level":"info","message":"[mb:5000] PUT /imposters","timestamp":"2023-03-01T17:36:14.645Z"}
+{"level":"info","message":"[http:6001 Dependency 1] Open for business...","timestamp":"2023-03-01T17:36:14.668Z"}
+{"level":"info","message":"[http:6002 Dependency 2] Open for business...","timestamp":"2023-03-01T17:36:14.668Z"}
+{"level":"info","message":"[https:6003 Dependency 3] Open for business...","timestamp":"2023-03-01T17:36:14.669Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-03-01T17:36:21.011Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/6001","timestamp":"2023-03-01T17:36:21.022Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/6002","timestamp":"2023-03-01T17:36:21.024Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/6003","timestamp":"2023-03-01T17:36:21.025Z"}
+{"level":"info","message":"[mb:5000] OPTIONS /imposters","timestamp":"2023-03-01T17:37:02.727Z"}
+{"level":"info","message":"[mb:5000] POST /imposters","timestamp":"2023-03-01T17:37:02.729Z"}
+{"level":"info","message":"[http:6009 dep ] Open for business...","timestamp":"2023-03-01T17:37:02.731Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/6009","timestamp":"2023-03-01T17:37:13.614Z"}
+{"level":"info","message":"[mb:5000] GET /images/book.jpg","timestamp":"2023-03-01T17:37:27.625Z"}
+{"level":"info","message":"[mb:5000] GET /images/book.jpg","timestamp":"2023-03-01T17:37:29.775Z"}
