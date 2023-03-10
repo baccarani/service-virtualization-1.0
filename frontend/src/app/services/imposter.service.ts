@@ -15,8 +15,8 @@ export class ImposterService {
         return this.predicates.slice();
     }
 
-    onAddPredicate({ operator,  method, path, data, newOperator, query }: Predicate) {
-        this.predicates.push({ operator, method, path, data, newOperator, query });
+    onAddPredicate({ operator,  method, path, newpath,data, newOperator, query }: Predicate) {
+        this.predicates.push({ operator, method, path, newpath, data, newOperator, query });
     }
 
     onResetPredicates() {
@@ -61,6 +61,7 @@ export class ImposterService {
     onCreateImposter(formValues) {
         const headers = JSON.parse(formValues.headers);
         const body = JSON.parse(formValues.body);
+        console.log(formValues.newpath);
         const predicates = this.predicates.map((predicate) => {
             const operator = predicate.operator;
             const query = JSON.parse(predicate.query);
@@ -68,15 +69,22 @@ export class ImposterService {
             /**
              * TODO: same for NOT opertor
              */
+            let updatePath;
+            if(predicate.path == 'other'){
+                updatePath = predicate.newpath;
+                console.log(updatePath);
+                
+            }else{
+                updatePath = predicate.path;
+            }
 
             if(operator === "or" || operator === "and"){
-                console.log(predicate.newOperator);
                 return {
                     [operator]: [
                         {
                             [predicate.newOperator]: {
                                 method: predicate.method,
-                                path: predicate.path,
+                                path: updatePath,
                                 data: predicate.data
                             }
                         }
@@ -86,7 +94,7 @@ export class ImposterService {
                 return {
                     [operator]: {
                         method: predicate.method,
-                        path: predicate.path,
+                        path: updatePath,
                         data: predicate.data,
                         query: query
                     },

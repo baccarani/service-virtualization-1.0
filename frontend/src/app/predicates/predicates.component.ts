@@ -18,6 +18,7 @@ export class PredicatesComponent implements OnInit {
     operator: '',
     method: '',
     path: '',
+    newpath: '',
     data: '',
     newOperator: '',
     query: ''
@@ -28,6 +29,12 @@ export class PredicatesComponent implements OnInit {
   @Output() beneficiaryUpdate = new EventEmitter();
   @Output() editUpdate = new EventEmitter();
   @Output() deleteUpdate = new EventEmitter();
+
+  genericPath = [
+    '/customer',
+    '/user',
+    'other'
+  ];
 
   operator = [
     { name: 'equals'},
@@ -58,6 +65,7 @@ export class PredicatesComponent implements OnInit {
     operator: [''],
     method: [''],
     path: [''],
+    newpath: [''],
     data: [''],
     newOperator: [''],
     query: ['']
@@ -66,7 +74,7 @@ export class PredicatesComponent implements OnInit {
   constructor(private imposterService: ImposterService, private formBuilder: FormBuilder, private formService: FormService) { }
 
   ngOnInit(): void {
-    this.predicateForm.setValue({ operator: this.predicate.operator, method: this.predicate.method, path: this.predicate.path, query: this.predicate.query ,data: this.predicate.data, newOperator: this.predicate.newOperator });
+    this.predicateForm.setValue({ operator: this.predicate.operator, method: this.predicate.method, path: this.predicate.path, newpath: this.predicate.newpath, query: this.predicate.query ,data: this.predicate.data, newOperator: this.predicate.newOperator });
     this.predicateForm.valueChanges.subscribe(() => {
       this.updatePredicates();
     });
@@ -84,6 +92,7 @@ export class PredicatesComponent implements OnInit {
     const operator = this.predicateForm.get('operator').value;
     const method = this.predicateForm.get('method').value;
     const path = this.predicateForm.get('path').value;
+    const newpath = this.predicateForm.get('newpath').value;
     const data = this.predicateForm.get('data').value
     const newOperator = this.predicateForm.get('newOperator').value;
     const query = this.predicateForm.get('query').value;
@@ -91,11 +100,15 @@ export class PredicatesComponent implements OnInit {
     this.predicate.operator = operator;
     this.predicate.method = method;
     this.predicate.path = path;
+    this.predicate.newpath = newpath;
     this.predicate.data = data;
     this.predicate.newOperator = newOperator;
     this.predicate.query = query;
 
-    const index = this.imposterService.onGetPredicates().findIndex(p => p.method === method && p.query=== query && p.path === path && p.data === data && p.newOperator === newOperator);
+    console.log(this.predicate.newpath);
+    
+
+    const index = this.imposterService.onGetPredicates().findIndex(p => p.method === method && p.query=== query && p.path === path && p.newpath === newpath && p.data === data && p.newOperator === newOperator);
     if (index > -1) {
       // Update existing predicate
       this.imposterService.onGetPredicates()[index] = this.predicate;

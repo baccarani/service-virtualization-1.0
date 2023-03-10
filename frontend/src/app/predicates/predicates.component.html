@@ -13,10 +13,10 @@
                 <select  name="operator" required class="form-control" #options formControlName="operator" >
                     <option *ngFor="let o of operator" [value]="o.name">{{o.name}}</option>
                 </select> 
-            </div><br>
+            </div>
             
             <div [hidden]="options.value == 'or' || options.value == 'and' ? false : true">
-                <label>Select Operator to compare: </label>
+                <br><label>Select Operator to compare: </label>
                 <select name="newOperator" required class="form-control" #secondOperator formControlName="newOperator">
                     <option *ngFor="let opt of newOperator" [value]="opt.name">{{opt.name}}</option>
                 </select>
@@ -39,7 +39,12 @@
             
             <div>
                 <label>Path:</label>
-                <input type="text" name="path" required class="form-control" formControlName="path">
+                <br><select name="path" class="form-control" formControlName="path" #path>
+                    <option *ngFor="let path of genericPath" [value]="path">{{path}}</option>
+                </select>
+                <div [hidden]="path.value == 'other' ? false : true">
+                    <br><input type="text" name="newpath" required class="form-control" formControlName="newpath">
+                </div>
             </div><br>
 
             <div>

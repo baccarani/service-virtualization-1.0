@@ -3,6 +3,7 @@ export interface Predicate {
   data: string;
   method: string;
   path: string;
+  newpath: string;
   newOperator: string;
   query: string;
 }
