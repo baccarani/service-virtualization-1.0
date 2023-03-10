@@ -72,4 +72,12 @@ export class HomeComponent implements OnInit {
     }, 2000);
   }
 
+  openPostman(data){
+    console.log('clicked');
+    window.open('postman://app', '_blank');
+    //response for selected imposter
+    this.imposterService.onViewImposter(data).subscribe((res) => {
+      console.log(res);
+    });
+  }
 }

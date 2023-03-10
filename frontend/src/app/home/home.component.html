@@ -18,6 +18,7 @@
         <th># of Requests</th>
         <th>View</th>
         <th>Delete</th>
+        <th>Open in Postman</th>
       </tr>
     </thead>
     <tbody>
@@ -32,7 +33,11 @@
         </td>
         <td><button class="btn btn-danger" (click)="onDeleteImposter(imposter.port, i)"
             style="display: inline-flex; align-items: center; padding-left: 0; padding-left: 5px;"><mat-icon
-              style="padding-right: 30px; padding-left: 0; transform: scale(.8);">delete</mat-icon>Delete</button></td>
+              style="padding-right: 30px; padding-left: 0; transform: scale(.8);">delete</mat-icon>Delete</button>
+        </td>
+        <td>
+          <button class="btn btn-warning" (click)="openPostman(imposter.port)">Open in Postman</button>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -46,4 +51,5 @@
   <pre>
     {{ viewDependency | json }}
   </pre>
+    
 </div>
