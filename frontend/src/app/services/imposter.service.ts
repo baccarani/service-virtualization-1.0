@@ -152,4 +152,18 @@ export class ImposterService {
             }
         );
     }
+
+    onExportImposter(data){
+        const url = `http://localhost:5000/imposters/${data}/_postman`;
+        this.http.get(url, {responseType: 'text'}).subscribe((res) => {
+            const blob = new Blob([res], {type: 'application/json'});
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+
+            a.href = url;
+            a.download = `imposter-${data}.json`;
+            window.URL.revokeObjectURL(url);
+        });
+    }
+    
 }
