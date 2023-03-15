@@ -9,7 +9,9 @@ export class ImposterService {
     private predicates = [];
     private subPredicates = [];
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) { };
+
+    private postmanApi = 'PMAK-64120e8cefa3472466ffd52a-bfa5575400aea41aaf20b6105624775ac7';
 
     onGetPredicates() {
         return this.predicates.slice();
@@ -154,16 +156,41 @@ export class ImposterService {
     }
 
     onExportImposter(data){
-        const url = `http://localhost:5000/imposters/${data}/_postman`;
-        this.http.get(url, {responseType: 'text'}).subscribe((res) => {
-            const blob = new Blob([res], {type: 'application/json'});
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
+        const postmanApiUrl = 'https://api.getpostman.com';
+        const exportURL = `${postmanApiUrl}/collections?apikey=${this.postmanApi}`;
+        const imposterURL = `http://localhost:5000/imposters/${data}`;
 
-            a.href = url;
-            a.download = `imposter-${data}.json`;
-            window.URL.revokeObjectURL(url);
-        });
+        //get req to get imposter data
+        this.http.get(imposterURL).subscribe((imposterData: any) => {
+            //creating collection
+            const collection = {
+                info: {
+                    name: imposterData.name
+                },
+                item: [
+                    {
+                        name: imposterData.name,
+                        request: {
+                            method: imposterData.method,
+                            url: imposterData.url,
+                            header: imposterData.headers,
+                            body: {
+                                mode: 'raw',
+                                raw: imposterData.body
+                            }
+                        },
+                        response: []
+                    }
+                ]
+            };
+
+            //post req to export the collection to Postman
+            console.log(JSON.stringify({ collection })); //getting requested collection
+            
+            this.http.post(exportURL, {collection}).subscribe((res: any) => {
+                console.log(res);
+            }, (err) => {console.log(err)});
+        }, (err) => {console.log(err)});
     }
     
 }
