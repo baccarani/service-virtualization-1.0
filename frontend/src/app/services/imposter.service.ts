@@ -158,10 +158,14 @@ export class ImposterService {
     onExportImposter(data){
         const postmanApiUrl = 'https://api.getpostman.com';
         const exportURL = `${postmanApiUrl}/collections?apikey=${this.postmanApi}`;
-        const imposterURL = `http://localhost:5000/imposters/${data}`;
+        const imposterURL = `http://localhost:5000/imposters/${data.port}`;
 
         //get req to get imposter data
         this.http.get(imposterURL).subscribe((imposterData: any) => {
+           
+           //TODO
+            const header = JSON.stringify(imposterData.stubs[0].responses[0].headers);
+            
             //creating collection
             const collection = {
                 info: {
@@ -173,9 +177,9 @@ export class ImposterService {
                     {
                         name: imposterData.name,
                         request: {
-                            method: imposterData.method,
+                            method: imposterData.stubs[0].predicates[0].equals.method,
                             url: imposterData.url,
-                            header: imposterData.headers,
+                            header: header,
                             body: {
                                 mode: 'raw',
                                 raw: imposterData.body
@@ -187,10 +191,9 @@ export class ImposterService {
             };
 
             //post req to export the collection to Postman
-            console.log(JSON.stringify({ collection })); //getting requested collection
             
             this.http.post(exportURL, {collection}).subscribe((res: any) => {
-                console.log(res);
+                console.log('Posted in POSTMAN! Check Collection!');
             }, (err) => {console.log(err)});
         }, (err) => {console.log(err)});
     }

@@ -76,10 +76,9 @@ export class HomeComponent implements OnInit {
     console.log('clicked');
     window.open('postman://app', '_blank');
     //response for selected imposter
-    // this.imposterService.onViewImposter(data).subscribe((res) => {
-    //   console.log(res);
-    // });
-    this.imposterService.onExportImposter(data);
+    this.imposterService.onViewImposter(data).subscribe((res) => {
+      this.imposterService.onExportImposter(res)
+    });
   }
 }
  
