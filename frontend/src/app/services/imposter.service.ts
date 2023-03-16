@@ -165,7 +165,9 @@ export class ImposterService {
             //creating collection
             const collection = {
                 info: {
-                    name: imposterData.name
+                    name: imposterData.name,
+                    description: 'This is the collection',
+                    schema: "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
                 },
                 item: [
                     {
