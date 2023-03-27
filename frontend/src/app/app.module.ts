@@ -19,11 +19,17 @@ import { PredicatesComponent } from './predicates/predicates.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormService } from './services/form.services';
 import { HeaderComponent } from './header/header.component';
-import { PredicatesAndOrOperatorsComponent } from './predicates/sub-predicates/sub-predicates.component';
-
+import { SubPredicatesComponent } from './predicates/sub-predicates/sub-predicates.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, AddDependencyComponent, PredicatesComponent, HeaderComponent, PredicatesAndOrOperatorsComponent],
+  declarations: [AppComponent, 
+    HomeComponent, 
+    AddDependencyComponent, 
+    PredicatesComponent, 
+    HeaderComponent, 
+    SubPredicatesComponent
+  ],
   imports: [BrowserModule, 
     FormsModule, 
     HttpClientModule,
@@ -33,7 +39,8 @@ import { PredicatesAndOrOperatorsComponent } from './predicates/sub-predicates/s
     MatButtonModule,
     MatIconModule,
     ReactiveFormsModule,
-    StoreModule.forRoot({imposter: imposterReducer}) 
+    StoreModule.forRoot({imposter: imposterReducer}),
+    MatMenuModule
   ],
   providers: [ImposterService, FormService],
   bootstrap: [AppComponent]

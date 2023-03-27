@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PredicatesAndOrOperatorsComponent } from './predicates-and-or-operators.component';
+import { SubPredicatesComponent } from './predicates-and-or-operators.component';
 
-describe('PredicatesAndOrOperatorsComponent', () => {
-  let component: PredicatesAndOrOperatorsComponent;
-  let fixture: ComponentFixture<PredicatesAndOrOperatorsComponent>;
+describe('SubPredicatesComponent', () => {
+  let component: SubPredicatesComponent;
+  let fixture: ComponentFixture<SubPredicatesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PredicatesAndOrOperatorsComponent ]
+      declarations: [ SubPredicatesComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PredicatesAndOrOperatorsComponent);
+    fixture = TestBed.createComponent(SubPredicatesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

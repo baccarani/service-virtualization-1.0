@@ -8,7 +8,7 @@ import { ImposterService } from 'src/app/services/imposter.service';
   templateUrl: './sub-predicates.component.html',
   styleUrls: ['./sub-predicates.component.css']
 })
-export class PredicatesAndOrOperatorsComponent implements OnInit {
+export class SubPredicatesComponent implements OnInit {
 
   @Input() index: number = 0;
 
@@ -31,6 +31,11 @@ export class PredicatesAndOrOperatorsComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.index)
+
+    this.subPredicateForm.valueChanges.subscribe(value => {
+      console.log(value);
+      this.getOperator();
+    })
   }
 
   onSubmit() {
@@ -41,4 +46,7 @@ export class PredicatesAndOrOperatorsComponent implements OnInit {
 
   }
 
+  getOperator() {
+    this.imposterService.setOperator(this.subPredicateForm.value.operator);
+  }
 }
