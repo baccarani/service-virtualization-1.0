@@ -1,16 +1,16 @@
 <!-- <div style="max-height: 85vh; overflow-y: auto; overflow-x: hidden;"> -->
-    <!-- <h1 style="font-weight: bold; display: flex; align-items: center; justify-content: space-between;"> -->
-        <!-- Add Dependency -->
-        <!-- <button mat-icon-button class="close-button" (click)="closeModal()"> -->
-            <!-- <mat-icon aria-label="Close modal">close</mat-icon> -->
-        <!-- </button> -->
-    <!-- </h1> -->
-    <!-- <div> -->
-        <!-- <p>Fill in the below form to add your dependency.</p> -->
-        <!-- <br> -->
-        <!-- <div class="container" style="max-width: 400px;"> -->
-            <!-- <div class="row"> -->
-                <!-- <div>
+<!-- <h1 style="font-weight: bold; display: flex; align-items: center; justify-content: space-between;"> -->
+<!-- Add Dependency -->
+<!-- <button mat-icon-button class="close-button" (click)="closeModal()"> -->
+<!-- <mat-icon aria-label="Close modal">close</mat-icon> -->
+<!-- </button> -->
+<!-- </h1> -->
+<!-- <div> -->
+<!-- <p>Fill in the below form to add your dependency.</p> -->
+<!-- <br> -->
+<!-- <div class="container" style="max-width: 400px;"> -->
+<!-- <div class="row"> -->
+<!-- <div>
                     <form  (ngSubmit)="onSubmit(form.value)" #form="ngForm">
                         <h2>General Information</h2>
                         <div>
@@ -31,8 +31,8 @@
                         <hr>
                         <div>
                             <h2>Predicates</h2> -->
-                            <!-- <mat-icon style="cursor: pointer; margin-top: 5px; float: right;">add</mat-icon> -->
-                        <!-- </div>
+<!-- <mat-icon style="cursor: pointer; margin-top: 5px; float: right;">add</mat-icon> -->
+<!-- </div>
                         <div *ngFor="let predicate of predicates; let i = index">
                             <app-predicates (editUpdate)="editUpdate($event)"
                                             (deleteUpdate)="deleteUpdate($event)"
@@ -47,12 +47,12 @@
                         <h2>Responses</h2>
                         <div>
                             <label>Status Code:</label> -->
-                            <!-- <input type="number" name="statusCode" ngModel required class="form-control"> -->
-                            <!-- <select name="statusCode" class="form-control" ngModel  #code>
+<!-- <input type="number" name="statusCode" ngModel required class="form-control"> -->
+<!-- <select name="statusCode" class="form-control" ngModel  #code>
                                 <option value="select option">Please select an option</option>
                                 <option *ngFor="let opt of statusCode" [value]="opt">{{opt}}</option>
                             </select> -->
-                            <!-- <div [hidden]="code.value == 'Informational responses (100 to 199)' ? false : true">
+<!-- <div [hidden]="code.value == 'Informational responses (100 to 199)' ? false : true">
                                 <br><select name="infoRes" class="form-control">
                                     <option *ngFor="let infoCode of informationRes">{{infoCode}}</option>
                                 </select>
@@ -77,7 +77,7 @@
                                     <option *ngFor="let serverCode of serverErrRes">{{serverCode}}</option>
                                 </select>
                             </div> -->
-                        <!-- </div><br>
+<!-- </div><br>
                         <div>
                             <label>Headers:</label>
                             <textarea name="headers" ngModel required class="form-control"
@@ -136,10 +136,8 @@
                         <!-- <mat-icon style="cursor: pointer; margin-top: 5px; float: right;">add</mat-icon> -->
                     </div>
                     <div *ngFor="let predicate of predicates; let i = index">
-                        <app-predicates (editUpdate)="editUpdate($event)"
-                                        (deleteUpdate)="deleteUpdate($event)"
-                                        [index]="i"
-                                        [predicate]="predicate">
+                        <app-predicates (editUpdate)="editUpdate($event)" (deleteUpdate)="deleteUpdate($event)"
+                            [index]="i" [predicate]="predicate">
                         </app-predicates>
                     </div>
                     <a style="text-decoration: underline; cursor: pointer;" (click)="addPredicate()">Add
@@ -149,7 +147,7 @@
                     <div>
                         <label>Status Code:</label>
                         <!-- <input type="number" name="statusCode" ngModel required class="form-control"> -->
-                        <select name="statusCode" class="form-control" formControlName="statusCode"  #code>
+                        <select name="statusCode" class="form-control" formControlName="statusCode" #code>
                             <option value="select option">Please select an option</option>
                             <option *ngFor="let opt of statusCode" [value]="opt">{{opt}}</option>
                         </select>
@@ -160,29 +158,34 @@
                         </div>
                         <div [hidden]="code.value == 'Successful responses (200 to 299)' ? false : true">
                             <br><select name="succRes" class="form-control" formControlName="successCode">
-                                <option *ngFor="let successCode of successRes" [value]="successCode">{{successCode}}</option>
+                                <option *ngFor="let successCode of successRes" [value]="successCode">{{successCode}}
+                                </option>
                             </select>
                         </div>
                         <div [hidden]="code.value == 'Redirection messages (300 to 399)' ? false : true">
                             <br><select name="redRes" class="form-control" formControlName="redirectCode">
-                                <option *ngFor="let redirectCode of redirectionRes" [value]="redirectCode">{{redirectCode}}</option>
+                                <option *ngFor="let redirectCode of redirectionRes" [value]="redirectCode">
+                                    {{redirectCode}}</option>
                             </select>
                         </div>
                         <div [hidden]="code.value == 'Client error responses (400 to 499)' ? false : true">
                             <br><select name="cliRes" class="form-control" formControlName="clientCode">
-                                <option *ngFor="let clientCode of clientErrRes" [value]="clientCode">{{clientCode}}</option>
+                                <option *ngFor="let clientCode of clientErrRes" [value]="clientCode">{{clientCode}}
+                                </option>
                             </select>
                         </div>
                         <div [hidden]="code.value == 'Server error responses (500 to 599)' ? false : true">
                             <br><select name="serverRes" class="form-control" formControlName="serverCode">
-                                <option *ngFor="let serverCode of serverErrRes" [value]="serverCode">{{serverCode}}</option>
+                                <option *ngFor="let serverCode of serverErrRes" [value]="serverCode">{{serverCode}}
+                                </option>
                             </select>
                         </div>
                     </div><br>
                     <div>
                         <label>Headers:</label>
-                        <textarea name="headers" required class="form-control" formControlName="headers"
-                            style="resize: none;"></textarea>
+                        <br><select name="headers" class="form-control" formControlName="headers" #path>
+                            <option *ngFor="let header of headers" [value]="header | json">{{header | json}}</option>
+                        </select>
                     </div><br>
                     <div>
                         <label>Body:</label>
@@ -198,4 +201,3 @@
         </div>
     </div>
 </div>
-

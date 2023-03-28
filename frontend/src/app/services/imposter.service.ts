@@ -69,18 +69,15 @@ export class ImposterService {
     onCreateImposter(formValues) {
         const headers = JSON.parse(formValues.headers);
         const body = JSON.parse(formValues.body);
-        console.log(formValues.newpath);
         const predicates = this.predicates.map((predicate) => {
             const operator = predicate.operator;
             const query = JSON.parse(predicate.query);
-            console.log(operator);
             /**
              * TODO: same for NOT opertor
              */
             let updatePath;
             if(predicate.path == 'other'){
                 updatePath = predicate.newpath;
-                console.log(updatePath);
                 
             }else{
                 updatePath = predicate.path;
@@ -143,7 +140,6 @@ export class ImposterService {
                 },
             ],
         };
-        console.log(data);
         this.http.post(`http://localhost:5000/imposters`, data).subscribe(
             (responseData) => {
                 this.imposterArray.push(responseData);

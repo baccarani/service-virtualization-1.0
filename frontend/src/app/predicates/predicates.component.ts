@@ -125,10 +125,7 @@ export class PredicatesComponent implements OnInit {
     this.predicate.newpath = newpath;
     this.predicate.data = data;
     this.predicate.newOperator = newOperator;
-    this.predicate.query = query;
-
-    console.log(this.predicate.newpath);
-    
+    this.predicate.query = query;    
 
     const index = this.imposterService.onGetPredicates().findIndex(p => p.method === method && p.query=== query && p.path === path && p.newpath === newpath && p.data === data && p.newOperator === newOperator);
     if (index > -1) {
