@@ -4,12 +4,8 @@
     align-items: center;
   }  
 
-  @media screen and (max-width: 767px) {
-    button {
-      display: block;
+  @media screen and (max-width: 396px) {
+    .add-dependency-button {
       margin-bottom: 15px;
-    }
-    .btn-primary {
-      margin-right: 0;
     }
   }
