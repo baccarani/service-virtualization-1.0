@@ -30,10 +30,7 @@ export class SubPredicatesComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private imposterService: ImposterService,) { }
 
   ngOnInit(): void {
-    console.log(this.index)
-
     this.subPredicateForm.valueChanges.subscribe(value => {
-      console.log(value);
       this.getOperator();
     })
   }
