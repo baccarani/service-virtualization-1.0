@@ -2,4 +2,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }  
+
+  @media screen and (max-width: 767px) {
+    button {
+      display: block;
+      margin-bottom: 15px;
+    }
+    .btn-primary {
+      margin-right: 0;
+    }
   }

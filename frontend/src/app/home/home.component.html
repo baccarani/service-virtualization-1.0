@@ -7,8 +7,10 @@
       style="padding-right: 30px; padding-left: 0;">add</mat-icon>Add Dependency</button>
   <button class="btn btn-default" (click)="onCopyAll()"
     style="display: inline-flex; align-items: center; padding-left: 0; padding-left: 5px;"><mat-icon
-      style="padding-right: 30px; padding-left: 0; transform: scale(.8);" [ngStyle]="{'color': copyAllButtonColor}" >{{iconName}}</mat-icon>{{copyAllButtonText}}</button>
+      style="padding-right: 30px; padding-left: 0; transform: scale(.8);"
+      [ngStyle]="{'color': copyAllButtonColor}">{{iconName}}</mat-icon>{{copyAllButtonText}}</button>
   <br><br>
+  <div style="overflow-x: auto;">
   <table class="table table-striped">
     <thead>
       <tr>
@@ -16,41 +18,46 @@
         <th>Protocol</th>
         <th>Port</th>
         <th># of Requests</th>
-        <th>View</th>
-        <th>Delete</th>
-        <th>Open in Postman</th>
+        <th>More</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let imposter of imposterArray; let i = index">
-        <td>{{ imposter.name }}</td>
+        <td><a style="cursor: pointer;" (click)="onViewImposter(imposter.port)">{{ imposter.name }}</a></td>
         <td>{{ imposter.protocol }}</td>
         <td>{{ imposter.port }}</td>
         <td>{{ imposter.numberOfRequests }}</td>
-        <td><button class="btn btn-primary" (click)="onViewImposter(imposter.port)"
-            style="display: inline-flex; align-items: center; padding-left: 0; padding-left: 7px;"><mat-icon
-              style="padding-right: 30px; padding-left: 0; transform: scale(.8);">visibility</mat-icon>View</button>
-        </td>
-        <td><button class="btn btn-danger" (click)="onDeleteImposter(imposter.port, i)"
-            style="display: inline-flex; align-items: center; padding-left: 0; padding-left: 5px;"><mat-icon
-              style="padding-right: 30px; padding-left: 0; transform: scale(.8);">delete</mat-icon>Delete</button>
-        </td>
         <td>
-          <button class="btn btn-warning" (click)="openPostman(imposter.name)">Open in Postman</button>
-        </td>
-        {{imposter.port}}
+          <div [matMenuTriggerFor]="menu">
+            <mat-icon style="cursor: pointer;" class="dropdown-toggle" role="button">more_horiz</mat-icon>
+          </div>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="onViewImposter(imposter.port)">
+              <mat-icon>visibility</mat-icon>
+              View
+            </button>
+            <button mat-menu-item (click)="onDeleteImposter(imposter.port, i)">
+              <mat-icon>delete</mat-icon>
+              Delete
+            </button>
+            <button mat-menu-item (click)="openPostman(imposter.name)">
+              <mat-icon>open_in_new</mat-icon>
+              Open in Postman
+            </button>
+          </mat-menu>
+          
+        </td>        
       </tr>
     </tbody>
   </table>
+  </div>
   <br>
   <div style="font-weight: bold;">
     Request Stub:
     {{ viewDependency.name }}
-    <!-- <mat-icon style="float: right; transform: scale(.8); padding-right: 35px;">file_copy</mat-icon> -->
   </div>
   <br>
   <pre>
     {{ viewDependency | json }}
   </pre>
-    
 </div>

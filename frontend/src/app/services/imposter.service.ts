@@ -11,6 +11,10 @@ export class ImposterService {
 
     constructor(private http: HttpClient) { }
 
+    setOperator(operator) {
+        this.subPredicates.push(operator);
+    }
+
     onGetPredicates() {
         return this.predicates.slice();
     }
