@@ -21,6 +21,7 @@ import { FormService } from './services/form.services';
 import { HeaderComponent } from './header/header.component';
 import { SubPredicatesComponent } from './predicates/sub-predicates/sub-predicates.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { ResponsesComponent } from './responses/responses.component';
 
 @NgModule({
   declarations: [AppComponent, 
@@ -28,7 +29,7 @@ import { MatMenuModule } from '@angular/material/menu';
     AddDependencyComponent, 
     PredicatesComponent, 
     HeaderComponent, 
-    SubPredicatesComponent
+    SubPredicatesComponent, ResponsesComponent
   ],
   imports: [BrowserModule, 
     FormsModule, 

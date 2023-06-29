@@ -8,6 +8,7 @@ export class ImposterService {
     private imposterArray: any = null;
     private predicates = [];
     private subPredicates = [];
+    private responses = [];
 
     constructor(private http: HttpClient) { }
 
@@ -19,8 +20,16 @@ export class ImposterService {
         return this.predicates.slice();
     }
 
+    onGetResponses() {
+        return this.responses.slice();
+    }
+
     onAddPredicate({ operator,  method, path, newpath,data, newOperator, query }: Predicate) {
         this.predicates.push({ operator, method, path, newpath, data, newOperator, query });
+    }
+
+    onAddResponse({ statusCode, headers, body }) {
+        this.responses.push({ statusCode, headers, body });
     }
 
     onResetPredicates() {
