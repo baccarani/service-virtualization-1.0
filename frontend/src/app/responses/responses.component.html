@@ -1,0 +1,64 @@
+<form [formGroup]="responseForm" (ngSubmit)="onSubmit()">
+    <div style="border: 1px solid #ccc; border-radius: 10px; background-color: #dcdcdc;">
+        <div
+            style="display: flex; justify-content: flex-start; align-items: center; padding-right: 5px; padding-top: 5px;">
+            <h3 style="margin-right: auto; padding-left: 15px; padding-top: 5px; font-weight: bold;">New Response</h3>
+            <div>
+                <button mat-icon-button color="basic" (click)="onDelete()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div style="padding-bottom: 30px; padding-left: 30px; padding-right: 30px;">
+            <div>
+                <label>Status Code:</label>
+                <!-- <input type="number" name="statusCode" ngModel required class="form-control"> -->
+                <select name="statusCode" class="form-control" formControlName="statusCode" #code>
+                    <option value="select option">Please select an option</option>
+                    <option *ngFor="let opt of statusCode" [value]="opt">{{opt}}</option>
+                </select>
+                <div [hidden]="code.value == 'Informational responses (100 to 199)' ? false : true">
+                    <br><select name="infoRes" class="form-control" formControlName="infoCode">
+                        <option *ngFor="let infoCode of informationRes" [value]="infoCode">{{infoCode}}</option>
+                    </select>
+                </div>
+                <div [hidden]="code.value == 'Successful responses (200 to 299)' ? false : true">
+                    <br><select name="succRes" class="form-control" formControlName="successCode">
+                        <option *ngFor="let successCode of successRes" [value]="successCode">{{successCode}}
+                        </option>
+                    </select>
+                </div>
+                <div [hidden]="code.value == 'Redirection messages (300 to 399)' ? false : true">
+                    <br><select name="redRes" class="form-control" formControlName="redirectCode">
+                        <option *ngFor="let redirectCode of redirectionRes" [value]="redirectCode">
+                            {{redirectCode}}</option>
+                    </select>
+                </div>
+                <div [hidden]="code.value == 'Client error responses (400 to 499)' ? false : true">
+                    <br><select name="cliRes" class="form-control" formControlName="clientCode">
+                        <option *ngFor="let clientCode of clientErrRes" [value]="clientCode">{{clientCode}}
+                        </option>
+                    </select>
+                </div>
+                <div [hidden]="code.value == 'Server error responses (500 to 599)' ? false : true">
+                    <br><select name="serverRes" class="form-control" formControlName="serverCode">
+                        <option *ngFor="let serverCode of serverErrRes" [value]="serverCode">{{serverCode}}
+                        </option>
+                    </select>
+                </div>
+            </div><br>
+            <div>
+                <label>Headers:</label>
+                <br><select name="headers" class="form-control" formControlName="headers" #path>
+                    <option *ngFor="let header of headers" [value]="header | json">{{header | json}}</option>
+                </select>
+            </div><br>
+            <div>
+                <label>Body:</label>
+                <textarea name="body" required class="form-control" formControlName="body"
+                    style="resize: none;"></textarea>
+            </div>
+        </div>
+    </div>
+</form>
+<br><br>
