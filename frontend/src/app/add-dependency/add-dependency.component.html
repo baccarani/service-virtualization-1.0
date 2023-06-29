@@ -53,7 +53,7 @@
                                 </div>
                                 <div *ngFor="let response of responses; let i = index">
                                     <app-responses (editUpdate)="editUpdate($event)"
-                                        (deleteResponseUpdate)="deleteResponseUpdate($event)" [indexResponse]="i" [response]="response">
+                                        (deleteResponseUpdate)="deleteResponseUpdate($event)" [responseIndex]="i" [response]="response">
                                     </app-responses>
                                 </div>
                                 <a style="text-decoration: underline; cursor: pointer;" (click)="addResponse()">

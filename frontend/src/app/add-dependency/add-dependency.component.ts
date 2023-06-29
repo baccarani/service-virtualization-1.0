@@ -62,6 +62,7 @@ export class AddDependencyComponent implements OnInit {
 
 
   onSubmit() {
+    console.log(this.dependencyForm.value);
     this.imposterService.onCreateImposter(this.dependencyForm.value);
     this.matDialogRef.close();
   }
@@ -98,10 +99,10 @@ export class AddDependencyComponent implements OnInit {
     this.imposterService.onDeletePredicate(index);
   }
 
-  deleteResponseUpdate(index: any): void {
+  deleteResponseUpdate(responseIndex: any): void {
     let tempResponses: Response[] = [];
     for (let i = 0; i < this.responses.length; i++) {
-      if (i !== index) {
+      if (i !== responseIndex) {
         tempResponses.push(this.responses[i]);
       }
     }
@@ -109,13 +110,13 @@ export class AddDependencyComponent implements OnInit {
 
     let tempEdit: boolean[] = [];
     for (let i = 0; i < this.showEdit.length; i++) {
-      if (i !== index) {
+      if (i !== responseIndex) {
         tempEdit.push(this.showEdit[i]);
       }
     }
     this.showEdit = tempEdit;
 
-    this.imposterService.onDeleteResponse(index);
+    this.imposterService.onDeleteResponse(responseIndex);
   }
 
   onDelete() {

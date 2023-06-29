@@ -10,6 +10,8 @@ import { ImposterService } from '../services/imposter.service';
 export class ResponsesComponent implements OnInit {
 
   @Input() index: number = 0;
+  @Input() responseIndex: number = 0;
+
   @Output() deleteUpdate = new EventEmitter();
   @Output() deleteResponseUpdate = new EventEmitter();
 
@@ -123,10 +125,10 @@ export class ResponsesComponent implements OnInit {
   ngOnInit(): void {
     this.responses = this.imposterService.onGetResponses();
 
-    if (this.responses.length > 1) {
-      this.showCloseButton = true;
-    } else { 
+    if (this.responses.length === 1) {
       this.showCloseButton = false;
+    } else { 
+      this.showCloseButton = true;
     }
   }
 
@@ -135,7 +137,7 @@ export class ResponsesComponent implements OnInit {
   }
 
   onDelete() {
-    this.deleteResponseUpdate.emit(this.index);
+    this.deleteResponseUpdate.emit(this.responseIndex);
   }
 
 }

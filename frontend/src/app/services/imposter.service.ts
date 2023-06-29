@@ -119,20 +119,13 @@ export class ImposterService {
                 };
             }
         });
-        //updating statusCode
-        let code;
-        switch(formValues.statusCode){
-            case 'Informational responses (100 to 199)': code = formValues.infoCode;
-            break;
-            case 'Successful responses (200 to 299)': code = formValues.successCode;
-            break;
-            case 'Redirection messages (300 to 399)': code = formValues.redirectCode;
-            break;
-            case 'Client error responses (400 to 499)': code = formValues.clientCode;
-            break;
-            case 'Server error responses (500 to 599)': code = formValues.serverCode;
-            break;
-        };
+        const responses = this.responses.map((response) => {
+            is: {
+                const statusCode = response.statusCode;
+                const headers = JSON.parse(response.headers);
+                const body = JSON.parse(response.body);
+            }
+        });
 
         const data = {
             port: formValues.port,
@@ -140,16 +133,8 @@ export class ImposterService {
             name: formValues.name,
             stubs: [
                 {
-                    responses: [
-                        {
-                            is: {
-                                statusCode: code,
-                                headers: headers,
-                                body: body,
-                            },
-                        },
-                    ],
-                    predicates: predicates
+                    predicates: predicates,
+                    responses: [ responses ],
                 },
             ],
         };
