@@ -24,7 +24,7 @@ export class ImposterService {
         return this.responses.slice();
     }
 
-    onAddPredicate({ operator,  method, path, newpath,data, newOperator, query }: Predicate) {
+    onAddPredicate({ operator, method, path, newpath, data, newOperator, query }: Predicate) {
         this.predicates.push({ operator, method, path, newpath, data, newOperator, query });
     }
 
@@ -34,6 +34,10 @@ export class ImposterService {
 
     onResetPredicates() {
         this.predicates = [];
+    }
+
+    onResetResponses() {
+        this.responses = [];
     }
 
     onDeletePredicate(index) {
@@ -80,8 +84,6 @@ export class ImposterService {
     }
 
     onCreateImposter(formValues) {
-        const headers = JSON.parse(formValues.headers);
-        const body = JSON.parse(formValues.body);
         const predicates = this.predicates.map((predicate) => {
             const operator = predicate.operator;
             const query = JSON.parse(predicate.query);
@@ -89,14 +91,14 @@ export class ImposterService {
              * TODO: same for NOT opertor
              */
             let updatePath;
-            if(predicate.path == 'other'){
+            if (predicate.path == 'other') {
                 updatePath = predicate.newpath;
-                
-            }else{
+
+            } else {
                 updatePath = predicate.path;
             }
 
-            if(operator === "or" || operator === "and"){
+            if (operator === "or" || operator === "and") {
                 return {
                     [operator]: [
                         {
@@ -108,7 +110,7 @@ export class ImposterService {
                         }
                     ]
                 }
-            }else {
+            } else {
                 return {
                     [operator]: {
                         method: predicate.method,
@@ -119,11 +121,14 @@ export class ImposterService {
                 };
             }
         });
+
         const responses = this.responses.map((response) => {
-            is: {
-                const statusCode = response.statusCode;
-                const headers = JSON.parse(response.headers);
-                const body = JSON.parse(response.body);
+            const statusCode = response.statusCode;
+            const headers = JSON.parse(response.headers);
+            const body = JSON.parse(response.body);
+
+            return {
+                is: { statusCode: statusCode, headers: headers, body: body },
             }
         });
 
@@ -134,10 +139,11 @@ export class ImposterService {
             stubs: [
                 {
                     predicates: predicates,
-                    responses: [ responses ],
+                    responses: responses,
                 },
             ],
         };
+        
         this.http.post(`http://localhost:5000/imposters`, data).subscribe(
             (responseData) => {
                 this.imposterArray.push(responseData);
@@ -151,10 +157,10 @@ export class ImposterService {
         );
     }
 
-    onExportImposter(data){
+    onExportImposter(data) {
         const url = `http://localhost:5000/imposters/${data}/_postman`;
-        this.http.get(url, {responseType: 'text'}).subscribe((res) => {
-            const blob = new Blob([res], {type: 'application/json'});
+        this.http.get(url, { responseType: 'text' }).subscribe((res) => {
+            const blob = new Blob([res], { type: 'application/json' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
 
@@ -163,5 +169,5 @@ export class ImposterService {
             window.URL.revokeObjectURL(url);
         });
     }
-    
+
 }

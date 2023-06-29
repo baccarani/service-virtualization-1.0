@@ -32,7 +32,8 @@
                     <div style="border: 1px solid #ccc; border-radius: 10px; background-color: #f4f4f4;">
                         <div
                             style="display: flex; justify-content: flex-start; align-items: center; padding-right: 5px; padding-top: 5px;">
-                            <h2 style="margin-right: auto; padding-left: 15px; padding-top: 5px; font-weight: bold;">Stubs</h2>
+                            <h2 style="margin-right: auto; padding-left: 15px; padding-top: 5px; font-weight: bold;">
+                                Stubs</h2>
                             <!-- <button mat-icon-button color="basic" (click)="onDelete()">
                                 <mat-icon>close</mat-icon>
                             </button> -->
@@ -53,7 +54,8 @@
                                 </div>
                                 <div *ngFor="let response of responses; let i = index">
                                     <app-responses (editUpdate)="editUpdate($event)"
-                                        (deleteResponseUpdate)="deleteResponseUpdate($event)" [responseIndex]="i" [response]="response">
+                                        (deleteResponseUpdate)="deleteResponseUpdate($event)" [responseIndex]="i"
+                                        [response]="response">
                                     </app-responses>
                                 </div>
                                 <a style="text-decoration: underline; cursor: pointer;" (click)="addResponse()">
@@ -62,11 +64,11 @@
                         </div>
                     </div>
 
-                            <br><br><br>
-                            <button class="btn btn-primary" type="submit" [disabled]="!dependencyForm.valid"
-                                style="margin-right: 10px; width: 100%;">
-                                Add Dependency
-                            </button>
+                    <br><br><br>
+                    <button class="btn btn-primary" type="submit" [disabled]="!dependencyForm.valid"
+                        style="margin-right: 10px; width: 100%;">
+                        Add Dependency
+                    </button>
                 </form>
             </div>
         </div>

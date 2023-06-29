@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ImposterService } from '../services/imposter.service';
+import { Response } from '../models/response';
 
 @Component({
   selector: 'app-responses',
@@ -11,6 +12,11 @@ export class ResponsesComponent implements OnInit {
 
   @Input() index: number = 0;
   @Input() responseIndex: number = 0;
+  @Input() response: Response = {
+    statusCode: '',
+    headers: '',
+    body: '',
+  };
 
   @Output() deleteUpdate = new EventEmitter();
   @Output() deleteResponseUpdate = new EventEmitter();
@@ -23,7 +29,7 @@ export class ResponsesComponent implements OnInit {
     'Server error responses (500 to 599)',
   ];
 
-  informationRes = [ 
+  informationRes = [
     '100',
     '101',
     '102',
@@ -106,30 +112,32 @@ export class ResponsesComponent implements OnInit {
   ]
 
   responseForm = this.formBuilder.group({
-    statusCode: [''],
+    statusCode: 0,
     infoCode: [''],
-    successCode: [''], 
+    successCode: [''],
     redirectCode: [''],
     clientCode: [''],
     serverCode: [''],
     headers: [''],
     body: [''],
   });
-  
-  responses = [];
-
-  showCloseButton = false;
 
   constructor(private formBuilder: FormBuilder, private imposterService: ImposterService) { }
 
   ngOnInit(): void {
-    this.responses = this.imposterService.onGetResponses();
-
-    if (this.responses.length === 1) {
-      this.showCloseButton = false;
-    } else { 
-      this.showCloseButton = true;
-    }
+    this.responseForm.setValue({
+      statusCode: this.response.statusCode,
+      infoCode: '',
+      successCode: '',
+      redirectCode: '',
+      clientCode: '',
+      serverCode: '',
+      headers: this.response.headers,
+      body: this.response.body,
+    });
+    this.responseForm.valueChanges.subscribe(() => {
+      this.updateResponses();
+    });
   }
 
   onSubmit(): void {
@@ -138,6 +146,45 @@ export class ResponsesComponent implements OnInit {
 
   onDelete() {
     this.deleteResponseUpdate.emit(this.responseIndex);
+  }
+
+  updateResponses() {
+
+    const statusCode = this.responseForm.get('statusCode').value;
+    const infoCode = Number(this.responseForm.get('infoCode').value);
+    const successCode = Number(this.responseForm.get('successCode').value);
+    const redirectCode = Number(this.responseForm.get('redirectCode').value);
+    const clientCode = Number(this.responseForm.get('clientCode').value);
+    const serverCode = Number(this.responseForm.get('serverCode').value);
+    const headers = this.responseForm.get('headers').value;
+    const body = this.responseForm.get('body').value;
+
+    if (infoCode) {
+      this.response.statusCode = infoCode;
+    }
+    if (successCode) {
+      this.response.statusCode = successCode;
+    }
+    if (redirectCode) {
+      this.response.statusCode = redirectCode;
+    }
+    if (clientCode) {
+      this.response.statusCode = clientCode;
+    }
+    if (serverCode) {
+      this.response.statusCode = serverCode;
+    }
+    this.response.headers = headers;
+    this.response.body = body;
+
+    const index = this.imposterService.onGetResponses().findIndex(p => p.statusCode === statusCode && p.headers === headers && p.body === body);
+    if (index > -1) {
+      // Update existing predicate
+      this.imposterService.onGetResponses()[index] = this.response;
+    } else {
+      // Add new predicate
+      this.imposterService.onGetResponses().push(this.response);
+    }
   }
 
 }

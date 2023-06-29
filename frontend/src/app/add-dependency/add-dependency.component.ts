@@ -32,12 +32,12 @@ export class AddDependencyComponent implements OnInit {
     name: [''],
     port: [''],
     protocol: [''],
-    headers: [''],
-    body: ['']
   });
 
   ngOnInit(): void {
-    this.imposterService.onResetPredicates()
+    this.imposterService.onResetPredicates();
+    this.imposterService.onResetResponses();
+    
     if (this.imposterService.onGetPredicates().length === 0) {
       this.imposterService.onAddPredicate({operator: '', method: '', path: '', newpath: '', data: '', newOperator: '', query: ''})
     }
@@ -62,7 +62,6 @@ export class AddDependencyComponent implements OnInit {
 
 
   onSubmit() {
-    console.log(this.dependencyForm.value);
     this.imposterService.onCreateImposter(this.dependencyForm.value);
     this.matDialogRef.close();
   }

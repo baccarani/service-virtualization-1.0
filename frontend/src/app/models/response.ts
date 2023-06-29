@@ -1,5 +1,5 @@
 export interface Response {
-    statusCode: string;
+    statusCode: any;
     headers: string;
     body: string;
   }
