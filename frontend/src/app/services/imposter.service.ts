@@ -40,6 +40,10 @@ export class ImposterService {
         this.predicates.splice(index, 1);
     }
 
+    onDeleteResponse(index) {
+        this.responses.splice(index, 1);
+    }
+
     onDeleteSubPredicate(index) {
         this.subPredicates.splice(index, 1);
     }

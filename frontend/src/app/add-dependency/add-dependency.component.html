@@ -33,9 +33,9 @@
                         <div
                             style="display: flex; justify-content: flex-start; align-items: center; padding-right: 5px; padding-top: 5px;">
                             <h2 style="margin-right: auto; padding-left: 15px; padding-top: 5px; font-weight: bold;">Stubs</h2>
-                            <button mat-icon-button color="basic" (click)="onDelete()">
+                            <!-- <button mat-icon-button color="basic" (click)="onDelete()">
                                 <mat-icon>close</mat-icon>
-                            </button>
+                            </button> -->
                         </div>
 
                         <div style="padding-bottom: 30px; padding-left: 30px; padding-right: 30px;">
@@ -47,19 +47,16 @@
                                     <app-predicates (editUpdate)="editUpdate($event)"
                                         (deleteUpdate)="deleteUpdate($event)" [index]="i" [predicate]="predicate">
                                     </app-predicates>
-                                </div>
-                                <hr>
-
+                                </div><br>
                                 <div>
                                     <h3 style="font-weight: bold;">Responses</h3>
                                 </div>
-                                <div *ngFor="let predicate of predicates; let i = index">
+                                <div *ngFor="let response of responses; let i = index">
                                     <app-responses (editUpdate)="editUpdate($event)"
-                                        (deleteUpdate)="deleteUpdate($event)" [index]="i" [predicate]="predicate">
+                                        (deleteResponseUpdate)="deleteResponseUpdate($event)" [indexResponse]="i" [response]="response">
                                     </app-responses>
                                 </div>
-                                <br><br>
-                                <a style="text-decoration: underline; cursor: pointer;" (click)="addPredicate()">
+                                <a style="text-decoration: underline; cursor: pointer;" (click)="addResponse()">
                                     Add Response</a>
                             </div>
                         </div>

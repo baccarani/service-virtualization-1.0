@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { ImposterService } from '../services/imposter.service';
 
 @Component({
   selector: 'app-responses',
@@ -10,6 +11,7 @@ export class ResponsesComponent implements OnInit {
 
   @Input() index: number = 0;
   @Output() deleteUpdate = new EventEmitter();
+  @Output() deleteResponseUpdate = new EventEmitter();
 
   statusCode = [
     'Informational responses (100 to 199)',
@@ -111,10 +113,21 @@ export class ResponsesComponent implements OnInit {
     headers: [''],
     body: [''],
   });
+  
+  responses = [];
 
-  constructor(private formBuilder: FormBuilder) { }
+  showCloseButton = false;
+
+  constructor(private formBuilder: FormBuilder, private imposterService: ImposterService) { }
 
   ngOnInit(): void {
+    this.responses = this.imposterService.onGetResponses();
+
+    if (this.responses.length > 1) {
+      this.showCloseButton = true;
+    } else { 
+      this.showCloseButton = false;
+    }
   }
 
   onSubmit(): void {
@@ -122,7 +135,7 @@ export class ResponsesComponent implements OnInit {
   }
 
   onDelete() {
-    this.deleteUpdate.emit(this.index);
+    this.deleteResponseUpdate.emit(this.index);
   }
 
 }

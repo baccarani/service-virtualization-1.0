@@ -26,6 +26,7 @@ export class AddDependencyComponent implements OnInit {
   constructor(private http: HttpClient, private fb: FormBuilder,private matDialogRef: MatDialogRef<AddDependencyComponent>, private imposterService: ImposterService) { }
 
   @Input() index: number = 0;
+  @Input() indexResponse: number = 0;
 
   dependencyForm = this.fb.group({
     name: [''],
@@ -40,7 +41,13 @@ export class AddDependencyComponent implements OnInit {
     if (this.imposterService.onGetPredicates().length === 0) {
       this.imposterService.onAddPredicate({operator: '', method: '', path: '', newpath: '', data: '', newOperator: '', query: ''})
     }
+
+    if (this.imposterService.onGetResponses().length === 0) {
+      this.imposterService.onAddResponse({statusCode: '', headers: '', body: ''})
+    }
+
     this.predicates = this.imposterService.onGetPredicates();
+    this.responses = this.imposterService.onGetResponses();
   }
 
   predicateUpdate(form: any): void {
@@ -65,6 +72,12 @@ export class AddDependencyComponent implements OnInit {
     this.predicates = this.imposterService.onGetPredicates();
   }
 
+  addResponse() {
+    this.imposterService.onAddResponse({statusCode: '', headers: '', body: ''})
+    this.showEdit.push(false);
+    this.responses = this.imposterService.onGetResponses();
+  }
+
   deleteUpdate(index: any): void {
     let tempPredicates: Predicate[] = [];
     for (let i = 0; i < this.predicates.length; i++) {
@@ -85,8 +98,31 @@ export class AddDependencyComponent implements OnInit {
     this.imposterService.onDeletePredicate(index);
   }
 
+  deleteResponseUpdate(index: any): void {
+    let tempResponses: Response[] = [];
+    for (let i = 0; i < this.responses.length; i++) {
+      if (i !== index) {
+        tempResponses.push(this.responses[i]);
+      }
+    }
+    this.responses = tempResponses;
+
+    let tempEdit: boolean[] = [];
+    for (let i = 0; i < this.showEdit.length; i++) {
+      if (i !== index) {
+        tempEdit.push(this.showEdit[i]);
+      }
+    }
+    this.showEdit = tempEdit;
+
+    this.imposterService.onDeleteResponse(index);
+  }
+
   onDelete() {
     this.deleteUpdate(this.index);
   }
 
+  onDeleteResponse() {
+    this.deleteResponseUpdate(this.indexResponse);
+  }
 }
