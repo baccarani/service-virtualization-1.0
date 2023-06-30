@@ -28,7 +28,7 @@
                     ]
                 }
             ],
-            "name": "Dependency 1"
+            "name": "Dependency 6001"
         },
         {
             "port": 6002,
@@ -58,7 +58,7 @@
                     ]
                 }
             ],
-            "name": "Dependency 2"
+            "name": "Dependency 6002"
         },
         {
             "port": 6003,
@@ -114,7 +114,7 @@
                     "responsesEnabled": true
                 }
             ],
-            "name": "Dependency 3"
+            "name": "Dependency 6003"
         },
         {
             "protocol": "https",
@@ -179,6 +179,67 @@
                 },
                 "stubs": {
                     "href": "http://localhost:5000/imposters/13/stubs"
+                }
+            }
+        },
+        {
+            "protocol": "http",
+            "port": 1,
+            "name": "test 1",
+            "numberOfRequests": 0,
+            "recordRequests": false,
+            "requests": [],
+            "stubs": [
+                {
+                    "predicates": [
+                        {
+                            "equals": {
+                                "method": "GET",
+                                "path": "/user",
+                                "data": "",
+                                "query": {
+                                    "id": 5
+                                }
+                            }
+                        }
+                    ],
+                    "responses": [
+                        {
+                            "is": {
+                                "statusCode": 200,
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "body": {
+                                    "": ""
+                                }
+                            }
+                        },
+                        {
+                            "is": {
+                                "statusCode": 400,
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "body": {
+                                    "": ""
+                                }
+                            }
+                        }
+                    ],
+                    "_links": {
+                        "self": {
+                            "href": "http://localhost:5000/imposters/1/stubs/0"
+                        }
+                    }
+                }
+            ],
+            "_links": {
+                "self": {
+                    "href": "http://localhost:5000/imposters/1"
+                },
+                "stubs": {
+                    "href": "http://localhost:5000/imposters/1/stubs"
                 }
             }
         }
