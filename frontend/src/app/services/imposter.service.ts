@@ -5,6 +5,7 @@ import { Predicate } from '../models/predicate';
 
 @Injectable()
 export class ImposterService {
+    private stubs = [];
     private imposterArray: any = null;
     private predicates = [];
     private subPredicates = [];
@@ -143,7 +144,7 @@ export class ImposterService {
                 },
             ],
         };
-        
+
         this.http.post(`http://localhost:5000/imposters`, data).subscribe(
             (responseData) => {
                 this.imposterArray.push(responseData);

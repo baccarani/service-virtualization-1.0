@@ -116,7 +116,6 @@
             ],
             "name": "Dependency 3"
         },
-
         {
             "protocol": "https",
             "port": 13,
@@ -130,58 +129,58 @@
             "ca": null,
             "requests": [],
             "stubs": [
-              {
-                "predicates": [
-                  {
-                    "equals": {
-                      "method": "GET",
-                      "path": "/user",
-                      "data": "",
-                      "query": {
-                        "user": "5"
-                      }
+                {
+                    "predicates": [
+                        {
+                            "equals": {
+                                "method": "GET",
+                                "path": "/user",
+                                "data": "",
+                                "query": {
+                                    "user": "5"
+                                }
+                            }
+                        }
+                    ],
+                    "responses": [
+                        {
+                            "is": {
+                                "statusCode": 200,
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "body": {
+                                    "message": "200"
+                                }
+                            }
+                        },
+                        {
+                            "is": {
+                                "statusCode": 400,
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "body": {
+                                    "message": "400"
+                                }
+                            }
+                        }
+                    ],
+                    "_links": {
+                        "self": {
+                            "href": "http://localhost:5000/imposters/13/stubs/0"
+                        }
                     }
-                  }
-                ],
-                "responses": [
-                  {
-                    "is": {
-                      "statusCode": 200,
-                      "headers": {
-                        "Content-Type": "application/json"
-                      },
-                      "body": {
-                        "message": "200"
-                      }
-                    }
-                  },
-                  {
-                    "is": {
-                      "statusCode": 400,
-                      "headers": {
-                        "Content-Type": "application/json"
-                      },
-                      "body": {
-                        "message": "400"
-                      }
-                    }
-                  }
-                ],
-                "_links": {
-                  "self": {
-                    "href": "http://localhost:5000/imposters/13/stubs/0"
-                  }
                 }
-              }
             ],
             "_links": {
-              "self": {
-                "href": "http://localhost:5000/imposters/13"
-              },
-              "stubs": {
-                "href": "http://localhost:5000/imposters/13/stubs"
-              }
+                "self": {
+                    "href": "http://localhost:5000/imposters/13"
+                },
+                "stubs": {
+                    "href": "http://localhost:5000/imposters/13/stubs"
+                }
             }
-          }
+        }
     ]
 }

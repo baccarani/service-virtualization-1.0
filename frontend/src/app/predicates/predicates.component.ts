@@ -2,7 +2,6 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 import { Predicate } from '../models/predicate';
 import { ImposterService } from '../services/imposter.service';
 import { FormBuilder, Validators } from '@angular/forms';
-import { FormService } from '../services/form.services'; 
 
 @Component({
   selector: 'app-predicates',
@@ -75,7 +74,7 @@ export class PredicatesComponent implements OnInit {
   showPredicates: boolean = false;
   showSubPredicates: boolean = false;
 
-  constructor(private imposterService: ImposterService, private formBuilder: FormBuilder, private formService: FormService) { }
+  constructor(private imposterService: ImposterService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.predicateForm.setValue({ operator: this.predicate.operator, 
