@@ -1,26 +1,25 @@
-{"level":"info","message":"[mb:5000] mountebank v2.8.1 now taking orders - point your browser to http://localhost:5000/ for help","timestamp":"2023-06-30T19:35:24.895Z"}
-{"level":"info","message":"[mb:5000] PUT /imposters","timestamp":"2023-06-30T19:35:24.911Z"}
-{"level":"info","message":"[http:6001 Dependency 6001] Open for business...","timestamp":"2023-06-30T19:35:24.962Z"}
-{"level":"info","message":"[http:6002 Dependency 6002] Open for business...","timestamp":"2023-06-30T19:35:24.962Z"}
-{"level":"info","message":"[https:6003 Dependency 6003] Open for business...","timestamp":"2023-06-30T19:35:24.963Z"}
-{"level":"info","message":"[https:13 test 13] Open for business...","timestamp":"2023-06-30T19:35:24.963Z"}
-{"level":"info","message":"[http:1 test 1] Open for business...","timestamp":"2023-06-30T19:35:24.963Z"}
-{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-06-30T19:35:26.655Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/1","timestamp":"2023-06-30T19:35:26.759Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/13","timestamp":"2023-06-30T19:35:26.769Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/6001","timestamp":"2023-06-30T19:35:26.770Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/6002","timestamp":"2023-06-30T19:35:26.771Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/6003","timestamp":"2023-06-30T19:35:26.771Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/1","timestamp":"2023-06-30T19:35:31.065Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/1","timestamp":"2023-06-30T19:35:32.916Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/13","timestamp":"2023-06-30T19:35:37.062Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/6001","timestamp":"2023-06-30T19:35:38.110Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/1","timestamp":"2023-06-30T19:35:39.119Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/6003","timestamp":"2023-06-30T19:35:40.665Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/1","timestamp":"2023-06-30T19:35:41.795Z"}
-{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-06-30T19:35:43.058Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/1","timestamp":"2023-06-30T19:35:43.076Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/13","timestamp":"2023-06-30T19:35:43.082Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/6001","timestamp":"2023-06-30T19:35:43.086Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/6002","timestamp":"2023-06-30T19:35:43.087Z"}
-{"level":"info","message":"[mb:5000] GET /imposters/6003","timestamp":"2023-06-30T19:35:43.088Z"}
+{"level":"info","message":"[mb:5000] mountebank v2.8.1 now taking orders - point your browser to http://localhost:5000/ for help","timestamp":"2023-06-30T20:04:16.755Z"}
+{"level":"info","message":"[mb:5000] PUT /imposters","timestamp":"2023-06-30T20:04:16.769Z"}
+{"level":"info","message":"[http:6001 Dependency 6001] Open for business...","timestamp":"2023-06-30T20:04:16.824Z"}
+{"level":"info","message":"[http:6002 Dependency 6002] Open for business...","timestamp":"2023-06-30T20:04:16.824Z"}
+{"level":"info","message":"[https:6003 Dependency 6003] Open for business...","timestamp":"2023-06-30T20:04:16.825Z"}
+{"level":"info","message":"[https:13 test 13] Open for business...","timestamp":"2023-06-30T20:04:16.825Z"}
+{"level":"info","message":"[http:1 test 1] Open for business...","timestamp":"2023-06-30T20:04:16.825Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-06-30T20:04:27.643Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-06-30T20:04:27.655Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/1","timestamp":"2023-06-30T20:04:27.666Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/13","timestamp":"2023-06-30T20:04:27.669Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/6001","timestamp":"2023-06-30T20:04:27.671Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/6002","timestamp":"2023-06-30T20:04:27.672Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/6003","timestamp":"2023-06-30T20:04:27.677Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/1","timestamp":"2023-06-30T20:04:27.695Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/13","timestamp":"2023-06-30T20:04:27.696Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/6001","timestamp":"2023-06-30T20:04:27.701Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/6002","timestamp":"2023-06-30T20:04:27.703Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/6003","timestamp":"2023-06-30T20:04:27.705Z"}
+{"level":"info","message":"[mb:5000] GET /imposters","timestamp":"2023-06-30T20:04:32.929Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/1","timestamp":"2023-06-30T20:04:32.957Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/13","timestamp":"2023-06-30T20:04:32.959Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/6001","timestamp":"2023-06-30T20:04:32.961Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/6002","timestamp":"2023-06-30T20:04:32.961Z"}
+{"level":"info","message":"[mb:5000] GET /imposters/6003","timestamp":"2023-06-30T20:04:32.962Z"}
