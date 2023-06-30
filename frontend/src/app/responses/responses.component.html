@@ -3,11 +3,12 @@
         <div
             style="display: flex; justify-content: flex-start; align-items: center; padding-right: 5px; padding-top: 5px;">
             <h3 style="margin-right: auto; padding-left: 15px; padding-top: 5px; font-weight: bold;">New Response</h3>
-            <div>
+            <!-- <div *ngIf="!hideCloseButton"> -->
+                <div>
                 <button mat-icon-button color="basic" (click)="onDelete()">
-                    <mat-icon>close</mat-icon>
+                  <mat-icon>close</mat-icon>
                 </button>
-            </div>
+              </div>              
         </div>
         <div style="padding-bottom: 30px; padding-left: 30px; padding-right: 30px;">
             <div>
@@ -61,4 +62,4 @@
         </div>
     </div>
 </form>
-<br><br>
+<br>

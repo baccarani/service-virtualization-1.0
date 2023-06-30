@@ -17,7 +17,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { PredicatesComponent } from './predicates/predicates.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormService } from './services/form.services';
 import { HeaderComponent } from './header/header.component';
 import { SubPredicatesComponent } from './predicates/sub-predicates/sub-predicates.component';
 import { MatMenuModule } from '@angular/material/menu';
@@ -43,7 +42,7 @@ import { ResponsesComponent } from './responses/responses.component';
     StoreModule.forRoot({imposter: imposterReducer}),
     MatMenuModule
   ],
-  providers: [ImposterService, FormService],
+  providers: [ImposterService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

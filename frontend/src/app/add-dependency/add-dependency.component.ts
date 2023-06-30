@@ -18,6 +18,8 @@ export class AddDependencyComponent implements OnInit {
   predicates: Predicate[] = [];
   responses: Response[] = [];
   showEdit: boolean[] = [];
+  @Output() hideCloseButton: boolean = true;
+
 
 
 
@@ -76,6 +78,24 @@ export class AddDependencyComponent implements OnInit {
     this.imposterService.onAddResponse({statusCode: '', headers: '', body: ''})
     this.showEdit.push(false);
     this.responses = this.imposterService.onGetResponses();
+    if (this.imposterService.onGetResponses().length > 1) {
+      this.hideCloseButton = false;
+    } else {
+      this.hideCloseButton = true;
+    }
+  }
+
+  addPredicatesResponses() {
+    // this.imposterService.onAddPredicate({operator: '', method: '', path: '', newpath: '', data: '', newOperator: '', query: ''})
+    // this.imposterService.onAddResponse({statusCode: '', headers: '', body: ''})
+    // this.showEdit.push(false);
+    // this.predicates = this.imposterService.onGetPredicates();
+    // this.responses = this.imposterService.onGetResponses();
+    // if (this.imposterService.onGetResponses().length > 1) {
+    //   this.hideCloseButton = false;
+    // } else {
+    //   this.hideCloseButton = true;
+    // }
   }
 
   deleteUpdate(index: any): void {
@@ -124,5 +144,9 @@ export class AddDependencyComponent implements OnInit {
 
   onDeleteResponse() {
     this.deleteResponseUpdate(this.indexResponse);
+  }
+
+  onDeletePredicatesResponses() {
+    
   }
 }

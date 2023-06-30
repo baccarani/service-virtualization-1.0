@@ -11,15 +11,7 @@
         <div class="container" style="max-width: 400px;">
             <div class="row">
                 <form [formGroup]="dependencyForm" (ngSubmit)="onSubmit()">
-                    <h2>General Information</h2>
-                    <div>
-                        <label>Name:</label>
-                        <input type="text" name="name" required class="form-control" formControlName="name">
-                    </div><br>
-                    <div class="form-group">
-                        <label>Port:</label>
-                        <input type="number" name="port" required class="form-control" formControlName="port">
-                    </div><br>
+                    <!-- <h2>General Information</h2> -->
                     <div>
                         <label>Protocol:</label>
                         <select name="protocol" required class="form-control" formControlName="protocol">
@@ -27,19 +19,28 @@
                             <option value="https">HTTPS</option>
                         </select>
                     </div><br>
+                    <div class="form-group">
+                        <label>Port:</label>
+                        <input type="number" name="port" required class="form-control" formControlName="port">
+                    </div><br>
+                    <div>
+                        <label>Name:</label>
+                        <input type="text" name="name" required class="form-control" formControlName="name">
+                    </div><br>
                     <hr>
+                    <h2>Stubs</h2>
 
                     <div style="border: 1px solid #ccc; border-radius: 10px; background-color: #f4f4f4;">
                         <div
-                            style="display: flex; justify-content: flex-start; align-items: center; padding-right: 5px; padding-top: 5px;">
-                            <h2 style="margin-right: auto; padding-left: 15px; padding-top: 5px; font-weight: bold;">
-                                Stubs</h2>
-                            <!-- <button mat-icon-button color="basic" (click)="onDelete()">
+                            style="display: flex; justify-content: flex-start; align-items: center; padding-right: 5px; padding-top: 0px;">
+                            <!-- <h2 style="margin-right: auto; padding-left: 15px; padding-top: 0px; font-weight: bold;">
+                                </h2>
+                            <button mat-icon-button color="basic" (click)="onDeletePredicatesResponses()">
                                 <mat-icon>close</mat-icon>
                             </button> -->
                         </div>
 
-                        <div style="padding-bottom: 30px; padding-left: 30px; padding-right: 30px;">
+                        <div style="padding-bottom: 30px; padding-left: 30px; padding-right: 30px; padding-top: 20px;">
                             <div>
                                 <div>
                                     <h3 style="font-weight: bold;">Predicates</h3>
@@ -48,14 +49,21 @@
                                     <app-predicates (editUpdate)="editUpdate($event)"
                                         (deleteUpdate)="deleteUpdate($event)" [index]="i" [predicate]="predicate">
                                     </app-predicates>
-                                </div><br>
+                                </div>
+                                <a style="text-decoration: underline; cursor: pointer;" (click)="addPredicate()">
+                                    Add Predicate</a>
+                                    <br><br><br>
                                 <div>
                                     <h3 style="font-weight: bold;">Responses</h3>
                                 </div>
                                 <div *ngFor="let response of responses; let i = index">
-                                    <app-responses (editUpdate)="editUpdate($event)"
-                                        (deleteResponseUpdate)="deleteResponseUpdate($event)" [responseIndex]="i"
-                                        [response]="response">
+                                    <app-responses 
+                                        (editUpdate)="editUpdate($event)"
+                                        (deleteResponseUpdate)="deleteResponseUpdate($event)" 
+                                        [responseIndex]="i"
+                                        [response]="response"
+                                        [hideCloseButton]="hideCloseButton"
+                                        >
                                     </app-responses>
                                 </div>
                                 <a style="text-decoration: underline; cursor: pointer;" (click)="addResponse()">
@@ -63,6 +71,10 @@
                             </div>
                         </div>
                     </div>
+                    <!-- <br>
+
+                    <a style="text-decoration: underline; cursor: pointer; padding-left: 5px;" (click)="addPredicatesResponses()">
+                        Add Predicates/Responses</a> -->
 
                     <br><br><br>
                     <button class="btn btn-primary" type="submit" [disabled]="!dependencyForm.valid"

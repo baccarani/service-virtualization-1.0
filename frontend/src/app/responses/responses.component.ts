@@ -122,6 +122,8 @@ export class ResponsesComponent implements OnInit {
     body: [''],
   });
 
+  @Input() hideCloseButton: boolean;
+
   constructor(private formBuilder: FormBuilder, private imposterService: ImposterService) { }
 
   ngOnInit(): void {
@@ -146,8 +148,16 @@ export class ResponsesComponent implements OnInit {
 
   onDelete() {
     this.deleteResponseUpdate.emit(this.responseIndex);
+  
+    const responseCount = this.imposterService.onGetResponses().length;
+  
+    if (responseCount > 1) {
+      this.hideCloseButton = false;
+    } else {
+      this.hideCloseButton = true;
+    }
   }
-
+  
   updateResponses() {
 
     const statusCode = this.responseForm.get('statusCode').value;
