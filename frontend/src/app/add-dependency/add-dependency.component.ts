@@ -5,6 +5,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Predicate } from '../models/predicate';
 import { Response } from '../models/response';
 import { ImposterService } from '../services/imposter.service';
+import { Stubs } from '../models/stubs';
 
 @Component({
   selector: 'app-add-dependency',
@@ -14,7 +15,7 @@ import { ImposterService } from '../services/imposter.service';
 export class AddDependencyComponent implements OnInit {
   protocols = ['http', 'https', 'tcp']
   methods = ['GET', 'POST', 'PUT']
-  stubs = []
+  stubs: Stubs[] = [];
   predicates: Predicate[] = [];
   responses: Response[] = [];
   showEdit: boolean[] = [];
@@ -41,7 +42,7 @@ export class AddDependencyComponent implements OnInit {
     this.imposterService.onResetResponses();
     
     if (this.imposterService.onGetPredicates().length === 0) {
-      this.imposterService.onAddPredicate({operator: '', method: '', path: '', newpath: '', data: '', newOperator: '', query: ''})
+      this.imposterService.onAddPredicate({operator: '', method: '', path: '', newpath: '', data: '', newOperator: '', query: ''}, this.index)
     }
 
     if (this.imposterService.onGetResponses().length === 0) {
@@ -69,9 +70,15 @@ export class AddDependencyComponent implements OnInit {
   }
 
   addPredicate() {
-    this.imposterService.onAddPredicate({operator: '', method: '', path: '', newpath: '', data: '', newOperator: '', query: ''})
+    this.imposterService.onAddPredicate({operator: '', method: '', path: '', newpath: '', data: '', newOperator: '', query: ''}, this.index)
     this.showEdit.push(false);
     this.predicates = this.imposterService.onGetPredicates();
+    // add stub
+  }
+
+  addStub() {
+    this.imposterService.onAddStub({predicates: [], responses: []}, this.index);
+    this.stubs = this.imposterService.onGetStubs();
   }
 
   addResponse() {

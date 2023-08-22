@@ -2,14 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from "rxjs/operators";
 import { Predicate } from '../models/predicate';
+import { Stubs } from '../models/stubs';
 
 @Injectable()
 export class ImposterService {
-    private stubs = [];
     private imposterArray: any = null;
     private predicates = [];
     private subPredicates = [];
     private responses = [];
+    private stubs = [];
 
     constructor(private http: HttpClient) { }
 
@@ -25,8 +26,28 @@ export class ImposterService {
         return this.responses.slice();
     }
 
-    onAddPredicate({ operator, method, path, newpath, data, newOperator, query }: Predicate) {
-        this.predicates.push({ operator, method, path, newpath, data, newOperator, query });
+    onGetStubs() {
+        this.stubs[0].push({predicates: this.predicates[0], responses: this.responses[0]})
+        return this.stubs.slice();
+    }
+
+    onAddStub({predicates, responses}: Stubs, i: number) {
+        this.stubs.push({predicates, responses});
+    }
+
+    onAddPredicate({ operator, method, path, newpath, data, newOperator, query }: Predicate, i: number) {
+        if (this.predicates.length === 0) {
+            console.log(i);
+            this.predicates[i] = [{ operator, method, path, newpath, data, newOperator, query }];
+            this.stubs[i] = this.predicates[i];
+            console.log('stubs', this.stubs)
+        } else {
+            console.log(i);
+            console.log(this.predicates);
+            console.log(this.stubs);
+            this.stubs[0] = this.predicates[0];
+            this.predicates.push({ operator, method, path, newpath, data, newOperator, query });
+        }
     }
 
     onAddResponse({ statusCode, headers, body }) {
@@ -172,3 +193,7 @@ export class ImposterService {
     }
 
 }
+
+
+
+

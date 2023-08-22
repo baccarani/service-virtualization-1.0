@@ -52,16 +52,19 @@
     </table>
   </div>
   <br>
-  <div style="font-weight: bold;">
-    Request Stub:
-    {{ viewDependency.name }}
+  <div style="font-weight: bold; position: relative;">
+    <div style="padding-top: 7px;">
+      Request Stub:
+      {{ viewDependency.name }}
+    </div>
+    <button *ngIf="viewDependency" class="btn btn-default copy-button" (click)="onCopyJSON()" style="position: absolute; top: 0; right: 0; display: flex; align-items: center; background: transparent; border: none;;">
+      <mat-icon style="transform: scale(.8);" [ngStyle]="{'color': copyJSONButtonColor}">{{iconJSONName}}</mat-icon>
+      <span style="font-family: monospace; font-size: 14px;">{{copyJSONButtonText}}</span>
+    </button>
   </div>
   <br>
   <div style="position: relative;">
-    <button *ngIf="viewDependency" class="btn btn-default copy-button" (click)="onCopyJSON()" style="position: absolute; top: 0; right: 0; display: flex; align-items: center; background: transparent; border: none; padding-bottom: 15px;">
-      <mat-icon style="padding-top: 5px; transform: scale(.8);" [ngStyle]="{'color': copyJSONButtonColor}">{{iconJSONName}}</mat-icon>
-      <span style="padding-top: 5px; padding-left: 5px; padding-right: 5px; font-family: monospace; font-size: 14px;">{{copyJSONButtonText}}</span>
-    </button>
     <pre>{{ viewDependency | json }}</pre>
   </div>
 </div>
+<br><br>

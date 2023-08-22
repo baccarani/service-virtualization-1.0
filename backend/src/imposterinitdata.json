@@ -138,7 +138,8 @@
                                 "data": "",
                                 "query": {
                                     "user": "5"
-                                }
+                                },
+                                "statusCode": 200
                             }
                         }
                     ],
@@ -151,17 +152,6 @@
                                 },
                                 "body": {
                                     "message": "200"
-                                }
-                            }
-                        },
-                        {
-                            "is": {
-                                "statusCode": 400,
-                                "headers": {
-                                    "Content-Type": "application/json"
-                                },
-                                "body": {
-                                    "message": "400"
                                 }
                             }
                         }
@@ -242,6 +232,86 @@
                     "href": "http://localhost:5000/imposters/1/stubs"
                 }
             }
+        },
+        {
+            "name": "test 4545",
+            "port": 4545,
+            "protocol": "http",
+            "stubs": [
+                {
+                    "predicates": [
+                        {
+                            "and": [
+                                {
+                                    "equals": {
+                                        "method": "GET",
+                                        "path": "/customers"
+                                    }
+                                },
+                                {
+                                    "equals": {
+                                        "query": {
+                                            "id": 123
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "responses": [
+                        {
+                            "is": {
+                                "statusCode": 200,
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "body": {
+                                    "customer": {
+                                        "email": "customer@test.com"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "is": {
+                                "statusCode": 400,
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "body": {
+                                    "error": "email already exists"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "predicates": [
+                        {
+                            "equals": {
+                                "method": "POST",
+                                "path": "/customers",
+                                "query": {
+                                    "id": 345
+                                }
+                            }
+                        }
+                    ],
+                    "responses": [
+                        {
+                            "is": {
+                                "statusCode": 404,
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "body": {
+                                    "error": "email does not exists"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }
