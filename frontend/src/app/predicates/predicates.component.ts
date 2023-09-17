@@ -77,14 +77,15 @@ export class PredicatesComponent implements OnInit {
   constructor(private imposterService: ImposterService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-    this.predicateForm.setValue({ operator: this.predicate.operator, 
-                                  method: this.predicate.method, 
-                                  path: this.predicate.path, 
-                                  newpath: this.predicate.newpath, 
-                                  query: this.predicate.query, 
-                                  data: this.predicate.data, 
-                                  newOperator: this.predicate.newOperator 
-                                });
+    this.predicateForm.setValue({
+      operator: this.predicate.operator,
+      method: this.predicate.method,
+      path: this.predicate.path,
+      newpath: this.predicate.newpath,
+      query: this.predicate.query,
+      data: this.predicate.data,
+      newOperator: this.predicate.newOperator
+    });
     this.predicateForm.valueChanges.subscribe(() => {
       this.updatePredicates();
     });

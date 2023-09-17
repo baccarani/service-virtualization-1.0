@@ -27,32 +27,33 @@ export class ImposterService {
     }
 
     onGetStubs() {
-        this.stubs[0].push({predicates: this.predicates[0], responses: this.responses[0]})
         return this.stubs.slice();
     }
 
-    onAddStub({predicates, responses}: Stubs, i: number) {
-        this.stubs.push({predicates, responses});
+    onAddStub(stub: any, i: number) {
+        if (this.stubs.length === 0) {
+            this.stubs.push({predicates: this.predicates, responses: this.responses })
+        } else {
+            this.stubs.push(stub);
+        }
     }
 
     onAddPredicate({ operator, method, path, newpath, data, newOperator, query }: Predicate, i: number) {
         if (this.predicates.length === 0) {
-            console.log(i);
             this.predicates[i] = [{ operator, method, path, newpath, data, newOperator, query }];
-            this.stubs[i] = this.predicates[i];
-            console.log('stubs', this.stubs)
         } else {
-            console.log(i);
-            console.log(this.predicates);
-            console.log(this.stubs);
-            this.stubs[0] = this.predicates[0];
             this.predicates.push({ operator, method, path, newpath, data, newOperator, query });
         }
     }
 
-    onAddResponse({ statusCode, headers, body }) {
-        this.responses.push({ statusCode, headers, body });
+    onAddResponse({ statusCode, headers, body }, i: number) {
+        if (this.responses.length === 0) {
+            this.responses[i] = [{ statusCode, headers, body }];
+        } else {
+            this.responses.push({ statusCode, headers, body });
+        }
     }
+    
 
     onResetPredicates() {
         this.predicates = [];
@@ -60,6 +61,10 @@ export class ImposterService {
 
     onResetResponses() {
         this.responses = [];
+    }
+
+    onResetStubs() {
+        this.stubs = [];
     }
 
     onDeletePredicate(index) {

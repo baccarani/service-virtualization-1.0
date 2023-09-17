@@ -40,17 +40,23 @@ export class AddDependencyComponent implements OnInit {
   ngOnInit(): void {
     this.imposterService.onResetPredicates();
     this.imposterService.onResetResponses();
-    
+    this.imposterService.onResetStubs();
+
     if (this.imposterService.onGetPredicates().length === 0) {
       this.imposterService.onAddPredicate({operator: '', method: '', path: '', newpath: '', data: '', newOperator: '', query: ''}, this.index)
     }
 
     if (this.imposterService.onGetResponses().length === 0) {
-      this.imposterService.onAddResponse({statusCode: '', headers: '', body: ''})
+      this.imposterService.onAddResponse({statusCode: '', headers: '', body: ''}, this.index)
+    }
+
+    if (this.imposterService.onGetStubs().length === 0) {
+      this.imposterService.onAddStub({predicates: [], responses: []}, 0);
     }
 
     this.predicates = this.imposterService.onGetPredicates();
     this.responses = this.imposterService.onGetResponses();
+    this.stubs = this.imposterService.onGetStubs();
   }
 
   predicateUpdate(form: any): void {
@@ -58,11 +64,9 @@ export class AddDependencyComponent implements OnInit {
     this.predicates[form.index] = form.value;
   }
 
-
   closeModal() {
     this.matDialogRef.close();
   }
-
 
   onSubmit() {
     this.imposterService.onCreateImposter(this.dependencyForm.value);
@@ -77,12 +81,34 @@ export class AddDependencyComponent implements OnInit {
   }
 
   addStub() {
-    this.imposterService.onAddStub({predicates: [], responses: []}, this.index);
+    const newStub = {
+      predicates: [
+        [{
+          operator: '',
+          method: '',
+          path: '',
+          newpath: '',
+          data: '',
+          newOperator: '',
+          query: ''
+        }]
+      ],
+      responses: [
+        [{
+          statusCode: '',
+          headers: '',
+          body: ''
+        }]
+      ]
+    };
+
+    this.imposterService.onAddStub(newStub, this.index);
     this.stubs = this.imposterService.onGetStubs();
+    console.log(this.stubs);
   }
 
   addResponse() {
-    this.imposterService.onAddResponse({statusCode: '', headers: '', body: ''})
+    this.imposterService.onAddResponse({statusCode: '', headers: '', body: ''}, this.index)
     this.showEdit.push(false);
     this.responses = this.imposterService.onGetResponses();
     if (this.imposterService.onGetResponses().length > 1) {
@@ -90,19 +116,6 @@ export class AddDependencyComponent implements OnInit {
     } else {
       this.hideCloseButton = true;
     }
-  }
-
-  addPredicatesResponses() {
-    // this.imposterService.onAddPredicate({operator: '', method: '', path: '', newpath: '', data: '', newOperator: '', query: ''})
-    // this.imposterService.onAddResponse({statusCode: '', headers: '', body: ''})
-    // this.showEdit.push(false);
-    // this.predicates = this.imposterService.onGetPredicates();
-    // this.responses = this.imposterService.onGetResponses();
-    // if (this.imposterService.onGetResponses().length > 1) {
-    //   this.hideCloseButton = false;
-    // } else {
-    //   this.hideCloseButton = true;
-    // }
   }
 
   deleteUpdate(index: any): void {
@@ -151,9 +164,5 @@ export class AddDependencyComponent implements OnInit {
 
   onDeleteResponse() {
     this.deleteResponseUpdate(this.indexResponse);
-  }
-
-  onDeletePredicatesResponses() {
-    
   }
 }

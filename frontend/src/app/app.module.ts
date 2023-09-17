@@ -21,6 +21,7 @@ import { HeaderComponent } from './header/header.component';
 import { SubPredicatesComponent } from './predicates/sub-predicates/sub-predicates.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { ResponsesComponent } from './responses/responses.component';
+import { StubsComponent } from './stubs/stubs.component';
 
 @NgModule({
   declarations: [AppComponent, 
@@ -28,7 +29,7 @@ import { ResponsesComponent } from './responses/responses.component';
     AddDependencyComponent, 
     PredicatesComponent, 
     HeaderComponent, 
-    SubPredicatesComponent, ResponsesComponent
+    SubPredicatesComponent, ResponsesComponent, StubsComponent
   ],
   imports: [BrowserModule, 
     FormsModule, 

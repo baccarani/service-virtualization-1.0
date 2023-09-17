@@ -30,7 +30,16 @@
                     <hr>
                     <h2>Stubs</h2>
 
-                    <div style="border: 1px solid #ccc; border-radius: 10px; background-color: #f4f4f4;">
+                    <div 
+                        style="border: 1px solid #ccc; border-radius: 10px; background-color: #f4f4f4;"
+                        *ngFor="let stub of stubs; let i = index">
+                    <app-stubs 
+                        (editUpdate)="editUpdate($event)"
+                        (deleteStubUpdate)="deleteStubUpdate($event)"
+                        [stubIndex]="i"
+                        [stub]="stub"
+                        [hideCloseButton]="hideCloseButton"
+                    ></app-stubs>
                         <div
                             style="display: flex; justify-content: flex-start; align-items: center; padding-right: 5px; padding-top: 0px;">
                             <!-- <h2 style="margin-right: auto; padding-left: 15px; padding-top: 0px; font-weight: bold;">
