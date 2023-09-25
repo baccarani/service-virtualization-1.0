@@ -21,15 +21,11 @@ export class AddDependencyComponent implements OnInit {
   showEdit: boolean[] = [];
   @Output() hideCloseButton: boolean = true;
 
-
-
-
-
-
   constructor(private http: HttpClient, private fb: FormBuilder,private matDialogRef: MatDialogRef<AddDependencyComponent>, private imposterService: ImposterService) { }
 
   @Input() index: number = 0;
-  @Input() indexResponse: number = 0;
+  indexPredicate: number = 0;
+  indexResponse: number = 0;
 
   dependencyForm = this.fb.group({
     name: [''],
@@ -43,11 +39,13 @@ export class AddDependencyComponent implements OnInit {
     this.imposterService.onResetStubs();
 
     if (this.imposterService.onGetPredicates().length === 0) {
-      this.imposterService.onAddPredicate({operator: '', method: '', path: '', newpath: '', data: '', newOperator: '', query: ''}, this.index)
+      this.imposterService.onAddPredicate({operator: '', method: '', path: '', newpath: '', data: '', newOperator: '', query: ''}, this.indexPredicate)
+      this.indexPredicate++;
     }
 
     if (this.imposterService.onGetResponses().length === 0) {
-      this.imposterService.onAddResponse({statusCode: '', headers: '', body: ''}, this.index)
+      this.imposterService.onAddResponse({statusCode: '', headers: '', body: ''}, this.indexResponse);
+      this.indexResponse++;
     }
 
     if (this.imposterService.onGetStubs().length === 0) {
@@ -71,13 +69,6 @@ export class AddDependencyComponent implements OnInit {
   onSubmit() {
     this.imposterService.onCreateImposter(this.dependencyForm.value);
     this.matDialogRef.close();
-  }
-
-  addPredicate() {
-    this.imposterService.onAddPredicate({operator: '', method: '', path: '', newpath: '', data: '', newOperator: '', query: ''}, this.index)
-    this.showEdit.push(false);
-    this.predicates = this.imposterService.onGetPredicates();
-    // add stub
   }
 
   addStub() {
@@ -104,21 +95,30 @@ export class AddDependencyComponent implements OnInit {
 
     this.imposterService.onAddStub(newStub, this.index);
     this.stubs = this.imposterService.onGetStubs();
-    console.log(this.stubs);
+  }
+
+  addPredicate() {
+    this.imposterService.onAddPredicate({operator: '', method: '', path: '', newpath: '', data: '', newOperator: '', query: ''}, this.indexPredicate);
+    this.indexPredicate++;
+    this.showEdit.push(false);
+    this.predicates = this.imposterService.onGetPredicates();
   }
 
   addResponse() {
-    this.imposterService.onAddResponse({statusCode: '', headers: '', body: ''}, this.index)
+    this.imposterService.onAddResponse({statusCode: '', headers: '', body: ''}, this.indexResponse);
+    this.indexResponse++;
     this.showEdit.push(false);
     this.responses = this.imposterService.onGetResponses();
-    if (this.imposterService.onGetResponses().length > 1) {
-      this.hideCloseButton = false;
-    } else {
-      this.hideCloseButton = true;
-    }
+
+    // if (this.imposterService.onGetResponses().length > 1) {
+    //   this.hideCloseButton = false;
+    // } else {
+    //   this.hideCloseButton = true;
+    // }
   }
 
-  deleteUpdate(index: any): void {
+  deletePredicateUpdate(index: any): void {
+    this.indexPredicate--;
     let tempPredicates: Predicate[] = [];
     for (let i = 0; i < this.predicates.length; i++) {
       if (i !== index) {
@@ -139,6 +139,7 @@ export class AddDependencyComponent implements OnInit {
   }
 
   deleteResponseUpdate(responseIndex: any): void {
+    this.indexResponse--;
     let tempResponses: Response[] = [];
     for (let i = 0; i < this.responses.length; i++) {
       if (i !== responseIndex) {
@@ -159,7 +160,7 @@ export class AddDependencyComponent implements OnInit {
   }
 
   onDelete() {
-    this.deleteUpdate(this.index);
+    this.deletePredicateUpdate(this.index);
   }
 
   onDeleteResponse() {

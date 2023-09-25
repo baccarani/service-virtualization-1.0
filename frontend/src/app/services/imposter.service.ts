@@ -39,18 +39,22 @@ export class ImposterService {
     }
 
     onAddPredicate({ operator, method, path, newpath, data, newOperator, query }: Predicate, i: number) {
-        if (this.predicates.length === 0) {
-            this.predicates[i] = [{ operator, method, path, newpath, data, newOperator, query }];
-        } else {
+        if (this.predicates.length <= i) {
+            // Add new predicate to the end of the array
             this.predicates.push({ operator, method, path, newpath, data, newOperator, query });
+        } else {
+            // Update existing predicate
+            this.predicates[i] = { operator, method, path, newpath, data, newOperator, query };
         }
     }
 
     onAddResponse({ statusCode, headers, body }, i: number) {
-        if (this.responses.length === 0) {
-            this.responses[i] = [{ statusCode, headers, body }];
-        } else {
+        if (this.responses.length <= i) {
+            // Add new response to the end of the array
             this.responses.push({ statusCode, headers, body });
+        } else {
+            // Update existing response
+            this.responses[i] = { statusCode, headers, body };
         }
     }
     

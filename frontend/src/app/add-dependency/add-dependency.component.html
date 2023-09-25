@@ -31,15 +31,8 @@
                     <h2>Stubs</h2>
 
                     <div 
-                        style="border: 1px solid #ccc; border-radius: 10px; background-color: #f4f4f4;"
+                        style="border: 1px solid #ccc; border-radius: 10px; background-color: #f4f4f4; margin-bottom: 36px;"
                         *ngFor="let stub of stubs; let i = index">
-                    <app-stubs 
-                        (editUpdate)="editUpdate($event)"
-                        (deleteStubUpdate)="deleteStubUpdate($event)"
-                        [stubIndex]="i"
-                        [stub]="stub"
-                        [hideCloseButton]="hideCloseButton"
-                    ></app-stubs>
                         <div
                             style="display: flex; justify-content: flex-start; align-items: center; padding-right: 5px; padding-top: 0px;">
                             <!-- <h2 style="margin-right: auto; padding-left: 15px; padding-top: 0px; font-weight: bold;">
@@ -56,7 +49,7 @@
                                 </div>
                                 <div *ngFor="let predicate of predicates; let i = index">
                                     <app-predicates (editUpdate)="editUpdate($event)"
-                                        (deleteUpdate)="deleteUpdate($event)" [index]="i" [predicate]="predicate">
+                                        (deleteUpdate)="deletePredicateUpdate($event)" [index]="i" [predicate]="predicate">
                                     </app-predicates>
                                 </div>
                                 <a style="text-decoration: underline; cursor: pointer;" (click)="addPredicate()">
@@ -81,11 +74,12 @@
                         </div>
                     </div>
 
-                    <br>
-                    <br>
-
                     <a style="text-decoration: underline; cursor: pointer;" (click)="addStub()">
                         Add Stub</a>
+
+                        <br><br>
+
+                        {{stubs | json}}
                     
                     <!-- <br>
                     <a style="text-decoration: underline; cursor: pointer; padding-left: 5px;" (click)="addPredicatesResponses()">
