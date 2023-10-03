@@ -24,6 +24,7 @@ export class AddDependencyComponent implements OnInit {
   constructor(private http: HttpClient, private fb: FormBuilder,private matDialogRef: MatDialogRef<AddDependencyComponent>, private imposterService: ImposterService) { }
 
   @Input() index: number = 0;
+  indexStub: number = 0;
   indexPredicate: number = 0;
   indexResponse: number = 0;
 
@@ -50,6 +51,7 @@ export class AddDependencyComponent implements OnInit {
 
     if (this.imposterService.onGetStubs().length === 0) {
       this.imposterService.onAddStub({predicates: [], responses: []}, 0);
+      this.indexStub++;
     }
 
     this.predicates = this.imposterService.onGetPredicates();
@@ -93,7 +95,8 @@ export class AddDependencyComponent implements OnInit {
       ]
     };
 
-    this.imposterService.onAddStub(newStub, this.index);
+    this.imposterService.onAddStub(newStub, this.indexStub);
+    this.indexStub++;
     this.stubs = this.imposterService.onGetStubs();
   }
 
@@ -115,6 +118,27 @@ export class AddDependencyComponent implements OnInit {
     // } else {
     //   this.hideCloseButton = true;
     // }
+  }
+
+  deleteStubUpdate(stubIndex: any): void {
+    this.indexStub--;
+    let tempStubs: Stubs[] = [];
+    for (let i = 0; i < this.stubs.length; i++) {
+      if (i !== stubIndex) {
+        tempStubs.push(this.stubs[i]);
+      }
+    }
+    this.stubs = tempStubs;
+
+    let tempEdit: boolean[] = [];
+    for (let i = 0; i < this.showEdit.length; i++) {
+      if (i !== stubIndex) {
+        tempEdit.push(this.showEdit[i]);
+      }
+    }
+    this.showEdit = tempEdit;
+
+    this.imposterService.onDeleteStub(stubIndex);
   }
 
   deletePredicateUpdate(index: any): void {
@@ -163,7 +187,7 @@ export class AddDependencyComponent implements OnInit {
     this.deletePredicateUpdate(this.index);
   }
 
-  onDeleteResponse() {
-    this.deleteResponseUpdate(this.indexResponse);
-  }
+  // onDeleteResponse() {
+  //   this.deleteResponseUpdate(this.indexResponse);
+  // }
 }

@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 import { Predicate } from '../models/predicate';
 import { ImposterService } from '../services/imposter.service';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-predicates',
@@ -74,6 +75,8 @@ export class PredicatesComponent implements OnInit {
   showPredicates: boolean = false;
   showSubPredicates: boolean = false;
 
+  private subscription: Subscription;
+
   constructor(private imposterService: ImposterService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
@@ -86,7 +89,7 @@ export class PredicatesComponent implements OnInit {
       data: this.predicate.data,
       newOperator: this.predicate.newOperator
     });
-    this.predicateForm.valueChanges.subscribe(() => {
+    this.subscription = this.predicateForm.valueChanges.subscribe(() => {
       this.updatePredicates();
     });
   }
@@ -98,17 +101,17 @@ export class PredicatesComponent implements OnInit {
     this.deleteUpdate.emit(this.index);
   }
 
-  deleteSubPredicateUpdate(index) {
-    let tempPredicates: Predicate[] = [];
-    for (let i = 0; i < this.subPredicates.length; i++) {
-      if (i !== index) {
-        tempPredicates.push(this.subPredicates[i]);
-      }
-    }
-    this.subPredicates = tempPredicates;
-    this.imposterService.onDeleteSubPredicate(index);
-    this.subPredicates = this.imposterService.onGetPredicates();
-  }
+  // deleteSubPredicateUpdate(index) {
+  //   let tempPredicates: Predicate[] = [];
+  //   for (let i = 0; i < this.subPredicates.length; i++) {
+  //     if (i !== index) {
+  //       tempPredicates.push(this.subPredicates[i]);
+  //     }
+  //   }
+  //   this.subPredicates = tempPredicates;
+  //   this.imposterService.onDeleteSubPredicate(index);
+  //   this.subPredicates = this.imposterService.onGetPredicates();
+  // }
 
   updatePredicates() {
     const operator = this.predicateForm.get('operator').value;
@@ -130,9 +133,12 @@ export class PredicatesComponent implements OnInit {
     const index = this.imposterService.onGetPredicates().findIndex(p => p.method === method && p.query=== query && p.path === path && p.newpath === newpath && p.data === data && p.newOperator === newOperator);
     if (index > -1) {
       // Update existing predicate
+      console.log(index)
       this.imposterService.onGetPredicates()[index] = this.predicate;
+      console.log()
     } else {
       // Add new predicate
+      console.log('test')
       this.imposterService.onGetPredicates().push(this.predicate);
     }
   }
@@ -145,5 +151,9 @@ export class PredicatesComponent implements OnInit {
     }else{
       this.predicateForm.controls.data.enable();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

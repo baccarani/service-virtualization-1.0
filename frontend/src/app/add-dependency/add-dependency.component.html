@@ -33,14 +33,13 @@
                     <div 
                         style="border: 1px solid #ccc; border-radius: 10px; background-color: #f4f4f4; margin-bottom: 36px;"
                         *ngFor="let stub of stubs; let i = index">
-                        <div
-                            style="display: flex; justify-content: flex-start; align-items: center; padding-right: 5px; padding-top: 0px;">
-                            <!-- <h2 style="margin-right: auto; padding-left: 15px; padding-top: 0px; font-weight: bold;">
-                                </h2>
-                            <button mat-icon-button color="basic" (click)="onDeletePredicatesResponses()">
-                                <mat-icon>close</mat-icon>
-                            </button> -->
-                        </div>
+
+                        <span class="close-button">
+                            <h2 style="margin-right: auto; padding-left: 15px; padding-top: 0px; font-weight: bold;"></h2>
+                            <button mat-icon-button color="basic" (click)="deleteStubUpdate()">
+                              <mat-icon>close</mat-icon>
+                            </button>
+                          </span>
 
                         <div style="padding-bottom: 30px; padding-left: 30px; padding-right: 30px; padding-top: 20px;">
                             <div>
@@ -48,6 +47,7 @@
                                     <h3 style="font-weight: bold;">Predicates</h3>
                                 </div>
                                 <div *ngFor="let predicate of predicates; let i = index">
+                                    <!-- {{stubs[i].predicates | json}} -->
                                     <app-predicates (editUpdate)="editUpdate($event)"
                                         (deleteUpdate)="deletePredicateUpdate($event)" [index]="i" [predicate]="predicate">
                                     </app-predicates>

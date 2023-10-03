@@ -19,6 +19,8 @@ export class ImposterService {
     }
 
     onGetPredicates() {
+        console.log(this.predicates)
+        console.log(this.stubs)
         return this.predicates.slice();
     }
 
@@ -34,16 +36,21 @@ export class ImposterService {
         if (this.stubs.length === 0) {
             this.stubs.push({predicates: this.predicates, responses: this.responses })
         } else {
-            this.stubs.push(stub);
+            // this.stubs.push(stub);
+            console.log(i)
+            this.stubs[i] = stub;
         }
     }
 
     onAddPredicate({ operator, method, path, newpath, data, newOperator, query }: Predicate, i: number) {
         if (this.predicates.length <= i) {
             // Add new predicate to the end of the array
+            console.log('if', i)
+            console.log(this.stubs)
             this.predicates.push({ operator, method, path, newpath, data, newOperator, query });
         } else {
             // Update existing predicate
+            console.log('else', i)
             this.predicates[i] = { operator, method, path, newpath, data, newOperator, query };
         }
     }
@@ -69,6 +76,10 @@ export class ImposterService {
 
     onResetStubs() {
         this.stubs = [];
+    }
+
+    onDeleteStub(index) {
+        this.stubs.splice(index, 1);
     }
 
     onDeletePredicate(index) {
