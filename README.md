@@ -1,6 +1,6 @@
 # Get Started
 
-Run 2 terminals, cd into frontend and backend folders, and run **npm start** in both folders.
+Run 2 terminals, cd into frontend and backend folders, run **npm i** in the frontend folder and run **npm start** in both folders.
 
 # Mountebank
 
