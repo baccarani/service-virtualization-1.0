@@ -1,7 +1,8 @@
-# Mountebank
-
 # Get Started
+
 Run 2 terminals, cd into frontend and backend folders, and run **npm start** in both folders.
+
+# Mountebank
 
 Mountebank is the first open source tool to provide cross-platform, multi-protocol test doubles over the wire. Simply point your application under test to mountebank instead of the real dependency, and test like you would with traditional stubs and mocks.
 
