@@ -128,7 +128,7 @@ export class ImposterService {
     onCreateImposter(formValues) {
         const predicates = this.predicates.map((predicate) => {
             const operator = predicate.operator;
-            const query = JSON.parse(predicate.query);
+            const query = JSON.parse(predicate.query) || {};
             /**
              * TODO: same for NOT opertor
              */
@@ -166,8 +166,8 @@ export class ImposterService {
 
         const responses = this.responses.map((response) => {
             const statusCode = response.statusCode;
-            const headers = JSON.parse(response.headers);
-            const body = JSON.parse(response.body);
+            const headers = JSON.parse(response.headers) || {};
+            const body = JSON.parse(response.body) || {};
 
             return {
                 is: { statusCode: statusCode, headers: headers, body: body },

@@ -13,9 +13,9 @@ import { Stubs } from '../models/stubs';
   styleUrls: ['./add-dependency.component.css']
 })
 export class AddDependencyComponent implements OnInit {
-  protocols = ['http', 'https', 'tcp']
-  methods = ['GET', 'POST', 'PUT']
-  stubs: Stubs[] = [];
+  protocols = ['http', 'https', 'tcp'];
+  methods = ['GET', 'POST', 'PUT'];
+  stubs: Stubs[] = [];ƒ
   predicates: Predicate[] = [];
   responses: Response[] = [];
   showEdit: boolean[] = [];
@@ -57,6 +57,10 @@ export class AddDependencyComponent implements OnInit {
     this.predicates = this.imposterService.onGetPredicates();
     this.responses = this.imposterService.onGetResponses();
     this.stubs = this.imposterService.onGetStubs();
+
+    console.log('Stubs:', this.stubs);
+    console.log('Predicates:', this.predicates);
+    console.log('Responses:', this.responses);
   }
 
   predicateUpdate(form: any): void {
@@ -121,6 +125,7 @@ export class AddDependencyComponent implements OnInit {
   }
 
   deleteStubUpdate(stubIndex: any): void {
+    console.log("stubIndex: ", stubIndex);
     this.indexStub--;
     let tempStubs: Stubs[] = [];
     for (let i = 0; i < this.stubs.length; i++) {
@@ -139,6 +144,7 @@ export class AddDependencyComponent implements OnInit {
     this.showEdit = tempEdit;
 
     this.imposterService.onDeleteStub(stubIndex);
+    console.log(this.stubs);
   }
 
   deletePredicateUpdate(index: any): void {
