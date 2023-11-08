@@ -2,4 +2,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }  
+
+  @media screen and (max-width: 396px) {
+    .add-dependency-button {
+      margin-bottom: 15px;
+    }
   }

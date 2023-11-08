@@ -28,7 +28,7 @@
                     ]
                 }
             ],
-            "name": "Dependency 1"
+            "name": "Dependency 6001"
         },
         {
             "port": 6002,
@@ -58,7 +58,7 @@
                     ]
                 }
             ],
-            "name": "Dependency 2"
+            "name": "Dependency 6002"
         },
         {
             "port": 6003,
@@ -114,7 +114,204 @@
                     "responsesEnabled": true
                 }
             ],
-            "name": "Dependency 3"
+            "name": "Dependency 6003"
+        },
+        {
+            "protocol": "https",
+            "port": 13,
+            "name": "test 13",
+            "numberOfRequests": 0,
+            "recordRequests": false,
+            "key": "-----BEGIN RSA PRIVATE KEY-----\nMIICXAIBAAKBgQDEBCigM4IEQA7QIQLj+tjh2JrUXgHajpDuJkYAD0o6pon7HGJt\nNA8C//UcB2Y2zAQVWf2nD0gVL+4UScTI0oJ83eNlC1XPKMuXMt07TUDwXxKYVx3Y\nw2xgDppEDFk9cAw2oNQK4vIAsHdlzfilzoa7d00jTJ75PJp4Oewji1BZOwIDAQAB\nAoGAZodmWKWYlHCNTwB1apqDZ17NXdfuUEvSMz+BzfYxdYw3EEpAka5xS7hmlUqp\nhHAikqiHrSKpKavwdFxBummiJpPEVUeGS6xK40vuU9AjyELbuRHCbSdZIud66QSW\nRIpAQv+aFpYM4RkrAYAr+CHm7A5WFSooO7hjlq/4M6kgIEECQQDo1o+sbiNo/pRP\nlp2pUW/dwX6yybWTQ0WnlZPfS9Pl6bSiOcjWYgjtR5GkVb29coMaqaxs76cTfIBV\nt7Fm11UXAkEA14Pk4AsTJUF0OsmifbPvVs8/qE4r1nBcLNg8RxsVxo8kQiJd427g\nW4+yYkq5H9e3KFjg6pPa2T7VgzCnqZy7fQJBAKG1Qpty8szc4oxUArOxh4vv8tqh\nFKZuNlYpoEWZGFW5dmak00NxWtnQtun3UovcmAlQhhwyZUs3ULo3ldHjA4kCQBiB\natj+6WJnGuxEWTGp8CES184vdVSg2hpPTCtZrRQy2pCaj8p4pRJEOKhsjrhMMwtn\nb8u8nDnvpx+PvMDQjZECQFkM/xvQmTG3lf32J0Xo5L3RGORm9kQfODBjLqKIK3Kd\niGeNkwZLszDs1EKEVDoUTH1egcqC4UlO+FJc5wjYYqk=\n-----END RSA PRIVATE KEY-----\n",
+            "cert": "-----BEGIN CERTIFICATE-----\nMIICITCCAYoCCQDX01G4alp5vTANBgkqhkiG9w0BAQUFADBVMQswCQYDVQQGEwJV\nUzELMAkGA1UECBMCVFgxDzANBgNVBAcTBkRhbGxhczETMBEGA1UEChMKbW91bnRl\nYmFuazETMBEGA1UEAxMKbW91bnRlYmFuazAeFw0xNzAyMjYxODM5NTdaFw0yNzAy\nMjQxODM5NTdaMFUxCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJUWDEPMA0GA1UEBxMG\nRGFsbGFzMRMwEQYDVQQKEwptb3VudGViYW5rMRMwEQYDVQQDEwptb3VudGViYW5r\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDEBCigM4IEQA7QIQLj+tjh2JrU\nXgHajpDuJkYAD0o6pon7HGJtNA8C//UcB2Y2zAQVWf2nD0gVL+4UScTI0oJ83eNl\nC1XPKMuXMt07TUDwXxKYVx3Yw2xgDppEDFk9cAw2oNQK4vIAsHdlzfilzoa7d00j\nTJ75PJp4Oewji1BZOwIDAQABMA0GCSqGSIb3DQEBBQUAA4GBAA1zMTMj6acy2SU2\n8Idc1pxavI6vGyAMZYa8Y3NgDIygufOtJ0CzzWVOe/ofOWOguMpgdQec3nSjgHzC\nXr55Mgp+mS8+YJKslMy7XkzJwT3Ak2RZ5N+9E86Ep0NViBqQndqhudrI4xJL7w5P\ngDAvH84dZ4pp3gPCDpd/AlxzXXfy\n-----END CERTIFICATE-----\n",
+            "mutualAuth": false,
+            "rejectUnauthorized": false,
+            "ca": null,
+            "requests": [],
+            "stubs": [
+                {
+                    "predicates": [
+                        {
+                            "equals": {
+                                "method": "GET",
+                                "path": "/user",
+                                "data": "",
+                                "query": {
+                                    "user": "5"
+                                },
+                                "statusCode": 200
+                            }
+                        }
+                    ],
+                    "responses": [
+                        {
+                            "is": {
+                                "statusCode": 200,
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "body": {
+                                    "message": "200"
+                                }
+                            }
+                        }
+                    ],
+                    "_links": {
+                        "self": {
+                            "href": "http://localhost:5000/imposters/13/stubs/0"
+                        }
+                    }
+                }
+            ],
+            "_links": {
+                "self": {
+                    "href": "http://localhost:5000/imposters/13"
+                },
+                "stubs": {
+                    "href": "http://localhost:5000/imposters/13/stubs"
+                }
+            }
+        },
+        {
+            "protocol": "http",
+            "port": 1,
+            "name": "test 1",
+            "numberOfRequests": 0,
+            "recordRequests": false,
+            "requests": [],
+            "stubs": [
+                {
+                    "predicates": [
+                        {
+                            "equals": {
+                                "method": "GET",
+                                "path": "/user",
+                                "data": "",
+                                "query": {
+                                    "id": 5
+                                }
+                            }
+                        }
+                    ],
+                    "responses": [
+                        {
+                            "is": {
+                                "statusCode": 200,
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "body": {
+                                    "": ""
+                                }
+                            }
+                        },
+                        {
+                            "is": {
+                                "statusCode": 400,
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "body": {
+                                    "": ""
+                                }
+                            }
+                        }
+                    ],
+                    "_links": {
+                        "self": {
+                            "href": "http://localhost:5000/imposters/1/stubs/0"
+                        }
+                    }
+                }
+            ],
+            "_links": {
+                "self": {
+                    "href": "http://localhost:5000/imposters/1"
+                },
+                "stubs": {
+                    "href": "http://localhost:5000/imposters/1/stubs"
+                }
+            }
+        },
+        {
+            "name": "test 4545",
+            "port": 4545,
+            "protocol": "http",
+            "stubs": [
+                {
+                    "predicates": [
+                        {
+                            "and": [
+                                {
+                                    "equals": {
+                                        "method": "GET",
+                                        "path": "/customers"
+                                    }
+                                },
+                                {
+                                    "equals": {
+                                        "query": {
+                                            "id": 123
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "responses": [
+                        {
+                            "is": {
+                                "statusCode": 200,
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "body": {
+                                    "customer": {
+                                        "email": "customer@test.com"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "is": {
+                                "statusCode": 400,
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "body": {
+                                    "error": "email already exists"
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "predicates": [
+                        {
+                            "equals": {
+                                "method": "POST",
+                                "path": "/customers",
+                                "query": {
+                                    "id": 345
+                                }
+                            }
+                        }
+                    ],
+                    "responses": [
+                        {
+                            "is": {
+                                "statusCode": 404,
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "body": {
+                                    "error": "email does not exists"
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }

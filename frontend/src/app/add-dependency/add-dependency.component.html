@@ -10,61 +10,80 @@
         <br>
         <div class="container" style="max-width: 400px;">
             <div class="row">
-                <div>
-                    <form (ngSubmit)="onSubmit(form.value)" #form="ngForm">
-                        <h2>General Information</h2>
-                        <div>
-                            <label>Name:</label>
-                            <input type="text" name="name" ngModel required class="form-control">
-                        </div><br>
-                        <div class="form-group">
-                            <label>Port:</label>
-                            <input type="number" name="port" ngModel required class="form-control">
-                        </div>
-                        <div>
-                            <label>Protocol:</label>
-                            <select name="protocol" ngModel required class="form-control">
-                                <option value="http">HTTP</option>
-                                <option value="https">HTTPS</option>
-                            </select>
-                        </div><br>
-                        <hr>
-                        <div>
-                            <h2>Predicates</h2>
-                            <!-- <mat-icon style="cursor: pointer; margin-top: 5px; float: right;">add</mat-icon> -->
-                        </div>
-                        <div *ngFor="let predicate of predicates; let i = index">
-                            <app-predicates (editUpdate)="editUpdate($event)"
-                                            (deleteUpdate)="deleteUpdate($event)"
-                                            [index]="i"
+                <form [formGroup]="dependencyForm" (ngSubmit)="onSubmit()">
+                    <!-- <h2>General Information</h2> -->
+                    <div>
+                        <label>Protocol:</label>
+                        <select name="protocol" required class="form-control" formControlName="protocol">
+                            <option value="http">HTTP</option>
+                            <option value="https">HTTPS</option>
+                        </select>
+                    </div><br>
+                    <div class="form-group">
+                        <label>Port:</label>
+                        <input type="number" name="port" required class="form-control" formControlName="port">
+                    </div><br>
+                    <div>
+                        <label>Name:</label>
+                        <input type="text" name="name" required class="form-control" formControlName="name">
+                    </div><br>
+                    <hr>
+                    <h2>Stubs</h2>
+
+                    <div *ngIf="stubs.length > 0">
+                        <div style="border: 1px solid #ccc; border-radius: 10px; background-color: #f4f4f4; margin-bottom: 36px;"
+                            *ngFor="let stub of stubs; let i = index">
+
+                            <span class="close-button">
+                                <h2
+                                    style="margin-right: auto; padding-left: 15px; padding-top: 0px; font-weight: bold;">
+                                </h2>
+                                <button mat-icon-button style="padding-top: 10px;" color="basic" (click)="deleteStubUpdate(i)">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </span>
+
+                            <div
+                                style="padding-bottom: 30px; padding-left: 30px; padding-right: 30px; padding-top: 20px;">
+                                <div>
+                                    <div>
+                                        <h3 style="font-weight: bold;">Predicates</h3>
+                                    </div>
+                                    <div *ngFor="let predicate of predicates; let i = index">
+                                        <app-predicates (editUpdate)="editUpdate($event)"
+                                            (deleteUpdate)="deletePredicateUpdate($event)" [index]="i"
                                             [predicate]="predicate">
-                            </app-predicates>
+                                        </app-predicates>
+                                    </div>
+                                    <a style="text-decoration: underline; cursor: pointer;" (click)="addPredicate()">
+                                        Add Predicate</a>
+                                    <br><br><br>
+                                    <div>
+                                        <h3 style="font-weight: bold;">Responses</h3>
+                                    </div>
+                                    <div *ngFor="let response of responses; let i = index">
+                                        <app-responses (editUpdate)="editUpdate($event)"
+                                            (deleteResponseUpdate)="deleteResponseUpdate($event)" [responseIndex]="i"
+                                            [response]="response" [hideCloseButton]="hideCloseButton">
+                                        </app-responses>
+                                    </div>
+                                    <a style="text-decoration: underline; cursor: pointer;" (click)="addResponse()">
+                                        Add Response</a>
+                                </div>
+                            </div>
                         </div>
-                        <a style="text-decoration: underline; cursor: pointer;" (click)="addPredicate()">Add
-                            Predicate</a>
-                        <br>
-                        <hr>
-                        <h2>Responses</h2>
-                        <div>
-                            <label>Status Code:</label>
-                            <input type="number" name="statusCode" ngModel required class="form-control">
-                        </div><br>
-                        <div>
-                            <label>Headers:</label>
-                            <textarea name="headers" ngModel required class="form-control"
-                                style="resize: none;"></textarea>
-                        </div><br>
-                        <div>
-                            <label>Body:</label>
-                            <textarea name="body" ngModel required class="form-control"
-                                style="resize: none;"></textarea>
-                        </div><br><br>
-                        <button class="btn btn-primary" type="submit" [disabled]="!form.valid"
-                            style="margin-right: 10px; width: 100%;">
-                            Add
-                        </button>
-                    </form>
-                </div>
+
+                    </div>
+
+                    <a style="text-decoration: underline; cursor: pointer;" (click)="addStub()">
+                        Add Stub</a>
+
+                    <br><br><br>
+                    <button class="btn btn-primary" type="submit" [disabled]="!dependencyForm.valid"
+                        style="margin-right: 10px; width: 100%;">
+                        Add Dependency
+                    </button>
+                </form>
             </div>
         </div>
     </div>

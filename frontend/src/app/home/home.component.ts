@@ -18,8 +18,11 @@ export class HomeComponent implements OnInit {
   viewDependencyName: string = '';
   isCopyAll = false;
   copyAllButtonText = 'Copy All';
+  copyJSONButtonText = 'Copy JSON';
   iconName = 'file_copy';
+  iconJSONName = 'file_copy';
   copyAllButtonColor = 'black';
+  copyJSONButtonColor = 'black';
 
 
   constructor(private http: HttpClient,
@@ -60,6 +63,18 @@ export class HomeComponent implements OnInit {
     this.viewDependencyName = '';
   }
 
+  onCopyJSON() {
+    this.clipboard.copy(JSON.stringify(this.viewDependency));
+    this.copyJSONButtonText = 'Copied!';
+    this.iconJSONName = 'done';
+    this.copyJSONButtonColor = 'green';
+    setTimeout(() => {
+      this.copyJSONButtonText = 'Copy JSON';
+      this.iconJSONName = 'file_copy';
+      this.copyJSONButtonColor = 'black';
+    }, 2000);
+  }
+
   onCopyAll() {
     this.clipboard.copy(JSON.stringify(this.imposterArray));
     this.copyAllButtonText = 'Copied!';
@@ -72,4 +87,13 @@ export class HomeComponent implements OnInit {
     }, 2000);
   }
 
+  openPostman(data){
+    console.log('clicked');
+    // window.open('postman://app', '_blank');
+    //response for selected imposter
+    // this.imposterService.onViewImposter(data).subscribe((res) => {
+    //   console.log(res);
+    // });
+    this.imposterService.onExportImposter(6001);
+  }
 }

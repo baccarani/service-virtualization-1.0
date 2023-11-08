@@ -1,6 +1,9 @@
 export interface Predicate {
-    operator: string;
-    method: string;
-    path: string;
-  }
-  
+  operator: string;
+  data: string;
+  method: string;
+  path: string;
+  newpath: string;
+  newOperator: string;
+  query: string;
+}

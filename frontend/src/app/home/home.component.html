@@ -1,49 +1,70 @@
 <div style="margin: auto; width: 80%">
   <h1 style="font-weight: bold; font-size: xx-large">Environment Simulator Tool</h1>
-  <p>Add dependencies to simulate requests/responses for integration development and testing.</p>
+  <p>Add dependencies to create mock API services that simulate requests/responses for integration development and
+    testing.</p>
   <br>
-  <button class="btn btn-primary" (click)="onAddImposter()"
+  <button class="btn btn-primary add-dependency-button" (click)="onAddImposter()"
     style="display: inline-flex; align-items: center; padding-left: 0; padding-left: 5px; margin-right: 15px;"><mat-icon
       style="padding-right: 30px; padding-left: 0;">add</mat-icon>Add Dependency</button>
   <button class="btn btn-default" (click)="onCopyAll()"
     style="display: inline-flex; align-items: center; padding-left: 0; padding-left: 5px;"><mat-icon
-      style="padding-right: 30px; padding-left: 0; transform: scale(.8);" [ngStyle]="{'color': copyAllButtonColor}" >{{iconName}}</mat-icon>{{copyAllButtonText}}</button>
+      style="padding-right: 30px; padding-left: 0; transform: scale(.8);"
+      [ngStyle]="{'color': copyAllButtonColor}">{{iconName}}</mat-icon>{{copyAllButtonText}}</button>
   <br><br>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Protocol</th>
-        <th>Port</th>
-        <th># of Requests</th>
-        <th>View</th>
-        <th>Delete</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let imposter of imposterArray; let i = index">
-        <td>{{ imposter.name }}</td>
-        <td>{{ imposter.protocol }}</td>
-        <td>{{ imposter.port }}</td>
-        <td>{{ imposter.numberOfRequests }}</td>
-        <td><button class="btn btn-primary" (click)="onViewImposter(imposter.port)"
-            style="display: inline-flex; align-items: center; padding-left: 0; padding-left: 7px;"><mat-icon
-              style="padding-right: 30px; padding-left: 0; transform: scale(.8);">visibility</mat-icon>View</button>
-        </td>
-        <td><button class="btn btn-danger" (click)="onDeleteImposter(imposter.port, i)"
-            style="display: inline-flex; align-items: center; padding-left: 0; padding-left: 5px;"><mat-icon
-              style="padding-right: 30px; padding-left: 0; transform: scale(.8);">delete</mat-icon>Delete</button></td>
-      </tr>
-    </tbody>
-  </table>
-  <br>
-  <div style="font-weight: bold;">
-    Request Stub:
-    {{ viewDependency.name }}
-    <!-- <mat-icon style="float: right; transform: scale(.8); padding-right: 35px;">file_copy</mat-icon> -->
+  <div style="overflow-x: auto;">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Protocol</th>
+          <th>Port</th>
+          <th># of Requests</th>
+          <th>More</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let imposter of imposterArray; let i = index">
+          <td><a style="cursor: pointer;" (click)="onViewImposter(imposter.port)">{{ imposter.name }}</a></td>
+          <td>{{ imposter.protocol }}</td>
+          <td>{{ imposter.port }}</td>
+          <td>{{ imposter.numberOfRequests }}</td>
+          <td>
+            <div [matMenuTriggerFor]="menu">
+              <mat-icon style="cursor: pointer;" class="dropdown-toggle" role="button">more_horiz</mat-icon>
+            </div>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="onViewImposter(imposter.port)">
+                <mat-icon>visibility</mat-icon>
+                View
+              </button>
+              <button mat-menu-item (click)="onDeleteImposter(imposter.port, i)">
+                <mat-icon>delete</mat-icon>
+                Delete
+              </button>
+              <button mat-menu-item (click)="openPostman(imposter.name)">
+                <mat-icon>open_in_new</mat-icon>
+                Open in Postman
+              </button>
+            </mat-menu>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
   <br>
-  <pre>
-    {{ viewDependency | json }}
-  </pre>
+  <div style="font-weight: bold; position: relative;">
+    <div style="padding-top: 7px;">
+      Request Stub:
+      {{ viewDependency.name }}
+    </div>
+    <button *ngIf="viewDependency" class="btn btn-default copy-button" (click)="onCopyJSON()" style="position: absolute; top: 0; right: 0; display: flex; align-items: center; background: transparent; border: none;;">
+      <mat-icon style="transform: scale(.8);" [ngStyle]="{'color': copyJSONButtonColor}">{{iconJSONName}}</mat-icon>
+      <span style="font-family: monospace; font-size: 14px;">{{copyJSONButtonText}}</span>
+    </button>
+  </div>
+  <br>
+  <div style="position: relative;">
+    <pre>{{ viewDependency | json }}</pre>
+  </div>
 </div>
+<br><br>
