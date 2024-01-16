@@ -9,7 +9,6 @@ import { Response } from '../models/response';
   styleUrls: ['./responses.component.css']
 })
 export class ResponsesComponent implements OnInit {
-
   @Input() index: number = 0;
   @Input() responseIndex: number = 0;
   @Input() response: Response = {
@@ -17,7 +16,6 @@ export class ResponsesComponent implements OnInit {
     headers: '',
     body: '',
   };
-
   @Output() deleteUpdate = new EventEmitter();
   @Output() deleteResponseUpdate = new EventEmitter();
 
@@ -126,7 +124,7 @@ export class ResponsesComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private imposterService: ImposterService) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.responseForm.setValue({
       statusCode: this.response.statusCode,
       infoCode: '',
@@ -142,24 +140,15 @@ export class ResponsesComponent implements OnInit {
     });
   }
 
-  onSubmit(): void {
+  onSubmit() {
 
   }
 
   onDelete() {
     this.deleteResponseUpdate.emit(this.responseIndex);
-  
-    const responseCount = this.imposterService.onGetResponses().length;
-  
-    if (responseCount > 1) {
-      this.hideCloseButton = false;
-    } else {
-      this.hideCloseButton = true;
-    }
   }
   
   updateResponses() {
-
     const statusCode = this.responseForm.get('statusCode').value;
     const infoCode = Number(this.responseForm.get('infoCode').value);
     const successCode = Number(this.responseForm.get('successCode').value);
@@ -196,5 +185,4 @@ export class ResponsesComponent implements OnInit {
       this.imposterService.onGetResponses().push(this.response);
     }
   }
-
 }

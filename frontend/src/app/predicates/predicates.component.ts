@@ -10,10 +10,8 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./predicates.component.css']
 })
 export class PredicatesComponent implements OnInit {
-
   @ViewChild('options') options: ElementRef;
-
-  @Input() index: number = 0;
+  @Input() predicateIndex: number = 0;
   @Input() predicate: Predicate = {
     operator: '',
     method: '',
@@ -24,7 +22,6 @@ export class PredicatesComponent implements OnInit {
     query: ''
   };
   @Input() showEdit: boolean = false;
-
   @Output() beneficiaryUpdate = new EventEmitter();
   @Output() editUpdate = new EventEmitter();
   @Output() deleteUpdate = new EventEmitter();
@@ -44,8 +41,8 @@ export class PredicatesComponent implements OnInit {
     { name: 'matches'},
     { name: 'exists'},
     { name: 'not'},
-    { name: 'or'},
-    { name: 'and'},
+    // { name: 'or'},
+    // { name: 'and'},
     { name: 'inject'}
   ];
 
@@ -71,7 +68,6 @@ export class PredicatesComponent implements OnInit {
   });
 
   subPredicates: Predicate[] = [];
-  
   showPredicates: boolean = false;
   showSubPredicates: boolean = false;
 
@@ -79,7 +75,7 @@ export class PredicatesComponent implements OnInit {
 
   constructor(private imposterService: ImposterService, private formBuilder: FormBuilder) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.predicateForm.setValue({
       operator: this.predicate.operator,
       method: this.predicate.method,
@@ -93,12 +89,12 @@ export class PredicatesComponent implements OnInit {
       this.updatePredicates();
     });
   }
-  
+
   onSubmit() {
   }
 
   onDelete() {
-    this.deleteUpdate.emit(this.index);
+    this.deleteUpdate.emit(this.predicateIndex);
   }
 
   // deleteSubPredicateUpdate(index) {
@@ -133,27 +129,24 @@ export class PredicatesComponent implements OnInit {
     const index = this.imposterService.onGetPredicates().findIndex(p => p.method === method && p.query=== query && p.path === path && p.newpath === newpath && p.data === data && p.newOperator === newOperator);
     if (index > -1) {
       // Update existing predicate
-      console.log(index)
       this.imposterService.onGetPredicates()[index] = this.predicate;
-      console.log()
     } else {
       // Add new predicate
-      console.log('test')
       this.imposterService.onGetPredicates().push(this.predicate);
     }
   }
 
-  selectHideData(): void {
-    if(this.options.nativeElement.value == 'equals' || this.options.nativeElement.value == 'deepEquals' ||
-    this.options.nativeElement.value == 'and' || this.options.nativeElement.value == 'equals'
-    ){
+  selectHideData() {
+    if (this.options.nativeElement.value == 'equals' || this.options.nativeElement.value == 'deepEquals' ||
+      this.options.nativeElement.value == 'and' || this.options.nativeElement.value == 'equals'
+    ) {
       this.predicateForm.controls.data.disable();
-    }else{
+    } else {
       this.predicateForm.controls.data.enable();
     }
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 }

@@ -14,20 +14,16 @@
                 <select  name="operator" required class="form-control" #options formControlName="operator" >
                     <option *ngFor="let o of operator" [value]="o.name">{{o.name}}</option>
                 </select> 
-            </div>
+            </div><br>
             
-            <div [hidden]="options.value == 'or' || options.value == 'and' ? false : true">
+            <!-- This is to handle and/or operators which can be consider for a future enhancement -->
+            <!-- <div [hidden]="options.value == 'or' || options.value == 'and' ? false : true">
                 <br><label>Select Operator to compare: </label>
                 <select name="newOperator" required class="form-control" #secondOperator formControlName="newOperator">
                     <option *ngFor="let opt of newOperator" [value]="opt.name">{{opt.name}}</option>
                 </select>
-            </div><br>
-            
-            <!-- <div>
-                <label>Data:</label>
-                <input type="text" class="form-control" formControlName="data" />
-            </div><br>
-             -->
+            </div><br> -->
+
             <div>
                 <label>Method:</label>
                 <select name="method" required class="form-control" formControlName="method">

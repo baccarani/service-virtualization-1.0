@@ -15,7 +15,7 @@ import { Stubs } from '../models/stubs';
 export class AddDependencyComponent implements OnInit {
   protocols = ['http', 'https', 'tcp'];
   methods = ['GET', 'POST', 'PUT'];
-  stubs: Stubs[] = [];ƒ
+  stubs: Stubs[] = [];
   predicates: Predicate[] = [];
   responses: Response[] = [];
   showEdit: boolean[] = [];
@@ -34,36 +34,13 @@ export class AddDependencyComponent implements OnInit {
     protocol: [''],
   });
 
-  ngOnInit(): void {
-    this.imposterService.onResetPredicates();
-    this.imposterService.onResetResponses();
+  ngOnInit() {
     this.imposterService.onResetStubs();
-
-    if (this.imposterService.onGetPredicates().length === 0) {
-      this.imposterService.onAddPredicate({operator: '', method: '', path: '', newpath: '', data: '', newOperator: '', query: ''}, this.indexPredicate)
-      this.indexPredicate++;
-    }
-
-    if (this.imposterService.onGetResponses().length === 0) {
-      this.imposterService.onAddResponse({statusCode: '', headers: '', body: ''}, this.indexResponse);
-      this.indexResponse++;
-    }
-
-    if (this.imposterService.onGetStubs().length === 0) {
-      this.imposterService.onAddStub({predicates: [], responses: []}, 0);
-      this.indexStub++;
-    }
-
-    this.predicates = this.imposterService.onGetPredicates();
-    this.responses = this.imposterService.onGetResponses();
+    this.imposterService.setDefaultStubs();
     this.stubs = this.imposterService.onGetStubs();
-
-    console.log('Stubs:', this.stubs);
-    console.log('Predicates:', this.predicates);
-    console.log('Responses:', this.responses);
   }
 
-  predicateUpdate(form: any): void {
+  predicateUpdate(form: any) {
     this.showEdit[form.index] = true;
     this.predicates[form.index] = form.value;
   }
@@ -78,122 +55,27 @@ export class AddDependencyComponent implements OnInit {
   }
 
   addStub() {
-    const newStub = {
-      predicates: [
-        [{
-          operator: '',
-          method: '',
-          path: '',
-          newpath: '',
-          data: '',
-          newOperator: '',
-          query: ''
-        }]
-      ],
-      responses: [
-        [{
-          statusCode: '',
-          headers: '',
-          body: ''
-        }]
-      ]
-    };
-
-    this.imposterService.onAddStub(newStub, this.indexStub);
-    this.indexStub++;
-    this.stubs = this.imposterService.onGetStubs();
+    this.imposterService.onAddStub();
+    this.stubs = this.imposterService.onGetStubs(); // can be refactored to use a behaviour subject for a future enhancement
   }
 
-  addPredicate() {
-    this.imposterService.onAddPredicate({operator: '', method: '', path: '', newpath: '', data: '', newOperator: '', query: ''}, this.indexPredicate);
-    this.indexPredicate++;
-    this.showEdit.push(false);
-    this.predicates = this.imposterService.onGetPredicates();
+  addPredicate(stubID: number) {
+    this.imposterService.onAddPredicate(stubID);
   }
 
-  addResponse() {
-    this.imposterService.onAddResponse({statusCode: '', headers: '', body: ''}, this.indexResponse);
-    this.indexResponse++;
-    this.showEdit.push(false);
-    this.responses = this.imposterService.onGetResponses();
-
-    // if (this.imposterService.onGetResponses().length > 1) {
-    //   this.hideCloseButton = false;
-    // } else {
-    //   this.hideCloseButton = true;
-    // }
+  addResponse(stubID: number) {
+    this.imposterService.onAddResponse(stubID);
   }
 
-  deleteStubUpdate(stubIndex: any): void {
-    console.log("stubIndex: ", stubIndex);
-    this.indexStub--;
-    let tempStubs: Stubs[] = [];
-    for (let i = 0; i < this.stubs.length; i++) {
-      if (i !== stubIndex) {
-        tempStubs.push(this.stubs[i]);
-      }
-    }
-    this.stubs = tempStubs;
-
-    let tempEdit: boolean[] = [];
-    for (let i = 0; i < this.showEdit.length; i++) {
-      if (i !== stubIndex) {
-        tempEdit.push(this.showEdit[i]);
-      }
-    }
-    this.showEdit = tempEdit;
-
-    this.imposterService.onDeleteStub(stubIndex);
-    console.log(this.stubs);
+  deleteStubUpdate(stubID: number) {
+    this.imposterService.onDeleteStub(stubID);
   }
 
-  deletePredicateUpdate(index: any): void {
-    this.indexPredicate--;
-    let tempPredicates: Predicate[] = [];
-    for (let i = 0; i < this.predicates.length; i++) {
-      if (i !== index) {
-        tempPredicates.push(this.predicates[i]);
-      }
-    }
-    this.predicates = tempPredicates;
-
-    let tempEdit: boolean[] = [];
-    for (let i = 0; i < this.showEdit.length; i++) {
-      if (i !== index) {
-        tempEdit.push(this.showEdit[i]);
-      }
-    }
-    this.showEdit = tempEdit;
-
-    this.imposterService.onDeletePredicate(index);
+  deletePredicateUpdate(predicateIndex: number, stubIndex: number) {
+    this.imposterService.onDeletePredicate(predicateIndex, stubIndex);
   }
 
-  deleteResponseUpdate(responseIndex: any): void {
-    this.indexResponse--;
-    let tempResponses: Response[] = [];
-    for (let i = 0; i < this.responses.length; i++) {
-      if (i !== responseIndex) {
-        tempResponses.push(this.responses[i]);
-      }
-    }
-    this.responses = tempResponses;
-
-    let tempEdit: boolean[] = [];
-    for (let i = 0; i < this.showEdit.length; i++) {
-      if (i !== responseIndex) {
-        tempEdit.push(this.showEdit[i]);
-      }
-    }
-    this.showEdit = tempEdit;
-
-    this.imposterService.onDeleteResponse(responseIndex);
+  deleteResponseUpdate(responseIndex: number, stubIndex: number) {
+    this.imposterService.onDeleteResponse(responseIndex, stubIndex);
   }
-
-  onDelete() {
-    this.deletePredicateUpdate(this.index);
-  }
-
-  // onDeleteResponse() {
-  //   this.deleteResponseUpdate(this.indexResponse);
-  // }
 }
