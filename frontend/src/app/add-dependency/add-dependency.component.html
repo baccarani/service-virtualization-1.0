@@ -32,14 +32,14 @@
 
                     <div *ngIf="stubs.length > 0">
                         <div style="border: 1px solid #ccc; border-radius: 10px; background-color: #f4f4f4; margin-bottom: 36px;"
-                            *ngFor="let stub of stubs; let i = index">
+                            *ngFor="let stub of stubs; let stubIndex = index; trackBy: stubIndex">
 
                             <span class="close-button" style="padding-bottom: 20px;">
                                 <h3
                                     style="margin-right: auto; padding-left: 15px; padding-top: 35px; font-weight: bold;">
-                                    Stub {{i + 1}}
+                                    Stub {{stubIndex + 1}}
                                 </h3>
-                                <button mat-icon-button style="padding-top: 10px;" color="basic" (click)="deleteStubUpdate(i)">
+                                <button mat-icon-button style="padding-top: 10px;" color="basic" (click)="deleteStubUpdate(stub.stubID)">
                                     <mat-icon>close</mat-icon>
                                 </button>
                             </span>
@@ -50,25 +50,30 @@
                                     <div>
                                         <h3 style="font-weight: bold;">Predicates</h3>
                                     </div>
-                                    <div *ngFor="let predicate of predicates; let i = index">
-                                        <app-predicates (editUpdate)="editUpdate($event)"
-                                            (deleteUpdate)="deletePredicateUpdate($event)" [index]="i"
+                                    <div *ngFor="let predicate of stubs[stubIndex].predicates; let predicateIndex = index; trackBy: predicateIndex">
+                                        <app-predicates 
+                                            (editUpdate)="editUpdate($event)"
+                                            (deleteUpdate)="deletePredicateUpdate($event, stubIndex)" 
+                                            [predicateIndex]="predicateIndex"
                                             [predicate]="predicate">
                                         </app-predicates>
                                     </div>
-                                    <a style="text-decoration: underline; cursor: pointer;" (click)="addPredicate()">
+                                    <a style="text-decoration: underline; cursor: pointer;" (click)="addPredicate(stubs[stubIndex].stubID)">
                                         Add Predicate</a>
                                     <br><br><br>
                                     <div>
                                         <h3 style="font-weight: bold;">Responses</h3>
                                     </div>
-                                    <div *ngFor="let response of responses; let i = index">
-                                        <app-responses (editUpdate)="editUpdate($event)"
-                                            (deleteResponseUpdate)="deleteResponseUpdate($event)" [responseIndex]="i"
-                                            [response]="response" [hideCloseButton]="hideCloseButton">
+                                    <div *ngFor="let response of stubs[stubIndex].responses; let responseIndex = index; trackBy: responseIndex">
+                                        <app-responses 
+                                            (editUpdate)="editUpdate($event)"
+                                            (deleteResponseUpdate)="deleteResponseUpdate($event, stubIndex)" 
+                                            [responseIndex]="responseIndex"
+                                            [response]="response" 
+                                            [hideCloseButton]="hideCloseButton">
                                         </app-responses>
                                     </div>
-                                    <a style="text-decoration: underline; cursor: pointer;" (click)="addResponse()">
+                                    <a style="text-decoration: underline; cursor: pointer;" (click)="addResponse(stubs[stubIndex].stubID)">
                                         Add Response</a>
                                 </div>
                             </div>

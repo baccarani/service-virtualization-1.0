@@ -12,9 +12,9 @@ export class SubPredicatesComponent implements OnInit {
 
   @Input() index: number = 0;
 
-  subPredicateForm = this.formBuilder.group({
-    operator: ['']
-  });
+  // subPredicateForm = this.formBuilder.group({
+  //   operator: ['']
+  // });
 
   operator = [
     {id: 1, name: 'equals'},
@@ -27,12 +27,12 @@ export class SubPredicatesComponent implements OnInit {
     {id: 11, name: 'inject'}
   ]
 
-  constructor(private formBuilder: FormBuilder, private imposterService: ImposterService,) { }
+  constructor(private formBuilder: FormBuilder, private imposterService: ImposterService) { }
 
-  ngOnInit(): void {
-    this.subPredicateForm.valueChanges.subscribe(value => {
-      this.getOperator();
-    })
+  ngOnInit() {
+    // this.subPredicateForm.valueChanges.subscribe(value => {
+    //   this.getOperator();
+    // })
   }
 
   onSubmit() {
@@ -43,7 +43,7 @@ export class SubPredicatesComponent implements OnInit {
 
   }
 
-  getOperator() {
-    this.imposterService.setOperator(this.subPredicateForm.value.operator);
-  }
+  // getOperator() {
+  //   this.imposterService.setOperator(this.subPredicateForm.value.operator);
+  // }
 }
