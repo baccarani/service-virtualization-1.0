@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
     private store: Store<{ imposter: {} }>,
     private clipboard: Clipboard) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     // use services to load data and state
     this.imposterService.onGetImposter().subscribe(data => {
       this.imposterArray = data;

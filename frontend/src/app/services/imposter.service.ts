@@ -1,21 +1,29 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from "rxjs/operators";
-import { Predicate } from '../models/predicate';
+// import { Predicate } from '../models/predicate';
+// import { Stubs } from '../models/stubs';
 
 @Injectable()
 export class ImposterService {
-    private stubs = [];
     private imposterArray: any = null;
+    private stubs = [];
     private predicates = [];
-    private subPredicates = [];
     private responses = [];
+    // private subPredicates = [];
 
     constructor(private http: HttpClient) { }
 
-    setOperator(operator) {
-        this.subPredicates.push(operator);
+    setDefaultStubs() {
+        if (this.stubs.length === 0) {
+            const defaultStubs = { stubID: Date.now(), predicates: [{ predicateID: Date.now(), operator: '', method: '', path: '', newpath: '', data: '', newOperator: '', query: '' }], responses: [{ responseID: Date.now(), statusCode: '', headers: '', body: '' }] }
+            this.stubs.push(defaultStubs);
+        }
     }
+
+    // setOperator(operator) {
+    //     this.subPredicates.push(operator);
+    // }
 
     onGetPredicates() {
         return this.predicates.slice();
@@ -25,12 +33,23 @@ export class ImposterService {
         return this.responses.slice();
     }
 
-    onAddPredicate({ operator, method, path, newpath, data, newOperator, query }: Predicate) {
-        this.predicates.push({ operator, method, path, newpath, data, newOperator, query });
+    onGetStubs() {
+        return this.stubs;
     }
 
-    onAddResponse({ statusCode, headers, body }) {
-        this.responses.push({ statusCode, headers, body });
+    onAddStub() {
+        let newStub = { stubID: Date.now(), predicates: [{ predicateID: Date.now(), operator: '', method: '', path: '', newpath: '', data: '', newOperator: '', query: '' }], responses: [{ responseID: Date.now(), statusCode: '', headers: '', body: '' }] }
+        this.stubs.push(newStub);
+    }
+
+    onAddPredicate(stubID: number) {
+        let index = this.stubs.findIndex(stub => stub.stubID === stubID);
+        this.stubs[index].predicates.push({ predicateID: Date.now(), operator: '', method: '', path: '', newpath: '', data: '', newOperator: '', query: '' });
+    }
+
+    onAddResponse(stubID: number) {
+        let index = this.stubs.findIndex(stub => stub.stubID === stubID);
+        this.stubs[index].responses.push({ responseID: Date.now(), statusCode: '', headers: '', body: '' });
     }
 
     onResetPredicates() {
@@ -41,17 +60,26 @@ export class ImposterService {
         this.responses = [];
     }
 
-    onDeletePredicate(index) {
-        this.predicates.splice(index, 1);
+    onResetStubs() {
+        this.stubs = [];
     }
 
-    onDeleteResponse(index) {
-        this.responses.splice(index, 1);
+    onDeleteStub(stubID) {
+        let index = this.stubs.findIndex(stub => stub.stubID === stubID);
+        this.stubs.splice(index, 1);
     }
 
-    onDeleteSubPredicate(index) {
-        this.subPredicates.splice(index, 1);
+    onDeletePredicate(predicateIndex, stubIndex) {
+        this.stubs[stubIndex].predicates.splice(predicateIndex, 1);
     }
+
+    onDeleteResponse(responseIndex, stubIndex) {
+        this.stubs[stubIndex].responses.splice(responseIndex, 1);
+    }
+
+    // onDeleteSubPredicate(index) {
+    //     this.subPredicates.splice(index, 1);
+    // }
 
     onGetImposter() {
         let imposterArray$ = [];
@@ -85,64 +113,61 @@ export class ImposterService {
     }
 
     onCreateImposter(formValues) {
-        const predicates = this.predicates.map((predicate) => {
-            const operator = predicate.operator;
-            const query = JSON.parse(predicate.query);
-            /**
-             * TODO: same for NOT opertor
-             */
-            let updatePath;
-            if (predicate.path == 'other') {
-                updatePath = predicate.newpath;
-
-            } else {
-                updatePath = predicate.path;
-            }
-
-            if (operator === "or" || operator === "and") {
-                return {
-                    [operator]: [
-                        {
-                            [predicate.newOperator]: {
-                                method: predicate.method,
-                                path: updatePath,
-                                data: predicate.data
-                            }
-                        }
-                    ]
+        const stubs = this.stubs.map((stub) => {
+            const predicates = stub.predicates.map((predicate) => {
+                const operator = predicate.operator;
+                const query = JSON.parse(predicate.query) || {};
+                let updatePath;
+                if (predicate.path == 'other') {
+                    updatePath = predicate.newpath;
+                } else {
+                    updatePath = predicate.path;
                 }
-            } else {
+    
+                if (operator === "or" || operator === "and") {
+                    return {
+                        [operator]: [
+                            {
+                                [predicate.newOperator]: {
+                                    method: predicate.method,
+                                    path: updatePath,
+                                    data: predicate.data
+                                }
+                            }
+                        ]
+                    }
+                } else {
+                    return {
+                        [operator]: {
+                            method: predicate.method,
+                            path: updatePath,
+                            query: query
+                        },
+                    };
+                }
+            });
+    
+            const responses = stub.responses.map((response) => {
+                const statusCode = response.statusCode;
+                const headers = JSON.parse(response.headers) || {};
+                const body = JSON.parse(response.body) || {};
+    
                 return {
-                    [operator]: {
-                        method: predicate.method,
-                        path: updatePath,
-                        data: predicate.data,
-                        query: query
-                    },
-                };
-            }
-        });
-
-        const responses = this.responses.map((response) => {
-            const statusCode = response.statusCode;
-            const headers = JSON.parse(response.headers);
-            const body = JSON.parse(response.body);
-
+                    is: { statusCode: statusCode, headers: headers, body: body },
+                }
+            });
+    
             return {
-                is: { statusCode: statusCode, headers: headers, body: body },
-            }
+                predicates: predicates,
+                responses: responses
+            };
         });
-
+    
         const data = {
             port: formValues.port,
             protocol: formValues.protocol,
             name: formValues.name,
-            stubs: [
-                {
-                    predicates: predicates,
-                    responses: responses,
-                },
-            ],
+            stubs: stubs
         };
 
         this.http.post(`http://localhost:5000/imposters`, data).subscribe(
@@ -170,5 +195,4 @@ export class ImposterService {
             window.URL.revokeObjectURL(url);
         });
     }
-
 }
