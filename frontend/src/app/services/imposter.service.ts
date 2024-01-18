@@ -136,6 +136,16 @@ export class ImposterService {
                             }
                         ]
                     }
+                } else if (operator === "not") {
+                    return {
+                        [operator]: {
+                                "equals": {
+                                    method: predicate.method,
+                                    path: updatePath,
+                                    query: query
+                                }
+                            }
+                    }
                 } else {
                     return {
                         [operator]: {
