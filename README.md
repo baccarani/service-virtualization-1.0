@@ -12,8 +12,8 @@ Learn more at http://www.mbtest.org/.
 
 <p align="center">
 
-[![Mountebank demo using Node.js and Angular](https://img.youtube.com/vi/XGZdic48SAc/0.jpg)](https://www.youtube.com/watch?v=XGZdic48SAc)
+[![Mountebank demo using Node.js and Angular](https://img.youtube.com/vi/K3MReXcDsp8/0.jpg)](https://www.youtube.com/watch?v=K3MReXcDsp8)
 
 </p>
 
-Watch the YouTube Video at https://youtu.be/XGZdic48SAc.
+Watch the YouTube Video at https://www.youtube.com/watch?v=K3MReXcDsp8.
