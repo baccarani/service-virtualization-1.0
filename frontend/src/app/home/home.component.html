@@ -37,6 +37,10 @@
                 <mat-icon>visibility</mat-icon>
                 View
               </button>
+              <button mat-menu-item (click)="onEditImposter(imposter)">
+                <mat-icon>edit</mat-icon>
+                Edit
+              </button>
               <button mat-menu-item (click)="onDeleteImposter(imposter.port, i)">
                 <mat-icon>delete</mat-icon>
                 Delete
