@@ -51,7 +51,7 @@
             <div>
                 <label>Headers:</label>
                 <br><select name="headers" class="form-control" formControlName="headers" #path>
-                    <option *ngFor="let header of headers" [value]="header | json">{{header | json}}</option>
+                    <option *ngFor="let header of headers" [value]="isEditImposter ? header : (header | json)">{{header | json}}</option>
                 </select>
             </div><br>
             <div>

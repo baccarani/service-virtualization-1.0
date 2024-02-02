@@ -80,10 +80,10 @@ export class PredicatesComponent implements OnInit {
       operator: this.predicate.operator,
       method: this.predicate.method,
       path: this.predicate.path,
-      newpath: this.predicate.newpath,
+      newpath: '',
       query: this.predicate.query,
-      data: this.predicate.data,
-      newOperator: this.predicate.newOperator
+      data: '',
+      newOperator: '',
     });
     this.subscription = this.predicateForm.valueChanges.subscribe(() => {
       this.updatePredicates();
@@ -124,16 +124,7 @@ export class PredicatesComponent implements OnInit {
     this.predicate.newpath = newpath;
     this.predicate.data = data;
     this.predicate.newOperator = newOperator;
-    this.predicate.query = query;    
-
-    const index = this.imposterService.onGetPredicates().findIndex(p => p.method === method && p.query=== query && p.path === path && p.newpath === newpath && p.data === data && p.newOperator === newOperator);
-    if (index > -1) {
-      // Update existing predicate
-      this.imposterService.onGetPredicates()[index] = this.predicate;
-    } else {
-      // Add new predicate
-      this.imposterService.onGetPredicates().push(this.predicate);
-    }
+    this.predicate.query = query;
   }
 
   selectHideData() {
