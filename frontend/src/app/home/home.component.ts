@@ -43,13 +43,7 @@ export class HomeComponent implements OnInit {
     this.imposterService.onGetImposter().subscribe((data) => {
       this.imposterArray = data;
     });
-
-    this.imposterService.notifyChanges
-      .pipe(switchMap(() => this.imposterService.onGetImposter()))
-      .subscribe((data) => {
-        this.imposterArray = data;
-      });
-
+    
     this.imposterService.updateImposterArray
       .pipe(switchMap(() => this.imposterService.onGetImposter()))
       .subscribe((data: any) => {
