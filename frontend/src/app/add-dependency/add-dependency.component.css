@@ -1,11 +1,10 @@
-
 ::-webkit-scrollbar {
-    display: none;
-  }
-  
+  display: none;
+}
+
 /* Set the width of the modal */
 .modal-dialog {
-    max-width: 800px;
+  max-width: 800px;
 }
 
 .close-button {

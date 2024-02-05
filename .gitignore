@@ -1,0 +1,51 @@
+# System Files
+.DS_Store
+Thumbs.db
+
+# Compiled Output
+/dist
+/tmp
+/out-tsc
+
+# Dependencies
+node_modules
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Ignore cache created with the Angular CLI.
+.angular/
+
+# Misc.
+.temp
+.cache
+/.sass-cache
+/coverage
+
+# e2e
+/e2e/*.js
+/e2e/*.map

@@ -2,16 +2,19 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Inject,
   Input,
   OnInit,
   Output,
+  ViewChild,
 } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
 import { ImposterService } from "../services/imposter.service";
 import { Response } from "../models/response";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import Papa from "papaparse";
 
 @Component({
   selector: "app-responses",
@@ -19,6 +22,7 @@ import { MAT_DIALOG_DATA } from "@angular/material/dialog";
   styleUrls: ["./responses.component.css"],
 })
 export class ResponsesComponent implements OnInit, AfterViewInit {
+  @ViewChild("file") fileInput: ElementRef;
   @Input() index: number = 0;
   @Input() responseIndex: number = 0;
   @Input() response: Response = {
@@ -128,7 +132,7 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
     private imposterService: ImposterService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -220,7 +224,7 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
         (p) =>
           p.statusCode === statusCode &&
           p.headers === headers &&
-          p.body === body
+          p.body === body,
       );
     if (index > -1) {
       // Update existing predicate
@@ -229,5 +233,26 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
       // Add new predicate
       this.imposterService.onGetResponses().push(this.response);
     }
+  }
+
+  uploadFile(files: File[]) {
+    let file = files[0] || null;
+    if (file) {
+      Papa.parse(file, {
+        header: true,
+        complete: (results) => {
+          this.responseForm.patchValue({
+            body: JSON.stringify(results.data),
+          });
+        },
+      });
+    }
+  }
+
+  clearTextarea() {
+    this.fileInput.nativeElement.value = null;
+    this.responseForm.patchValue({
+      body: null,
+    });
   }
 }

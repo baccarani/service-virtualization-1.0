@@ -6,10 +6,12 @@
     "start": "ng serve",
     "start:all": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
     "start:frontend": "ng serve",
-    "start:backend": "cd ../backend && npm start",    
+    "start:backend": "cd ../backend && npm start",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "prettier": "npx prettier --write .",
+    "lint": "eslint . --ext .ts"
   },
   "private": true,
   "dependencies": {
@@ -23,24 +25,29 @@
     "@angular/platform-browser": "^14.2.0",
     "@angular/platform-browser-dynamic": "^14.2.0",
     "@angular/router": "^14.2.0",
+    "@ngrx/store": "^14.3.2",
     "bootstrap": "^3.0.0",
+    "papaparse": "^5.4.1",
     "rxjs": "^6.6.3",
     "rxjs-compat": "^6.0.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.11.4",
-    "@ngrx/store": "^14.3.2"
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^14.2.7",
     "@angular/cli": "~14.2.7",
     "@angular/compiler-cli": "^14.2.0",
     "@types/jasmine": "~4.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.20.0",
+    "@typescript-eslint/parser": "^6.20.0",
+    "eslint": "^8.56.0",
     "jasmine-core": "~4.3.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
+    "prettier": "3.2.5",
     "typescript": "~4.7.2"
   }
 }

@@ -1,97 +1,188 @@
-<div style="max-height: 85vh; overflow-y: auto; overflow-x: hidden;">
-    <h1 style="font-weight: bold; display: flex; align-items: center; justify-content: space-between;">
-        Add Dependency
-        <button mat-icon-button class="close-button" (click)="closeModal()">
-            <mat-icon aria-label="Close modal">close</mat-icon>
-        </button>
-    </h1>
-    <div>
-        <p>Fill in the below form to add your dependency.</p>
-        <br>
-        <div class="container" style="max-width: 400px;">
-            <div class="row">
-                <form [formGroup]="dependencyForm" (ngSubmit)="onSubmit()">
-                    <!-- <h2>General Information</h2> -->
-                    <div>
-                        <label>Name:</label>
-                        <input [readonly]="isEditImposter" type="text" name="name" required class="form-control" formControlName="name">
-                    </div><br>
-                    <div class="form-group">
-                        <label>Port:</label>
-                        <input [readonly]="isEditImposter" type="number" name="port" required class="form-control" formControlName="port">
-                    </div><br>
-                    <div>
-                        <label>Protocol:</label>
-                        <select name="protocol" required class="form-control" formControlName="protocol">
-                            <option value="http">HTTP</option>
-                            <option value="https">HTTPS</option>
-                        </select>
-                    </div><br>
-                    <hr>
-                    <h2>Stubs</h2>
+<div style="max-height: 85vh; overflow-y: auto; overflow-x: hidden">
+  <h1
+    style="
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    "
+  >
+    Add Dependency
+    <button mat-icon-button class="close-button" (click)="closeModal()">
+      <mat-icon aria-label="Close modal">close</mat-icon>
+    </button>
+  </h1>
+  <div>
+    <p>Fill in the below form to add your dependency.</p>
+    <br />
+    <div class="container" style="max-width: 400px">
+      <div class="row">
+        <form [formGroup]="dependencyForm" (ngSubmit)="onSubmit()">
+          <!-- <h2>General Information</h2> -->
+          <div>
+            <label>Name:</label>
+            <input
+              [readonly]="isEditImposter"
+              type="text"
+              name="name"
+              required
+              class="form-control"
+              formControlName="name"
+            />
+          </div>
+          <br />
+          <div class="form-group">
+            <label>Port:</label>
+            <input
+              [readonly]="isEditImposter"
+              type="number"
+              name="port"
+              required
+              class="form-control"
+              formControlName="port"
+              #port
+            />
+          </div>
+          <br />
+          <div>
+            <label>Protocol:</label>
+            <select
+              name="protocol"
+              required
+              class="form-control"
+              formControlName="protocol"
+              #protocol
+            >
+              <option value="http">HTTP</option>
+              <option value="https">HTTPS</option>
+            </select>
+          </div>
+          <br />
+          <hr />
+          <h2>Stubs</h2>
 
-                    <div *ngIf="stubs.length > 0">
-                        <div style="border: 1px solid #ccc; border-radius: 10px; background-color: #f4f4f4; margin-bottom: 36px;"
-                            *ngFor="let stub of stubs; let stubIndex = index; trackBy: stubIndex">
+          <div *ngIf="stubs.length > 0">
+            <div
+              style="
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                background-color: #f4f4f4;
+                margin-bottom: 36px;
+              "
+              *ngFor="
+                let stub of stubs;
+                let stubIndex = index;
+                trackBy: stubIndex
+              "
+            >
+              <span class="close-button" style="padding-bottom: 20px">
+                <h3
+                  style="
+                    margin-right: auto;
+                    padding-left: 15px;
+                    padding-top: 35px;
+                    font-weight: bold;
+                  "
+                >
+                  Stub {{ stubIndex + 1 }}
+                </h3>
+                <button
+                  mat-icon-button
+                  style="padding-top: 10px"
+                  color="basic"
+                  (click)="deleteStubUpdate(stub.stubID)"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </span>
 
-                            <span class="close-button" style="padding-bottom: 20px;">
-                                <h3
-                                    style="margin-right: auto; padding-left: 15px; padding-top: 35px; font-weight: bold;">
-                                    Stub {{stubIndex + 1}}
-                                </h3>
-                                <button mat-icon-button style="padding-top: 10px;" color="basic" (click)="deleteStubUpdate(stub.stubID)">
-                                    <mat-icon>close</mat-icon>
-                                </button>
-                            </span>
-
-                            <div
-                                style="padding-bottom: 30px; padding-left: 30px; padding-right: 30px; padding-top: 20px;">
-                                <div>
-                                    <div>
-                                        <h3 style="font-weight: bold;">Predicates</h3>
-                                    </div>
-                                    <div *ngFor="let predicate of stubs[stubIndex].predicates; let predicateIndex = index; trackBy: predicateIndex">
-                                        <app-predicates 
-                                            (editUpdate)="editUpdate($event)"
-                                            (deleteUpdate)="deletePredicateUpdate($event, stubIndex)" 
-                                            [predicateIndex]="predicateIndex"
-                                            [predicate]="predicate">
-                                        </app-predicates>
-                                    </div>
-                                    <a style="text-decoration: underline; cursor: pointer;" (click)="addPredicate(stubs[stubIndex].stubID)">
-                                        Add Predicate</a>
-                                    <br><br><br>
-                                    <div>
-                                        <h3 style="font-weight: bold;">Responses</h3>
-                                    </div>
-                                    <div *ngFor="let response of stubs[stubIndex].responses; let responseIndex = index; trackBy: responseIndex">
-                                        <app-responses 
-                                            (editUpdate)="editUpdate($event)"
-                                            (deleteResponseUpdate)="deleteResponseUpdate($event, stubIndex)" 
-                                            [responseIndex]="responseIndex"
-                                            [response]="response" 
-                                            [hideCloseButton]="hideCloseButton"
-                                            [isEditImposter]="isEditImposter">
-                                        </app-responses>
-                                    </div>
-                                    <a style="text-decoration: underline; cursor: pointer;" (click)="addResponse(stubs[stubIndex].stubID)">
-                                        Add Response</a>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <a style="text-decoration: underline; cursor: pointer;" (click)="addStub()">
-                        Add Stub</a>
-
-                    <br><br><br>
-                    <button class="btn btn-primary" type="submit" [disabled]="!dependencyForm.valid"
-                        style="margin-right: 10px; width: 100%;">
-                        {{isEditImposter ? 'Edit' : 'Add'}} Dependency
-                    </button>
-                </form>
+              <div
+                style="
+                  padding-bottom: 30px;
+                  padding-left: 30px;
+                  padding-right: 30px;
+                  padding-top: 20px;
+                "
+              >
+                <div>
+                  <div>
+                    <h3 style="font-weight: bold">Predicates</h3>
+                  </div>
+                  <div
+                    *ngFor="
+                      let predicate of stubs[stubIndex].predicates;
+                      let predicateIndex = index;
+                      trackBy: predicateIndex
+                    "
+                  >
+                    <app-predicates
+                      (editUpdate)="editUpdate($event)"
+                      (deleteUpdate)="deletePredicateUpdate($event, stubIndex)"
+                      [predicateIndex]="predicateIndex"
+                      [predicate]="predicate"
+                      [protocol]="protocol.value"
+                      [port]="port.value"
+                    >
+                    </app-predicates>
+                  </div>
+                  <a
+                    style="text-decoration: underline; cursor: pointer"
+                    (click)="addPredicate(stubs[stubIndex].stubID)"
+                  >
+                    Add Predicate</a
+                  >
+                  <br /><br /><br />
+                  <div>
+                    <h3 style="font-weight: bold">Responses</h3>
+                  </div>
+                  <div
+                    *ngFor="
+                      let response of stubs[stubIndex].responses;
+                      let responseIndex = index;
+                      trackBy: responseIndex
+                    "
+                  >
+                    <app-responses
+                      (editUpdate)="editUpdate($event)"
+                      (deleteResponseUpdate)="
+                        deleteResponseUpdate($event, stubIndex)
+                      "
+                      [responseIndex]="responseIndex"
+                      [response]="response"
+                      [hideCloseButton]="hideCloseButton"
+                      [isEditImposter]="isEditImposter"
+                    >
+                    </app-responses>
+                  </div>
+                  <a
+                    style="text-decoration: underline; cursor: pointer"
+                    (click)="addResponse(stubs[stubIndex].stubID)"
+                  >
+                    Add Response</a
+                  >
+                </div>
+              </div>
             </div>
-        </div>
+          </div>
+
+          <a
+            style="text-decoration: underline; cursor: pointer"
+            (click)="addStub()"
+          >
+            Add Stub</a
+          >
+
+          <br /><br /><br />
+          <button
+            class="btn btn-primary"
+            type="submit"
+            [disabled]="!dependencyForm.valid"
+            style="margin-right: 10px; width: 100%"
+          >
+            {{ isEditImposter ? "Edit" : "Add" }} Dependency
+          </button>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
