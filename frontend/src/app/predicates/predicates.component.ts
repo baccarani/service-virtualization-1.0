@@ -1,70 +1,78 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { Predicate } from '../models/predicate';
-import { ImposterService } from '../services/imposter.service';
-import { FormBuilder, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from "@angular/core";
+import { Predicate } from "../models/predicate";
+import { ImposterService } from "../services/imposter.service";
+import { FormBuilder } from "@angular/forms";
+import { Subscription } from "rxjs";
+import { CommonService } from "../services/common.service";
 
 @Component({
-  selector: 'app-predicates',
-  templateUrl: './predicates.component.html',
-  styleUrls: ['./predicates.component.css']
+  selector: "app-predicates",
+  templateUrl: "./predicates.component.html",
+  styleUrls: ["./predicates.component.css"],
 })
 export class PredicatesComponent implements OnInit {
-  @ViewChild('options') options: ElementRef;
+  @ViewChild("options") options: ElementRef;
   @Input() predicateIndex: number = 0;
   @Input() predicate: Predicate = {
-    operator: '',
-    method: '',
-    path: '',
-    newpath: '',
-    data: '',
-    newOperator: '',
-    query: ''
+    operator: "",
+    method: "",
+    path: "",
+    newPath: "",
+    data: "",
+    newOperator: "",
+    query: "",
   };
   @Input() showEdit: boolean = false;
+  @Input() protocol: string;
+  @Input() port: number;
   @Output() beneficiaryUpdate = new EventEmitter();
   @Output() editUpdate = new EventEmitter();
   @Output() deleteUpdate = new EventEmitter();
 
-  genericPath = [
-    '/customer',
-    '/user',
-    'other'
-  ];
+  genericPath = ["/customer", "/user", "other"];
 
   operator = [
-    { name: 'equals'},
-    { name: 'deepEquals'},
-    { name: 'contains'},
-    { name: 'startsWith'},
-    { name: 'endsWith'},
-    { name: 'matches'},
-    { name: 'exists'},
-    { name: 'not'},
+    { name: "equals" },
+    { name: "deepEquals" },
+    { name: "contains" },
+    { name: "startsWith" },
+    { name: "endsWith" },
+    { name: "matches" },
+    { name: "exists" },
+    { name: "not" },
     // { name: 'or'},
     // { name: 'and'},
-    { name: 'inject'}
+    { name: "inject" },
   ];
 
   newOperator = [
-    { name: 'equals'},
-    { name: 'deepEquals'},
-    { name: 'contains'},
-    { name: 'startsWith'},
-    { name: 'endsWith'},
-    { name: 'matches'},
-    { name: 'exists'},
-    { name: 'inject'}
+    { name: "equals" },
+    { name: "deepEquals" },
+    { name: "contains" },
+    { name: "startsWith" },
+    { name: "endsWith" },
+    { name: "matches" },
+    { name: "exists" },
+    { name: "inject" },
   ];
-  
+
   predicateForm = this.formBuilder.group({
-    operator: [''],
-    method: [''],
-    path: [''],
-    newpath: [''],
-    data: [''],
-    newOperator: [''],
-    query: ['']
+    operator: [""],
+    method: [""],
+    path: [""],
+    newPath: [""],
+    data: [""],
+    newOperator: [""],
+    query: [""],
   });
 
   subPredicates: Predicate[] = [];
@@ -73,25 +81,36 @@ export class PredicatesComponent implements OnInit {
 
   private subscription: Subscription;
 
-  constructor(private imposterService: ImposterService, private formBuilder: FormBuilder) { }
+  constructor(
+    private imposterService: ImposterService,
+    private formBuilder: FormBuilder,
+    private cdRef: ChangeDetectorRef,
+    private commonService: CommonService
+  ) {}
 
   ngOnInit() {
-    this.predicateForm.setValue({
+    let filteredGenericPath = this.genericPath.filter((path) => path !== 'other');
+    let newPath = filteredGenericPath.includes(this.predicate.path) ? '' : this.predicate.path;
+    let predicateObject = {
       operator: this.predicate.operator,
       method: this.predicate.method,
-      path: this.predicate.path,
-      newpath: '',
+      path: newPath ? 'other' : this.predicate.path,
+      newPath: newPath,
       query: this.predicate.query,
-      data: '',
-      newOperator: '',
-    });
+      data: "",
+      newOperator: "",
+    };
+    this.predicateForm.setValue(predicateObject);
     this.subscription = this.predicateForm.valueChanges.subscribe(() => {
       this.updatePredicates();
     });
   }
 
-  onSubmit() {
+  ngAfterViewInit() {
+    this.cdRef.detectChanges();
   }
+
+  onSubmit() {}
 
   onDelete() {
     this.deleteUpdate.emit(this.predicateIndex);
@@ -110,26 +129,29 @@ export class PredicatesComponent implements OnInit {
   // }
 
   updatePredicates() {
-    const operator = this.predicateForm.get('operator').value;
-    const method = this.predicateForm.get('method').value;
-    const path = this.predicateForm.get('path').value;
-    const newpath = this.predicateForm.get('newpath').value;
-    const data = this.predicateForm.get('data').value
-    const newOperator = this.predicateForm.get('newOperator').value;
-    const query = this.predicateForm.get('query').value;
+    const operator = this.predicateForm.get("operator").value;
+    const method = this.predicateForm.get("method").value;
+    const path = this.predicateForm.get("path").value;
+    const newPath = this.predicateForm.get("newPath").value;
+    const data = this.predicateForm.get("data").value;
+    const newOperator = this.predicateForm.get("newOperator").value;
+    const query = this.predicateForm.get("query").value;
 
     this.predicate.operator = operator;
     this.predicate.method = method;
     this.predicate.path = path;
-    this.predicate.newpath = newpath;
+    this.predicate.newPath = newPath;
     this.predicate.data = data;
     this.predicate.newOperator = newOperator;
     this.predicate.query = query;
   }
 
   selectHideData() {
-    if (this.options.nativeElement.value == 'equals' || this.options.nativeElement.value == 'deepEquals' ||
-      this.options.nativeElement.value == 'and' || this.options.nativeElement.value == 'equals'
+    if (
+      this.options.nativeElement.value == "equals" ||
+      this.options.nativeElement.value == "deepEquals" ||
+      this.options.nativeElement.value == "and" ||
+      this.options.nativeElement.value == "equals"
     ) {
       this.predicateForm.controls.data.disable();
     } else {
@@ -139,5 +161,9 @@ export class PredicatesComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  getFormatedQuery(queryValue) {
+    return this.commonService.getFormatedQuery(queryValue);
   }
 }
