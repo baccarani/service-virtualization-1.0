@@ -57,7 +57,7 @@ export class ImposterService {
   }
 
   onAddStub() {
-    let newStub = {
+    const newStub = {
       stubID: Date.now(),
       predicates: [
         {
@@ -79,7 +79,7 @@ export class ImposterService {
   }
 
   onAddPredicate(stubID: number) {
-    let index = this.stubs.findIndex((stub) => stub.stubID === stubID);
+    const index = this.stubs.findIndex((stub) => stub.stubID === stubID);
     this.stubs[index].predicates.push({
       predicateID: Date.now(),
       operator: "",
@@ -93,7 +93,7 @@ export class ImposterService {
   }
 
   onAddResponse(stubID: number) {
-    let index = this.stubs.findIndex((stub) => stub.stubID === stubID);
+    const index = this.stubs.findIndex((stub) => stub.stubID === stubID);
     this.stubs[index].responses.push({
       responseID: Date.now(),
       statusCode: "",
@@ -115,7 +115,7 @@ export class ImposterService {
   }
 
   onDeleteStub(stubID) {
-    let index = this.stubs.findIndex((stub) => stub.stubID === stubID);
+    const index = this.stubs.findIndex((stub) => stub.stubID === stubID);
     this.stubs.splice(index, 1);
   }
 
@@ -134,7 +134,7 @@ export class ImposterService {
   onGetImposter() {
     return this.http.get(`http://localhost:5000/imposters`).pipe(
       mergeMap((responseData: any) => {
-        let imposterArray = responseData.imposters;
+        const imposterArray = responseData.imposters;
         return forkJoin(
           imposterArray.map((imposter: any) => {
             return this.http.get(
@@ -160,7 +160,7 @@ export class ImposterService {
   }
 
   onEditImposter(formValues: any) {
-    let formattedImposterData = this.formatImposterData(formValues, true);
+    const formattedImposterData = this.formatImposterData(formValues, true);
     return this.http
       .put(
         `http://localhost:5000/imposters/${formValues.port}/stubs`,

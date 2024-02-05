@@ -11,7 +11,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "prettier": "npx prettier --write .",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --fix"
   },
   "private": true,
   "dependencies": {
@@ -38,8 +38,8 @@
     "@angular/cli": "~14.2.7",
     "@angular/compiler-cli": "^14.2.0",
     "@types/jasmine": "~4.0.0",
-    "@typescript-eslint/eslint-plugin": "^6.20.0",
-    "@typescript-eslint/parser": "^6.20.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
     "eslint": "^8.56.0",
     "jasmine-core": "~4.3.0",
     "karma": "~6.4.0",

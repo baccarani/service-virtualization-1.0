@@ -64,10 +64,10 @@ export class AddDependencyComponent implements OnInit {
       this.stubs = this.imposterService.onGetStubs();
 
       this.data.imposter.stubs.forEach((stub) => {
-        let tempPredicates = [];
-        let tempResponses = [];
+        const tempPredicates = [];
+        const tempResponses = [];
         stub.predicates.forEach((operator) => {
-          let keys = Object.keys(operator);
+          const keys = Object.keys(operator);
 
           if (keys.length > 0 && keys[0] === "not") {
             const predicate = {

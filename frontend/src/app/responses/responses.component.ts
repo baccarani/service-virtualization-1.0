@@ -136,7 +136,7 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit() {
-    let responseObject = {
+    const responseObject = {
       statusCode: "",
       infoCode: "",
       successCode: "",
@@ -148,7 +148,7 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
     };
 
     const statusCode = this.response.statusCode;
-    let caseNumber = Math.floor(statusCode / 100);
+    const caseNumber = Math.floor(statusCode / 100);
 
     switch (caseNumber) {
       case 1:
@@ -236,7 +236,7 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
   }
 
   uploadFile(files: File[]) {
-    let file = files[0] || null;
+    const file = files[0] || null;
     if (file) {
       Papa.parse(file, {
         header: true,

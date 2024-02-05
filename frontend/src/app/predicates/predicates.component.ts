@@ -157,8 +157,8 @@ export class PredicatesComponent implements OnInit {
   }
 
   getFormatedQuery(queryVal: string) {
-    let queryObj = this.parseJson(queryVal);
-    let keys = Object.keys(queryObj) || null;
+    const queryObj = this.parseJson(queryVal);
+    const keys = Object.keys(queryObj) || null;
     let queryString = "";
     if (keys && keys.length > 0) {
       queryString = "?";
