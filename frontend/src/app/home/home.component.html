@@ -99,7 +99,7 @@
   <br />
   <div style="font-weight: bold; position: relative">
     <div style="padding-top: 7px">
-      Request Stub:
+      Imposter:
       {{ viewDependency.name }}
     </div>
     <button
@@ -127,6 +127,8 @@
     </button>
   </div>
   <br />
+  <!-- stubs can be more thatn 1, add a list ex. GET link, POST link etc. -->
+  <!-- <p> {{ viewDependency.protocol }}://localhost:{{ viewDependency.port }}{{ viewDependency.path }}{{ getFormatedQuery(viewDependency.query) }} </p> -->
   <div style="position: relative">
     <pre>{{ viewDependency | json }}</pre>
   </div>

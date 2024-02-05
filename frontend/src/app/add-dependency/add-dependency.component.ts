@@ -58,6 +58,7 @@ export class AddDependencyComponent implements OnInit {
         port: this.data.imposter.port,
         protocol: this.data.imposter.protocol,
       });
+      this.dependencyForm.get('protocol').disable();
 
       this.imposterService.onResetStubs();
       this.stubs = this.imposterService.onGetStubs();
@@ -73,10 +74,7 @@ export class AddDependencyComponent implements OnInit {
               operator: "not",
               method: operator.not.equals.method,
               path: operator.not.equals.path,
-              query: JSON.stringify(operator.not.equals.query).replace(
-                /\"([^(\")"]+)\":/g,
-                "$1:",
-              ),
+              query: JSON.stringify(operator.not.equals.query),
             };
             tempPredicates.push(predicate);
           } else {
