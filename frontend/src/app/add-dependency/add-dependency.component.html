@@ -13,19 +13,19 @@
                 <form [formGroup]="dependencyForm" (ngSubmit)="onSubmit()">
                     <!-- <h2>General Information</h2> -->
                     <div>
+                        <label>Name:</label>
+                        <input [readonly]="isEditImposter" type="text" name="name" required class="form-control" formControlName="name">
+                    </div><br>
+                    <div class="form-group">
+                        <label>Port:</label>
+                        <input [readonly]="isEditImposter" type="number" name="port" required class="form-control" formControlName="port" #port>
+                    </div><br>
+                    <div>
                         <label>Protocol:</label>
                         <select name="protocol" required class="form-control" formControlName="protocol" #protocol>
                             <option value="http">HTTP</option>
                             <option value="https">HTTPS</option>
                         </select>
-                    </div><br>
-                    <div class="form-group">
-                        <label>Port:</label>
-                        <input type="number" name="port" required class="form-control" formControlName="port" #port>
-                    </div><br>
-                    <div>
-                        <label>Name:</label>
-                        <input type="text" name="name" required class="form-control" formControlName="name">
                     </div><br>
                     <hr>
                     <h2>Stubs</h2>
@@ -73,7 +73,8 @@
                                             (deleteResponseUpdate)="deleteResponseUpdate($event, stubIndex)" 
                                             [responseIndex]="responseIndex"
                                             [response]="response" 
-                                            [hideCloseButton]="hideCloseButton">
+                                            [hideCloseButton]="hideCloseButton"
+                                            [isEditImposter]="isEditImposter">
                                         </app-responses>
                                     </div>
                                     <a style="text-decoration: underline; cursor: pointer;" (click)="addResponse(stubs[stubIndex].stubID)">
@@ -90,7 +91,7 @@
                     <br><br><br>
                     <button class="btn btn-primary" type="submit" [disabled]="!dependencyForm.valid"
                         style="margin-right: 10px; width: 100%;">
-                        Add Dependency
+                        {{isEditImposter ? 'Edit' : 'Add'}} Dependency
                     </button>
                 </form>
             </div>

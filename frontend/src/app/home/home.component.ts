@@ -1,10 +1,9 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { AddDependencyComponent } from '../add-dependency/add-dependency.component';
 import { ImposterService } from '../services/imposter.service';
 import { Store } from '@ngrx/store'
-import * as ImposterActions from '../store/imposter.actions'
 import { Clipboard } from '@angular/cdk/clipboard'
 import { switchMap } from 'rxjs/operators';
 
@@ -16,7 +15,6 @@ import { switchMap } from 'rxjs/operators';
 export class HomeComponent implements OnInit {
   imposterArray: any[] = [];
   viewDependency: any = '';
-  viewDependencyName: string = '';
   isCopyAll = false;
   copyAllButtonText = 'Copy All';
   copyJSONButtonText = 'Copy JSON';
@@ -25,15 +23,14 @@ export class HomeComponent implements OnInit {
   copyAllButtonColor = 'black';
   copyJSONButtonColor = 'black';
 
-
   constructor(private http: HttpClient,
     private matDialogModule: MatDialog,
     private imposterService: ImposterService,
     private store: Store<{ imposter: {} }>,
-    private clipboard: Clipboard) { }
+    private clipboard: Clipboard,
+    private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
-    // use services to load data and state
     this.imposterService.onGetImposter().subscribe(data => {
       this.imposterArray = data;
     });
@@ -44,30 +41,35 @@ export class HomeComponent implements OnInit {
       this.imposterArray = data;
     });
 
-    // use store and dispatch to load imposters with http
-    this.store.dispatch(new ImposterActions.AddImposter(this.imposterArray));
-
-    // get initial state from ngrx
-    let x = this.store.select('imposter');
-    x.subscribe(data => {
+    this.imposterService.updateImposterArray.pipe(
+      switchMap(() => this.imposterService.onGetImposter())
+    ).subscribe((data: any) => {
+      this.imposterArray = data;
+      this.onViewImposter(this.viewDependency?.port || null);
     })
   }
 
-  onViewImposter(data) {
-    this.imposterService.onViewImposter(data).subscribe(responseData => {
-      this.viewDependency = responseData;
-      this.viewDependencyName = this.viewDependency.name;
-    })
+  onViewImposter(port) {
+    if (port) {
+      this.imposterService.onViewImposter(port).subscribe(responseData => {
+        this.viewDependency = responseData;
+      })
+    }
   }
 
   onAddImposter() {
     this.matDialogModule.open(AddDependencyComponent);
   }
 
+  onEditImposter(imposter) {
+    this.matDialogModule.open(AddDependencyComponent, {
+      data: { imposter: imposter }
+    });
+  }
+
   onDeleteImposter(port, index) {
     this.imposterService.onDeleteImposter(port, index);
     this.viewDependency = '';
-    this.viewDependencyName = '';
   }
 
   onCopyJSON() {
@@ -94,7 +96,7 @@ export class HomeComponent implements OnInit {
     }, 2000);
   }
 
-  openPostman(data){
+  openPostman(data) {
     console.log('clicked');
     // window.open('postman://app', '_blank');
     //response for selected imposter
