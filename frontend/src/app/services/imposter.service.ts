@@ -138,11 +138,11 @@ export class ImposterService {
         return forkJoin(
           imposterArray.map((imposter: any) => {
             return this.http.get(
-              `http://localhost:5000/imposters/${imposter.port}`
+              `http://localhost:5000/imposters/${imposter.port}`,
             );
-          })
+          }),
         );
-      })
+      }),
     );
   }
 
@@ -164,7 +164,7 @@ export class ImposterService {
     return this.http
       .put(
         `http://localhost:5000/imposters/${formValues.port}/stubs`,
-        formattedImposterData
+        formattedImposterData,
       )
       .subscribe(
         (responseData) => {
@@ -172,7 +172,7 @@ export class ImposterService {
         },
         (error) => {
           console.error(error);
-        }
+        },
       );
   }
 
@@ -250,7 +250,7 @@ export class ImposterService {
       },
       (error) => {
         console.error(error);
-      }
+      },
     );
   }
 

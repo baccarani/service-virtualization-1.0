@@ -2,7 +2,6 @@ import { Predicate } from "./predicate";
 import { Response } from "./response";
 
 export interface Stubs {
-    predicates: Predicate[];
-    responses: Response[];
-  }
-  
+  predicates: Predicate[];
+  responses: Response[];
+}
