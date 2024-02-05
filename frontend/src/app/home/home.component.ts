@@ -6,6 +6,7 @@ import { ImposterService } from '../services/imposter.service';
 import { Store } from '@ngrx/store'
 import * as ImposterActions from '../store/imposter.actions'
 import { Clipboard } from '@angular/cdk/clipboard'
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -35,7 +36,13 @@ export class HomeComponent implements OnInit {
     // use services to load data and state
     this.imposterService.onGetImposter().subscribe(data => {
       this.imposterArray = data;
-    })
+    });
+
+    this.imposterService.notifyChanges.pipe(
+      switchMap(() => this.imposterService.onGetImposter())
+    ).subscribe((data) => {
+      this.imposterArray = data;
+    });
 
     // use store and dispatch to load imposters with http
     this.store.dispatch(new ImposterActions.AddImposter(this.imposterArray));

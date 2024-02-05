@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ImposterService } from '../services/imposter.service';
 import { Response } from '../models/response';
+import Papa from 'papaparse';
 
 @Component({
   selector: 'app-responses',
@@ -9,6 +10,7 @@ import { Response } from '../models/response';
   styleUrls: ['./responses.component.css']
 })
 export class ResponsesComponent implements OnInit {
+  @ViewChild('file') fileInput: ElementRef;
   @Input() index: number = 0;
   @Input() responseIndex: number = 0;
   @Input() response: Response = {
@@ -184,5 +186,26 @@ export class ResponsesComponent implements OnInit {
       // Add new predicate
       this.imposterService.onGetResponses().push(this.response);
     }
+  }
+
+  uploadFile(files: File[]) {
+    let file = files[0] || null;
+    if (file) {
+      Papa.parse(file, {
+        header: true,
+        complete: (results) => {
+          this.responseForm.patchValue({
+            body: JSON.stringify(results.data),
+          });
+        }
+      });
+    }
+  }
+
+  clearTextarea() {
+    this.fileInput.nativeElement.value = null;
+    this.responseForm.patchValue({
+      body: null
+    });
   }
 }

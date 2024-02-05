@@ -14,14 +14,14 @@
                     <!-- <h2>General Information</h2> -->
                     <div>
                         <label>Protocol:</label>
-                        <select name="protocol" required class="form-control" formControlName="protocol">
+                        <select name="protocol" required class="form-control" formControlName="protocol" #protocol>
                             <option value="http">HTTP</option>
                             <option value="https">HTTPS</option>
                         </select>
                     </div><br>
                     <div class="form-group">
                         <label>Port:</label>
-                        <input type="number" name="port" required class="form-control" formControlName="port">
+                        <input type="number" name="port" required class="form-control" formControlName="port" #port>
                     </div><br>
                     <div>
                         <label>Name:</label>
@@ -55,7 +55,10 @@
                                             (editUpdate)="editUpdate($event)"
                                             (deleteUpdate)="deletePredicateUpdate($event, stubIndex)" 
                                             [predicateIndex]="predicateIndex"
-                                            [predicate]="predicate">
+                                            [predicate]="predicate"
+                                            [protocol]="protocol.value"
+                                            [port]="port.value"
+                                            >
                                         </app-predicates>
                                     </div>
                                     <a style="text-decoration: underline; cursor: pointer;" (click)="addPredicate(stubs[stubIndex].stubID)">

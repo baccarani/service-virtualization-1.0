@@ -56,8 +56,9 @@
             </div><br>
             <div>
                 <label>Body:</label>
-                <textarea name="body" required class="form-control" formControlName="body"
-                    style="resize: none;"></textarea>
+                <br><input #file type="file" (change)="uploadFile($event.target.files)"/><br>
+                <textarea name="body" required class="form-control" formControlName="body" style="resize: none;"></textarea>
+                <br><button (click)="clearTextarea()">Clear</button>
             </div>
         </div>
     </div>

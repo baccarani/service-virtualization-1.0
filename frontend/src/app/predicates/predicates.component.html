@@ -46,7 +46,8 @@
 
             <div>
                 <label>Query:</label>
-                <input type="text" name="query" required class="form-control" formControlName="query">
+                <input type="text" #query name="query" required class="form-control" formControlName="query" placeholder='ex. { "id": 1 }'>
+                <p> preview: {{protocol}}://localhost/{{port}}{{ getFormatedQuery(query.value) }}</p>
             </div>
         </div>
     </div>

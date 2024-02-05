@@ -22,6 +22,8 @@ export class PredicatesComponent implements OnInit {
     query: ''
   };
   @Input() showEdit: boolean = false;
+  @Input() protocol: string;
+  @Input() port: number;
   @Output() beneficiaryUpdate = new EventEmitter();
   @Output() editUpdate = new EventEmitter();
   @Output() deleteUpdate = new EventEmitter();
@@ -144,6 +146,30 @@ export class PredicatesComponent implements OnInit {
     } else {
       this.predicateForm.controls.data.enable();
     }
+  }
+
+  parseJson(value: string) {
+    try {
+      return JSON.parse(value);
+    } catch (error) {
+      return {};
+    }
+  }
+
+  getFormatedQuery(queryVal: string) {
+    let queryObj = this.parseJson(queryVal);
+    let keys = Object.keys(queryObj) || null;
+    let queryString = '';
+    if (keys && keys.length > 0) {
+      queryString = '?';
+      keys.forEach((key, index) => {
+        queryString += `${key}=${queryObj[key]}`; 
+        if ((keys.length === 2 && index === 0) || (keys.length > 2 && index !== keys.length-1)) {
+          queryString += '&';
+        }
+      });
+    }
+    return queryString;
   }
 
   ngOnDestroy() {

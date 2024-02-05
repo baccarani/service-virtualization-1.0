@@ -1,16 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from "rxjs/operators";
+import { Observable, Subject, forkJoin } from 'rxjs';
+import { switchMap } from "rxjs/operators";
 // import { Predicate } from '../models/predicate';
 // import { Stubs } from '../models/stubs';
 
 @Injectable()
 export class ImposterService {
-    private imposterArray: any = null;
+    private imposterArray = []; //: any = null;
     private stubs = [];
     private predicates = [];
     private responses = [];
     // private subPredicates = [];
+    notifyChanges = new Subject();
 
     constructor(private http: HttpClient) { }
 
@@ -81,22 +83,17 @@ export class ImposterService {
     //     this.subPredicates.splice(index, 1);
     // }
 
-    onGetImposter() {
-        let imposterArray$ = [];
-        this.imposterArray = this.http
-            .get(`http://localhost:5000/imposters`)
-            .pipe(map((responseData) => {
-                this.imposterArray = responseData;
-                this.imposterArray = this.imposterArray.imposters;
-                for (let index = 0; index < this.imposterArray.length; index++) {
-                    this.http.get(`http://localhost:5000/imposters/${this.imposterArray[index].port}`).subscribe(data => {
-                        imposterArray$.push(data);
-                        imposterArray$.sort((a, b) => a.port - b.port);
+    onGetImposter(): Observable<any> {
+        return this.http.get(`http://localhost:5000/imposters`).pipe(
+            switchMap((responseData: any) => {
+                let imposterArray = responseData.imposters;
+                return forkJoin(
+                    imposterArray.map((imposter: any) => {
+                        return this.http.get(`http://localhost:5000/imposters/${imposter.port}`);
                     })
-                }
-                return this.imposterArray = imposterArray$;
-            }))
-        return this.imposterArray;
+                )
+            })
+        );
     }
 
     onViewImposter(data) {
@@ -109,6 +106,7 @@ export class ImposterService {
             .delete(`http://localhost:5000/imposters/${port}`)
             .subscribe(data => {
                 this.imposterArray.splice(index, 1);
+                this.notifyChanges.next();
             })
     }
 
@@ -186,6 +184,7 @@ export class ImposterService {
                 this.imposterArray.sort((a, b) => {
                     return a.port - b.port;
                 });
+                this.notifyChanges.next();
             },
             (error) => {
                 console.error(error);
