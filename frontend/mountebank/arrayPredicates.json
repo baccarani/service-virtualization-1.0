@@ -3,20 +3,28 @@
   "port": 3000,
   "stubs": [
     {
-      "predicates": [{
-        "equals": { "query": { "q": "Ryan" } }
-      }],
-      "responses": [{
-        "is": { "body": "My Name is Ryan" }
-      }]
+      "predicates": [
+        {
+          "equals": { "query": { "q": "Ryan" } }
+        }
+      ],
+      "responses": [
+        {
+          "is": { "body": "My Name is Ryan" }
+        }
+      ]
     },
     {
-      "predicates": [{
-        "equals": { "query": {"q": "Baccarani"} }
-      }],
-      "responses": [{
-        "is": { "body": "My Family Name is Baccarani" }
-      }]
+      "predicates": [
+        {
+          "equals": { "query": { "q": "Baccarani" } }
+        }
+      ],
+      "responses": [
+        {
+          "is": { "body": "My Family Name is Baccarani" }
+        }
+      ]
     }
   ]
 }
