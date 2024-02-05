@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
-import { Predicate } from "src/app/models/predicate";
 import { ImposterService } from "src/app/services/imposter.service";
 
 @Component({

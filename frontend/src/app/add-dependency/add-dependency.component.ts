@@ -1,13 +1,12 @@
 import { HttpClient } from "@angular/common/http";
 import {
   Component,
-  EventEmitter,
   Inject,
   Input,
   OnInit,
   Output,
 } from "@angular/core";
-import { FormBuilder, FormControl } from "@angular/forms";
+import { FormBuilder } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
 import { Predicate } from "../models/predicate";
 import { Response } from "../models/response";

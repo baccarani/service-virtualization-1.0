@@ -1,10 +1,7 @@
 import {
   ChangeDetectorRef,
   Component,
-  ElementRef,
-  Input,
   OnInit,
-  ViewChild,
 } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { MatDialog } from "@angular/material/dialog";

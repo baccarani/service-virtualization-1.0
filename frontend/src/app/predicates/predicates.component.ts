@@ -9,7 +9,7 @@ import {
 } from "@angular/core";
 import { Predicate } from "../models/predicate";
 import { ImposterService } from "../services/imposter.service";
-import { FormBuilder, Validators } from "@angular/forms";
+import { FormBuilder } from "@angular/forms";
 import { Subscription } from "rxjs";
 
 @Component({
