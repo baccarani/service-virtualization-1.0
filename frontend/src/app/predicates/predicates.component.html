@@ -107,7 +107,8 @@
           formControlName="query"
           placeholder='ex. { "id": 1 }'
         />
-        <p>
+        <br>
+        <p *ngIf="protocol && query.value">
           {{ protocol }}://localhost:{{ port }}{{ path.value !== 'other' ? path.value : newPath.value }}{{ getFormatedQuery(query.value) }}
         </p>
       </div>
