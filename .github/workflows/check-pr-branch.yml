@@ -1,29 +1,16 @@
 name: Check PR Source Branch
-
 on:
-
   pull_request:
-
     branches:
-
       - main
-
 jobs:
-
   check_source_branch:
-
     runs-on: ubuntu-latest
-
+    if: github.base_ref == 'main'
     steps:
-
       - name: Fail if source branch is not 'dev'
-
         run: |
-
           if [[ "${{ github.head_ref }}" != "dev" ]]; then
-
             echo "Pull requests to 'main' must come from 'dev'."
-
             exit 1
-
           fi
