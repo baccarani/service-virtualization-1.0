@@ -5,7 +5,9 @@ import { mergeMap } from "rxjs/operators";
 // import { Predicate } from '../models/predicate';
 // import { Stubs } from '../models/stubs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ImposterService {
   private imposterArray: any = [];
   private stubs = [];
@@ -26,7 +28,7 @@ export class ImposterService {
             operator: "",
             method: "",
             path: "",
-            newpath: "",
+            newPath: "",
             data: "",
             newOperator: "",
             query: "",
@@ -65,7 +67,7 @@ export class ImposterService {
           operator: "",
           method: "",
           path: "",
-          newpath: "",
+          newPath: "",
           data: "",
           newOperator: "",
           query: "",
@@ -85,7 +87,7 @@ export class ImposterService {
       operator: "",
       method: "",
       path: "",
-      newpath: "",
+      newPath: "",
       data: "",
       newOperator: "",
       query: "",
@@ -183,7 +185,7 @@ export class ImposterService {
         const query = JSON.parse(predicate.query) || {};
         let updatePath;
         if (predicate.path == "other") {
-          updatePath = predicate.newpath;
+          updatePath = predicate.newPath;
         } else {
           updatePath = predicate.path;
         }

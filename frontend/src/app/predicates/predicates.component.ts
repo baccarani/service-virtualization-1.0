@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -11,6 +12,7 @@ import { Predicate } from "../models/predicate";
 import { ImposterService } from "../services/imposter.service";
 import { FormBuilder } from "@angular/forms";
 import { Subscription } from "rxjs";
+import { CommonService } from "../services/common.service";
 
 @Component({
   selector: "app-predicates",
@@ -24,7 +26,7 @@ export class PredicatesComponent implements OnInit {
     operator: "",
     method: "",
     path: "",
-    newpath: "",
+    newPath: "",
     data: "",
     newOperator: "",
     query: "",
@@ -67,7 +69,7 @@ export class PredicatesComponent implements OnInit {
     operator: [""],
     method: [""],
     path: [""],
-    newpath: [""],
+    newPath: [""],
     data: [""],
     newOperator: [""],
     query: [""],
@@ -82,21 +84,30 @@ export class PredicatesComponent implements OnInit {
   constructor(
     private imposterService: ImposterService,
     private formBuilder: FormBuilder,
+    private cdRef: ChangeDetectorRef,
+    private commonService: CommonService
   ) {}
 
   ngOnInit() {
-    this.predicateForm.setValue({
+    let filteredGenericPath = this.genericPath.filter((path) => path !== 'other');
+    let newPath = filteredGenericPath.includes(this.predicate.path) ? '' : this.predicate.path;
+    let predicateObject = {
       operator: this.predicate.operator,
       method: this.predicate.method,
-      path: this.predicate.path,
-      newpath: "",
+      path: newPath ? 'other' : this.predicate.path,
+      newPath: newPath,
       query: this.predicate.query,
       data: "",
       newOperator: "",
-    });
+    };
+    this.predicateForm.setValue(predicateObject);
     this.subscription = this.predicateForm.valueChanges.subscribe(() => {
       this.updatePredicates();
     });
+  }
+
+  ngAfterViewInit() {
+    this.cdRef.detectChanges();
   }
 
   onSubmit() {}
@@ -121,7 +132,7 @@ export class PredicatesComponent implements OnInit {
     const operator = this.predicateForm.get("operator").value;
     const method = this.predicateForm.get("method").value;
     const path = this.predicateForm.get("path").value;
-    const newpath = this.predicateForm.get("newpath").value;
+    const newPath = this.predicateForm.get("newPath").value;
     const data = this.predicateForm.get("data").value;
     const newOperator = this.predicateForm.get("newOperator").value;
     const query = this.predicateForm.get("query").value;
@@ -129,7 +140,7 @@ export class PredicatesComponent implements OnInit {
     this.predicate.operator = operator;
     this.predicate.method = method;
     this.predicate.path = path;
-    this.predicate.newpath = newpath;
+    this.predicate.newPath = newPath;
     this.predicate.data = data;
     this.predicate.newOperator = newOperator;
     this.predicate.query = query;
@@ -148,34 +159,11 @@ export class PredicatesComponent implements OnInit {
     }
   }
 
-  parseJson(value: string) {
-    try {
-      return JSON.parse(value);
-    } catch (error) {
-      return {};
-    }
-  }
-
-  getFormatedQuery(queryVal: string) {
-    const queryObj = this.parseJson(queryVal);
-    const keys = Object.keys(queryObj) || null;
-    let queryString = "";
-    if (keys && keys.length > 0) {
-      queryString = "?";
-      keys.forEach((key, index) => {
-        queryString += `${key}=${queryObj[key]}`;
-        if (
-          (keys.length === 2 && index === 0) ||
-          (keys.length > 2 && index !== keys.length - 1)
-        ) {
-          queryString += "&";
-        }
-      });
-    }
-    return queryString;
-  }
-
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  getFormatedQuery(queryValue) {
+    return this.commonService.getFormatedQuery(queryValue);
   }
 }

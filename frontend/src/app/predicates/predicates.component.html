@@ -86,10 +86,11 @@
         <div [hidden]="path.value == 'other' ? false : true">
           <br /><input
             type="text"
-            name="newpath"
+            name="newPath"
             required
             class="form-control"
-            formControlName="newpath"
+            formControlName="newPath"
+            #newPath
           />
         </div>
       </div>
@@ -107,8 +108,7 @@
           placeholder='ex. { "id": 1 }'
         />
         <p>
-          preview: {{ protocol }}://localhost/{{ port
-          }}{{ getFormatedQuery(query.value) }}
+          {{ protocol }}://localhost:{{ port }}{{ path.value !== 'other' ? path.value : newPath.value }}{{ getFormatedQuery(query.value) }}
         </p>
       </div>
     </div>

@@ -1,5 +1,4 @@
 import {
-  ChangeDetectorRef,
   Component,
   OnInit,
 } from "@angular/core";
@@ -10,6 +9,7 @@ import { ImposterService } from "../services/imposter.service";
 import { Store } from "@ngrx/store";
 import { Clipboard } from "@angular/cdk/clipboard";
 import { switchMap } from "rxjs/operators";
+import { CommonService } from "../services/common.service";
 
 @Component({
   selector: "app-home",
@@ -33,7 +33,8 @@ export class HomeComponent implements OnInit {
     private imposterService: ImposterService,
     private store: Store<{ imposter: {} }>,
     private clipboard: Clipboard,
-    private cdRef: ChangeDetectorRef,
+    private commonService: CommonService,
+
   ) {}
 
   ngOnInit() {
@@ -104,5 +105,9 @@ export class HomeComponent implements OnInit {
     //   console.log(res);
     // });
     this.imposterService.onExportImposter(6001);
+  }
+
+  getFormatedQuery(queryValue) {
+    return this.commonService.getFormatedQuery(queryValue);
   }
 }

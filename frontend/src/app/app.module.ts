@@ -9,7 +9,6 @@ import { AppRoutingModule } from "./app-routing.module";
 import { HomeComponent } from "./home/home.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AddDependencyComponent } from "./add-dependency/add-dependency.component";
-import { ImposterService } from "./services/imposter.service";
 import { StoreModule } from "@ngrx/store";
 import { imposterReducer } from "./store/imposter.reducer";
 import { MatButtonModule } from "@angular/material/button";
@@ -46,7 +45,7 @@ import { StubsComponent } from "./stubs/stubs.component";
     StoreModule.forRoot({ imposter: imposterReducer }),
     MatMenuModule,
   ],
-  providers: [ImposterService],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

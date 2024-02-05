@@ -30,6 +30,7 @@ node_modules
 logs
 *.log
 npm-debug.log*
+/backend/*.log
 
 # TypeScript cache
 *.tsbuildinfo
