@@ -228,7 +228,7 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
       );
     if (index > -1) {
       // Update existing predicate
-      this.imposterService.onGetResponses()[index] = this.response;
+      //this.imposterService.onGetResponses()[index] = this.response;
     } else {
       // Add new predicate
       this.imposterService.onGetResponses().push(this.response);

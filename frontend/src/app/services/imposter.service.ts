@@ -32,6 +32,8 @@ export class ImposterService {
             data: "",
             newOperator: "",
             query: "",
+            headers: null,
+            body: ""
           },
         ],
         responses: [
@@ -71,6 +73,8 @@ export class ImposterService {
           data: "",
           newOperator: "",
           query: "",
+          headers: null,
+          body: ""
         },
       ],
       responses: [
@@ -91,6 +95,8 @@ export class ImposterService {
       data: "",
       newOperator: "",
       query: "",
+      headers: null,
+      body: ""
     });
   }
 
@@ -182,7 +188,12 @@ export class ImposterService {
     const stubs = this.stubs.map((stub) => {
       const predicates = stub.predicates.map((predicate) => {
         const operator = predicate.operator;
-        const query = JSON.parse(predicate.query) || {};
+        let query;
+        try {
+          query = JSON.parse(predicate.query);
+        } catch(error) {
+          query = {};
+        }
         let updatePath;
         if (predicate.path == "other") {
           updatePath = predicate.newPath;
@@ -202,23 +213,45 @@ export class ImposterService {
             ],
           };
         } else if (operator === "not") {
-          return {
+          let predicateObj = {
             [operator]: {
               equals: {
                 method: predicate.method,
                 path: updatePath,
-                query: query,
               },
             },
           };
+          switch(predicate.method) {
+            case('GET'):
+            case('DELETE'):
+              predicateObj[operator].equals['query'] = query;
+              break;
+            case('POST'):
+            case('PUT'):
+              predicateObj[operator].equals['headers'] = (isEditImposter ? predicate.headers : JSON.parse(predicate.headers)) || {};
+              predicateObj[operator].equals['body'] =  JSON.parse(predicate.body) || {};
+              break;
+          }
+          return predicateObj;
         } else {
-          return {
+          let predicateObj = {
             [operator]: {
               method: predicate.method,
               path: updatePath,
-              query: query,
             },
           };
+          switch(predicate.method) {
+            case('GET'):
+            case('DELETE'):
+              predicateObj[operator]['query'] = query;
+              break;
+            case('POST'):
+            case('PUT'):
+              predicateObj[operator]['headers'] = JSON.parse(predicate.headers) || {};
+              predicateObj[operator]['body'] =  JSON.parse(predicate.body) || {};
+              break;
+          }
+          return predicateObj;
         }
       });
       const responses = stub.responses.map((response) => {

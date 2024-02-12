@@ -75,6 +75,8 @@ export class AddDependencyComponent implements OnInit {
               method: operator.not.equals.method,
               path: operator.not.equals.path,
               query: JSON.stringify(operator.not.equals.query),
+              headers: operator.not.equals.headers,
+              body: JSON.stringify(operator.not.equals.body)
             };
             tempPredicates.push(predicate);
           } else {
@@ -83,6 +85,8 @@ export class AddDependencyComponent implements OnInit {
               method: operator[keys[0]].method,
               path: operator[keys[0]].path,
               query: JSON.stringify(operator[keys[0]].query), // turning into a string to display it in the form on the UI
+              headers: operator[keys[0]].headers,
+              body: JSON.stringify(operator[keys[0]].body)
             };
             tempPredicates.push(predicate);
           }

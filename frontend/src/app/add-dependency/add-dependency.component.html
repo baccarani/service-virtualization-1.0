@@ -15,7 +15,7 @@
   <div>
     <p>Fill in the below form to add your dependency.</p>
     <br />
-    <div class="container" style="max-width: 400px">
+    <div class="container" style="max-width: 600px">
       <div class="row">
         <form [formGroup]="dependencyForm" (ngSubmit)="onSubmit()">
           <!-- <h2>General Information</h2> -->
@@ -121,6 +121,7 @@
                       [predicate]="predicate"
                       [protocol]="protocol.value"
                       [port]="port.value"
+                      [isEditImposter]="isEditImposter"
                     >
                     </app-predicates>
                   </div>
