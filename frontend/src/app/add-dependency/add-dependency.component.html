@@ -115,6 +115,7 @@
                     "
                   >
                     <app-predicates
+                      #predicateComponent
                       (editUpdate)="editUpdate($event)"
                       (deleteUpdate)="deletePredicateUpdate($event, stubIndex)"
                       [predicateIndex]="predicateIndex"
@@ -143,6 +144,7 @@
                     "
                   >
                     <app-responses
+                      #responsesComponent
                       (editUpdate)="editUpdate($event)"
                       (deleteResponseUpdate)="
                         deleteResponseUpdate($event, stubIndex)

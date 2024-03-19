@@ -1,1 +1,6 @@
-export const HEADERS = [{ "Content-Type": "application/json" }];
+export const HEADERS = [
+  {
+    id: 1,
+    value: { "Content-Type": "application/json" },
+  },
+];

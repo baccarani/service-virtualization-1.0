@@ -9,7 +9,7 @@ import { mergeMap } from "rxjs/operators";
   providedIn: 'root'
 })
 export class ImposterService {
-  private imposterArray: any = [];
+  private imposterArray: unknown[] = [];
   private stubs = [];
   private predicates = [];
   private responses = [];
@@ -37,7 +37,7 @@ export class ImposterService {
           },
         ],
         responses: [
-          { responseID: Date.now(), statusCode: "", headers: "", body: "" },
+          { responseID: Date.now(), statusCode: "", headers: null, body: "" },
         ],
       };
       this.stubs.push(defaultStubs);
@@ -78,7 +78,7 @@ export class ImposterService {
         },
       ],
       responses: [
-        { responseID: Date.now(), statusCode: "", headers: "", body: "" },
+        { responseID: Date.now(), statusCode: "", headers: null, body: "" },
       ],
     };
     this.stubs.push(newStub);
@@ -105,7 +105,7 @@ export class ImposterService {
     this.stubs[index].responses.push({
       responseID: Date.now(),
       statusCode: "",
-      headers: "",
+      headers: null,
       body: "",
     });
   }
@@ -213,7 +213,7 @@ export class ImposterService {
             ],
           };
         } else if (operator === "not") {
-          let predicateObj = {
+          const predicateObj = {
             [operator]: {
               equals: {
                 method: predicate.method,
@@ -228,13 +228,13 @@ export class ImposterService {
               break;
             case('POST'):
             case('PUT'):
-              predicateObj[operator].equals['headers'] = (isEditImposter ? predicate.headers : JSON.parse(predicate.headers)) || {};
+              predicateObj[operator].equals['headers'] = JSON.parse(predicate.headers) || {};
               predicateObj[operator].equals['body'] =  JSON.parse(predicate.body) || {};
               break;
           }
           return predicateObj;
         } else {
-          let predicateObj = {
+          const predicateObj = {
             [operator]: {
               method: predicate.method,
               path: updatePath,
@@ -256,9 +256,7 @@ export class ImposterService {
       });
       const responses = stub.responses.map((response) => {
         const statusCode = response.statusCode;
-        const headers =
-          (isEditImposter ? response.headers : JSON.parse(response.headers)) ||
-          {};
+        const headers = JSON.parse(response.headers) || {};
         const body = JSON.parse(response.body) || {};
         return {
           is: { statusCode: statusCode, headers: headers, body: body },

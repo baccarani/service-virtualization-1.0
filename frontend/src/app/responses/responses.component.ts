@@ -15,6 +15,8 @@ import { ImposterService } from "../services/imposter.service";
 import { Response } from "../models/response";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import Papa from "papaparse";
+import { HEADERS } from "../models/constants";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-responses",
@@ -27,7 +29,7 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
   @Input() responseIndex: number = 0;
   @Input() response: Response = {
     statusCode: "",
-    headers: "",
+    headers: null,
     body: "",
   };
   @Output() deleteUpdate = new EventEmitter();
@@ -114,7 +116,7 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
     "511",
   ];
 
-  headers = [{ "Content-Type": "application/json" }];
+  headers = HEADERS;
   responseForm = this.formBuilder.group({
     statusCode: [""],
     infoCode: [""],
@@ -122,20 +124,24 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
     redirectCode: [""],
     clientCode: [""],
     serverCode: [""],
-    headers: [""],
+    headers: [null],
     body: [""],
   });
   @Input() hideCloseButton: boolean;
   @Input() isEditImposter: boolean = false;
 
+  private subscription: Subscription;
+  
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: unknown,
     private formBuilder: FormBuilder,
     private imposterService: ImposterService,
     private cdRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
+    const headersValue = this.headers.filter(header => JSON.stringify(header.value) === JSON.stringify(this.response.headers))[0];
+
     const responseObject = {
       statusCode: "",
       infoCode: "",
@@ -143,8 +149,8 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
       redirectCode: "",
       clientCode: "",
       serverCode: "",
-      headers: this.response.headers,
-      body: this.response.body,
+      headers: headersValue?.id ?? null,
+      body: this.response.body ?? null,
     };
 
     const statusCode = this.response.statusCode;
@@ -174,9 +180,8 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
     }
 
     this.responseForm.setValue(responseObject);
-    this.responseForm.valueChanges.subscribe(() => {
+    this.subscription = this.responseForm.valueChanges.subscribe(() => {
       this.updateResponses();
-      this.cdRef.detectChanges();
     });
   }
 
@@ -191,13 +196,13 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
   }
 
   updateResponses() {
-    const statusCode = this.responseForm.get("statusCode").value;
+    //const statusCode = this.responseForm.get("statusCode").value;
     const infoCode = Number(this.responseForm.get("infoCode").value);
     const successCode = Number(this.responseForm.get("successCode").value);
     const redirectCode = Number(this.responseForm.get("redirectCode").value);
     const clientCode = Number(this.responseForm.get("clientCode").value);
     const serverCode = Number(this.responseForm.get("serverCode").value);
-    const headers = this.responseForm.get("headers").value;
+    const headersId = this.responseForm.get("headers").value;
     const body = this.responseForm.get("body").value;
 
     if (infoCode) {
@@ -215,24 +220,24 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
     if (serverCode) {
       this.response.statusCode = serverCode;
     }
-    this.response.headers = headers;
+    this.response.headers = JSON.stringify(this.headers.filter(header => header.id === +headersId)[0]?.value ?? '');
     this.response.body = body;
 
-    const index = this.imposterService
-      .onGetResponses()
-      .findIndex(
-        (p) =>
-          p.statusCode === statusCode &&
-          p.headers === headers &&
-          p.body === body,
-      );
-    if (index > -1) {
-      // Update existing predicate
-      //this.imposterService.onGetResponses()[index] = this.response;
-    } else {
-      // Add new predicate
-      this.imposterService.onGetResponses().push(this.response);
-    }
+    // const index = this.imposterService
+    //   .onGetResponses()
+    //   .findIndex(
+    //     (p) =>
+    //       p.statusCode === statusCode &&
+    //       p.headers === headers &&
+    //       p.body === body,
+    //   );
+    // if (index > -1) {
+    //   // Update existing predicate
+    //   //this.imposterService.onGetResponses()[index] = this.response;
+    // } else {
+    //   // Add new predicate
+    //   this.imposterService.onGetResponses().push(this.response);
+    // }
   }
 
   uploadFile(files: File[]) {
@@ -254,5 +259,9 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
     this.responseForm.patchValue({
       body: null,
     });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

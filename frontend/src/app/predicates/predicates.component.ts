@@ -13,6 +13,7 @@ import { ImposterService } from "../services/imposter.service";
 import { FormBuilder } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { CommonService } from "../services/common.service";
+import { HEADERS } from "../models/constants";
 
 @Component({
   selector: "app-predicates",
@@ -42,12 +43,7 @@ export class PredicatesComponent implements OnInit {
   @Input() isEditImposter: boolean = false;
 
   genericPath = ["/customer", "/user", "other"];
-  headers = [
-    {
-      id: 1,
-      value: { "Content-Type": "application/json" }
-    }
-  ];
+  headers = HEADERS;
 
   operator = [
     { name: "equals" },
@@ -100,11 +96,11 @@ export class PredicatesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    let filteredGenericPath = this.genericPath.filter((path) => path !== 'other');
-    let newPath = filteredGenericPath.includes(this.predicate.path) ? '' : this.predicate.path;
-    let headersValue = this.headers.filter(header => JSON.stringify(header.value) === JSON.stringify(this.predicate.headers))[0];
+    const filteredGenericPath = this.genericPath.filter((path) => path !== 'other');
+    const newPath = filteredGenericPath.includes(this.predicate.path) ? '' : this.predicate.path;
+    const headersValue = this.headers.filter(header => JSON.stringify(header.value) === JSON.stringify(this.predicate.headers))[0];
 
-    let predicateObject = {
+    const predicateObject = {
       operator: this.predicate.operator,
       method: this.predicate.method,
       path: newPath ? 'other' : this.predicate.path,

@@ -5,6 +5,7 @@ import {
   Input,
   OnInit,
   Output,
+  ViewChild,
 } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
@@ -13,6 +14,8 @@ import { Response } from "../models/response";
 import { ImposterService } from "../services/imposter.service";
 import { Stubs } from "../models/stubs";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { PredicatesComponent } from "../predicates/predicates.component";
+import { ResponsesComponent } from "../responses/responses.component";
 
 @Component({
   selector: "app-add-dependency",
@@ -20,6 +23,8 @@ import { MAT_DIALOG_DATA } from "@angular/material/dialog";
   styleUrls: ["./add-dependency.component.css"],
 })
 export class AddDependencyComponent implements OnInit {
+  @ViewChild("predicateComponent") predicateComponent: PredicatesComponent;
+  @ViewChild("responsesComponent") responsesComponent: ResponsesComponent;
   protocols = ["http", "https", "tcp"];
   methods = ["GET", "POST", "PUT"];
   stubs: Stubs[] = [];
@@ -126,6 +131,9 @@ export class AddDependencyComponent implements OnInit {
 
   onSubmit() {
     if (this.isEditImposter) {
+      this.predicateComponent.updatePredicates();
+      this.responsesComponent.updateResponses();
+      
       this.imposterService.onEditImposter(this.dependencyForm.value);
     } else {
       this.imposterService.onCreateImposter(this.dependencyForm.value);
