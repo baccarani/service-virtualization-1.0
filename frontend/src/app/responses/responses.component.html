@@ -41,6 +41,7 @@
           class="form-control"
           formControlName="statusCode"
           #code
+          (change)="onStatusCodeChange($event.target.value)"
         >
           <option selected value="">Please select an option</option>
           <option *ngFor="let opt of statusCode" [value]="opt">
@@ -167,9 +168,10 @@
           style="resize: none"
           placeholder="{}"
         ></textarea>
+        <br>
         <p *ngIf="responseForm.get('body').errors && 
                   responseForm.get('body').hasError('invalidJson')"
-          style="margin: 0;">
+          style="margin: 0; color:red;">
           *Invalid JSON
         </p>
         <br /><button (click)="clearTextarea()">Clear</button>

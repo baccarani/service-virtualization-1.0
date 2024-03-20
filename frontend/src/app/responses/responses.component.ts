@@ -265,4 +265,50 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
+
+  onStatusCodeChange(statusCode) {
+    switch (statusCode) {
+      case this.statusCode[0]:
+        this.responseForm.patchValue({
+          successCode: null,
+          redirectCode: null,
+          clientCode: null,
+          serverCode: null
+        });
+        break;
+      case this.statusCode[1]:
+        this.responseForm.patchValue({
+          infoCode: null,
+          redirectCode: null,
+          clientCode: null,
+          serverCode: null
+        });
+        break;
+      case this.statusCode[2]:
+        this.responseForm.patchValue({
+          infoCode: null,
+          successCode: null,
+          clientCode: null,
+          serverCode: null,
+        });
+        break;
+      case this.statusCode[3]:
+        this.responseForm.patchValue({
+          infoCode: null,
+          successCode: null,
+          redirectCode: null,
+          serverCode: null
+        });
+        break;
+      case this.statusCode[4]:
+        this.responseForm.patchValue({
+          infoCode: null,
+          successCode: null,
+          redirectCode: null,
+          clientCode: null
+        });
+        break;
+    }
+
+  }
 }
