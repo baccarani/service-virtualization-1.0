@@ -89,7 +89,7 @@
                   mat-icon-button
                   style="padding-top: 10px"
                   color="basic"
-                  (click)="deleteStubUpdate(stub.stubID)"
+                  (click)="deleteStubUpdate(stub.stubID, stubIndex)"
                 >
                   <mat-icon>close</mat-icon>
                 </button>
@@ -123,12 +123,13 @@
                       [protocol]="protocol.value"
                       [port]="port.value"
                       [isEditImposter]="isEditImposter"
+                      [predicateForm]="getPredicateFormGroup(stubIndex, predicateIndex)"
                     >
                     </app-predicates>
                   </div>
                   <a
                     style="text-decoration: underline; cursor: pointer"
-                    (click)="addPredicate(stubs[stubIndex].stubID)"
+                    (click)="addPredicate(stubs[stubIndex].stubID, stubIndex)"
                   >
                     Add Predicate</a
                   >
@@ -153,12 +154,13 @@
                       [response]="response"
                       [hideCloseButton]="hideCloseButton"
                       [isEditImposter]="isEditImposter"
+                      [responseForm]="getResponseFormGroup(stubIndex, responseIndex)"
                     >
                     </app-responses>
                   </div>
                   <a
                     style="text-decoration: underline; cursor: pointer"
-                    (click)="addResponse(stubs[stubIndex].stubID)"
+                    (click)="addResponse(stubs[stubIndex].stubID, stubIndex)"
                   >
                     Add Response</a
                   >

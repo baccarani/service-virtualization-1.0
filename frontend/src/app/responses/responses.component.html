@@ -165,7 +165,13 @@
           class="form-control"
           formControlName="body"
           style="resize: none"
+          placeholder="{}"
         ></textarea>
+        <p *ngIf="responseForm.get('body').errors && 
+                  responseForm.get('body').hasError('invalidJson')"
+          style="margin: 0;">
+          *Invalid JSON
+        </p>
         <br /><button (click)="clearTextarea()">Clear</button>
       </div>
     </div>

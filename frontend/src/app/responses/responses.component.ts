@@ -10,7 +10,7 @@ import {
   Output,
   ViewChild,
 } from "@angular/core";
-import { FormBuilder } from "@angular/forms";
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { ImposterService } from "../services/imposter.service";
 import { Response } from "../models/response";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
@@ -34,6 +34,7 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
   };
   @Output() deleteUpdate = new EventEmitter();
   @Output() deleteResponseUpdate = new EventEmitter();
+  @Input() responseForm: FormGroup;
 
   statusCode = [
     "Informational responses (100 to 199)",
@@ -117,16 +118,16 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
   ];
 
   headers = HEADERS;
-  responseForm = this.formBuilder.group({
-    statusCode: [""],
-    infoCode: [""],
-    successCode: [""],
-    redirectCode: [""],
-    clientCode: [""],
-    serverCode: [""],
-    headers: [null],
-    body: [""],
-  });
+  // responseForm = this.formBuilder.group({
+  //   statusCode: [""],
+  //   infoCode: [""],
+  //   successCode: [""],
+  //   redirectCode: [""],
+  //   clientCode: [""],
+  //   serverCode: [""],
+  //   headers: [null],
+  //   body: ["", [jsonValidator()]],
+  // });
   @Input() hideCloseButton: boolean;
   @Input() isEditImposter: boolean = false;
 

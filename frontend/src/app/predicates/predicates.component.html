@@ -89,7 +89,7 @@
           <br /><input
             type="text"
             name="newPath"
-            required
+            [required]="path.value == 'other'"
             class="form-control"
             formControlName="newPath"
             #newPath

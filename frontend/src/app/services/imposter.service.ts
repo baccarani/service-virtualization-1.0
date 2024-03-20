@@ -161,21 +161,21 @@ export class ImposterService {
   onDeleteImposter(port, index) {
     this.http
       .delete(`http://localhost:5000/imposters/${port}`)
-      .subscribe((data) => {
+      .subscribe(() => {
         this.imposterArray.splice(index, 1);
         this.updateImposterArray.next();
       });
   }
 
   onEditImposter(formValues: any) {
-    const formattedImposterData = this.formatImposterData(formValues, true);
+    const formattedImposterData = this.formatImposterData(formValues);
     return this.http
       .put(
         `http://localhost:5000/imposters/${formValues.port}/stubs`,
         formattedImposterData,
       )
       .subscribe(
-        (responseData) => {
+        () => {
           this.updateImposterArray.next();
         },
         (error) => {
@@ -184,7 +184,7 @@ export class ImposterService {
       );
   }
 
-  formatImposterData(formValues: any, isEditImposter: boolean = false) {
+  formatImposterData(formValues: any) {
     const stubs = this.stubs.map((stub) => {
       const predicates = stub.predicates.map((predicate) => {
         const operator = predicate.operator;
@@ -278,7 +278,7 @@ export class ImposterService {
   onCreateImposter(formValues) {
     const data = this.formatImposterData(formValues);
     this.http.post(`http://localhost:5000/imposters`, data).subscribe(
-      (responseData) => {
+      () => {
         this.updateImposterArray.next();
       },
       (error) => {

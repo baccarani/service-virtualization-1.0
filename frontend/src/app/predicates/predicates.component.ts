@@ -10,7 +10,7 @@ import {
 } from "@angular/core";
 import { Predicate } from "../models/predicate";
 import { ImposterService } from "../services/imposter.service";
-import { FormBuilder } from "@angular/forms";
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { CommonService } from "../services/common.service";
 import { HEADERS } from "../models/constants";
@@ -41,6 +41,7 @@ export class PredicatesComponent implements OnInit {
   @Output() editUpdate = new EventEmitter();
   @Output() deleteUpdate = new EventEmitter();
   @Input() isEditImposter: boolean = false;
+  @Input() predicateForm: FormGroup;
 
   genericPath = ["/customer", "/user", "other"];
   headers = HEADERS;
@@ -70,17 +71,17 @@ export class PredicatesComponent implements OnInit {
     { name: "inject" },
   ];
 
-  predicateForm = this.formBuilder.group({
-    operator: [""],
-    method: [""],
-    path: [""],
-    newPath: [""],
-    data: [""],
-    newOperator: [""],
-    query: [""],
-    headers: [null],
-    body: [""]
-  });
+  // predicateForm = this.formBuilder.group({
+  //   operator: [""],
+  //   method: [""],
+  //   path: [""],
+  //   newPath: [""],
+  //   data: [""],
+  //   newOperator: [""],
+  //   query: [""],
+  //   headers: [null],
+  //   body: [""]
+  // });
 
   subPredicates: Predicate[] = [];
   showPredicates: boolean = false;
