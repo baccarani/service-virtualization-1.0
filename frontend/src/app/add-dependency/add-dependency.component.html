@@ -15,7 +15,7 @@
   <div>
     <p>Fill in the below form to add your dependency.</p>
     <br />
-    <div class="container" style="max-width: 400px">
+    <div class="container" style="max-width: 600px">
       <div class="row">
         <form [formGroup]="dependencyForm" (ngSubmit)="onSubmit()">
           <!-- <h2>General Information</h2> -->
@@ -36,6 +36,7 @@
               [readonly]="isEditImposter"
               type="number"
               name="port"
+              min="0"
               required
               class="form-control"
               formControlName="port"
@@ -89,7 +90,7 @@
                   mat-icon-button
                   style="padding-top: 10px"
                   color="basic"
-                  (click)="deleteStubUpdate(stub.stubID)"
+                  (click)="deleteStubUpdate(stub.stubID, stubIndex)"
                 >
                   <mat-icon>close</mat-icon>
                 </button>
@@ -115,18 +116,21 @@
                     "
                   >
                     <app-predicates
+                      #predicateComponent
                       (editUpdate)="editUpdate($event)"
                       (deleteUpdate)="deletePredicateUpdate($event, stubIndex)"
                       [predicateIndex]="predicateIndex"
                       [predicate]="predicate"
                       [protocol]="protocol.value"
                       [port]="port.value"
+                      [isEditImposter]="isEditImposter"
+                      [predicateForm]="getPredicateFormGroup(stubIndex, predicateIndex)"
                     >
                     </app-predicates>
                   </div>
                   <a
                     style="text-decoration: underline; cursor: pointer"
-                    (click)="addPredicate(stubs[stubIndex].stubID)"
+                    (click)="addPredicate(stubs[stubIndex].stubID, stubIndex)"
                   >
                     Add Predicate</a
                   >
@@ -142,6 +146,7 @@
                     "
                   >
                     <app-responses
+                      #responsesComponent
                       (editUpdate)="editUpdate($event)"
                       (deleteResponseUpdate)="
                         deleteResponseUpdate($event, stubIndex)
@@ -150,12 +155,13 @@
                       [response]="response"
                       [hideCloseButton]="hideCloseButton"
                       [isEditImposter]="isEditImposter"
+                      [responseForm]="getResponseFormGroup(stubIndex, responseIndex)"
                     >
                     </app-responses>
                   </div>
                   <a
                     style="text-decoration: underline; cursor: pointer"
-                    (click)="addResponse(stubs[stubIndex].stubID)"
+                    (click)="addResponse(stubs[stubIndex].stubID, stubIndex)"
                   >
                     Add Response</a
                   >

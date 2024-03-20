@@ -9,7 +9,7 @@ import { mergeMap } from "rxjs/operators";
   providedIn: 'root'
 })
 export class ImposterService {
-  private imposterArray: any = [];
+  private imposterArray: unknown[] = [];
   private stubs = [];
   private predicates = [];
   private responses = [];
@@ -32,10 +32,12 @@ export class ImposterService {
             data: "",
             newOperator: "",
             query: "",
+            headers: null,
+            body: ""
           },
         ],
         responses: [
-          { responseID: Date.now(), statusCode: "", headers: "", body: "" },
+          { responseID: Date.now(), statusCode: "", headers: null, body: "" },
         ],
       };
       this.stubs.push(defaultStubs);
@@ -71,10 +73,12 @@ export class ImposterService {
           data: "",
           newOperator: "",
           query: "",
+          headers: null,
+          body: ""
         },
       ],
       responses: [
-        { responseID: Date.now(), statusCode: "", headers: "", body: "" },
+        { responseID: Date.now(), statusCode: "", headers: null, body: "" },
       ],
     };
     this.stubs.push(newStub);
@@ -91,6 +95,8 @@ export class ImposterService {
       data: "",
       newOperator: "",
       query: "",
+      headers: null,
+      body: ""
     });
   }
 
@@ -99,7 +105,7 @@ export class ImposterService {
     this.stubs[index].responses.push({
       responseID: Date.now(),
       statusCode: "",
-      headers: "",
+      headers: null,
       body: "",
     });
   }
@@ -155,21 +161,21 @@ export class ImposterService {
   onDeleteImposter(port, index) {
     this.http
       .delete(`http://localhost:5000/imposters/${port}`)
-      .subscribe((data) => {
+      .subscribe(() => {
         this.imposterArray.splice(index, 1);
         this.updateImposterArray.next();
       });
   }
 
   onEditImposter(formValues: any) {
-    const formattedImposterData = this.formatImposterData(formValues, true);
+    const formattedImposterData = this.formatImposterData(formValues);
     return this.http
       .put(
         `http://localhost:5000/imposters/${formValues.port}/stubs`,
         formattedImposterData,
       )
       .subscribe(
-        (responseData) => {
+        () => {
           this.updateImposterArray.next();
         },
         (error) => {
@@ -178,11 +184,16 @@ export class ImposterService {
       );
   }
 
-  formatImposterData(formValues: any, isEditImposter: boolean = false) {
+  formatImposterData(formValues: any) {
     const stubs = this.stubs.map((stub) => {
       const predicates = stub.predicates.map((predicate) => {
         const operator = predicate.operator;
-        const query = JSON.parse(predicate.query) || {};
+        let query;
+        try {
+          query = JSON.parse(predicate.query);
+        } catch(error) {
+          query = {};
+        }
         let updatePath;
         if (predicate.path == "other") {
           updatePath = predicate.newPath;
@@ -202,30 +213,50 @@ export class ImposterService {
             ],
           };
         } else if (operator === "not") {
-          return {
+          const predicateObj = {
             [operator]: {
               equals: {
                 method: predicate.method,
                 path: updatePath,
-                query: query,
               },
             },
           };
+          switch(predicate.method) {
+            case('GET'):
+            case('DELETE'):
+              predicateObj[operator].equals['query'] = query;
+              break;
+            case('POST'):
+            case('PUT'):
+              predicateObj[operator].equals['headers'] = JSON.parse(predicate.headers) || {};
+              predicateObj[operator].equals['body'] =  JSON.parse(predicate.body) || {};
+              break;
+          }
+          return predicateObj;
         } else {
-          return {
+          const predicateObj = {
             [operator]: {
               method: predicate.method,
               path: updatePath,
-              query: query,
             },
           };
+          switch(predicate.method) {
+            case('GET'):
+            case('DELETE'):
+              predicateObj[operator]['query'] = query;
+              break;
+            case('POST'):
+            case('PUT'):
+              predicateObj[operator]['headers'] = JSON.parse(predicate.headers) || {};
+              predicateObj[operator]['body'] =  JSON.parse(predicate.body) || {};
+              break;
+          }
+          return predicateObj;
         }
       });
       const responses = stub.responses.map((response) => {
         const statusCode = response.statusCode;
-        const headers =
-          (isEditImposter ? response.headers : JSON.parse(response.headers)) ||
-          {};
+        const headers = JSON.parse(response.headers) || {};
         const body = JSON.parse(response.body) || {};
         return {
           is: { statusCode: statusCode, headers: headers, body: body },
@@ -247,7 +278,7 @@ export class ImposterService {
   onCreateImposter(formValues) {
     const data = this.formatImposterData(formValues);
     this.http.post(`http://localhost:5000/imposters`, data).subscribe(
-      (responseData) => {
+      () => {
         this.updateImposterArray.next();
       },
       (error) => {
