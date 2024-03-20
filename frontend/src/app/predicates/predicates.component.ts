@@ -10,10 +10,11 @@ import {
 } from "@angular/core";
 import { Predicate } from "../models/predicate";
 import { ImposterService } from "../services/imposter.service";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { CommonService } from "../services/common.service";
 import { HEADERS } from "../models/constants";
+import { jsonValidator } from "../shared/json-validator";
 
 @Component({
   selector: "app-predicates",
@@ -200,7 +201,16 @@ export class PredicatesComponent implements OnInit {
       this.predicateForm.patchValue({
         headers: null
       });
-      this.cdRef.detectChanges();
+      this.predicateForm.controls['query'].setValidators([Validators.required, jsonValidator()]);
+      this.predicateForm.controls['body'].clearValidators();
+      this.predicateForm.controls['query'].updateValueAndValidity();
+      this.predicateForm.controls['body'].updateValueAndValidity();
+    } else {
+      this.predicateForm.controls['body'].setValidators([Validators.required, jsonValidator()]);
+      this.predicateForm.controls['query'].clearValidators();
+      this.predicateForm.controls['query'].updateValueAndValidity();
+      this.predicateForm.controls['body'].updateValueAndValidity();
     }
+    this.cdRef.detectChanges();
   }
 }

@@ -110,6 +110,11 @@
           formControlName="query"
           placeholder='ex. { "id": 1 }'
         />
+        <p *ngIf="predicateForm.get('query').errors && 
+                  predicateForm.get('query').hasError('invalidJson')"
+          style="margin: 0;">
+          *Invalid JSON
+        </p>
         <br>
         <p *ngIf="protocol && query.value">
           {{ protocol }}://localhost:{{ port }}{{ path.value !== 'other' ? path.value : newPath.value }}{{ getFormatedQuery(query.value) }}
@@ -144,6 +149,11 @@
           formControlName="body"
           placeholder='ex. { "name": "John Doe" }'
         />
+        <p *ngIf="predicateForm.get('body').errors && 
+                predicateForm.get('body').hasError('invalidJson')"
+            style="margin: 0;">
+            *Invalid JSON
+        </p>
       </div>
     </div>
   </div>

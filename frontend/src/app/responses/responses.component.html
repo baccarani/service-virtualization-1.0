@@ -42,7 +42,7 @@
           formControlName="statusCode"
           #code
         >
-          <option value="select option">Please select an option</option>
+          <option selected value="">Please select an option</option>
           <option *ngFor="let opt of statusCode" [value]="opt">
             {{ opt }}
           </option>

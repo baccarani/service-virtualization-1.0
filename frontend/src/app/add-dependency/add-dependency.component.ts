@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import {
+  ChangeDetectorRef,
   Component,
   Inject,
   Input,
@@ -7,7 +8,7 @@ import {
   Output,
   ViewChild,
 } from "@angular/core";
-import { FormArray, FormBuilder } from "@angular/forms";
+import { FormArray, FormBuilder, Validators } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
 import { Predicate } from "../models/predicate";
 import { Response } from "../models/response";
@@ -40,6 +41,7 @@ export class AddDependencyComponent implements OnInit {
     private fb: FormBuilder,
     private matDialogRef: MatDialogRef<AddDependencyComponent>,
     private imposterService: ImposterService,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   @Input() index: number = 0;
@@ -75,11 +77,11 @@ export class AddDependencyComponent implements OnInit {
             clientCode: [""],
             serverCode: [""],
             headers: [null],
-            body: ["", [jsonValidator()]],
+            body: ["", [Validators.required, jsonValidator()]],
           })
         ])
       })
-    ]),
+    ], Validators.required),
   });
 
   isEditImposter: boolean = false;
@@ -92,8 +94,8 @@ export class AddDependencyComponent implements OnInit {
         name: this.data.imposter.name,
         port: this.data.imposter.port,
         protocol: this.data.imposter.protocol,
-        stubs: []
       });
+      this.dependencyForm.controls.stubs.clear();
       this.dependencyForm.get('protocol').disable();
 
       this.imposterService.onResetStubs();
@@ -109,6 +111,7 @@ export class AddDependencyComponent implements OnInit {
 
         const tempPredicates = [];
         const tempResponses = [];
+        const control = ["", [Validators.required, jsonValidator()]];
         stub.predicates.forEach((operator) => {
           const keys = Object.keys(operator);
 
@@ -122,6 +125,20 @@ export class AddDependencyComponent implements OnInit {
               body: JSON.stringify(operator.not.equals.body)
             };
             tempPredicates.push(predicate);
+
+            ((this.dependencyForm.get("stubs") as FormArray).at(stubIndex).get("predicates") as FormArray).push(
+              this.fb.group({
+                operator: [""],
+                method: [""],
+                path: [""],
+                newPath: [""],
+                data: [""],
+                newOperator: [""],
+                query: (operator.not.equals.method === 'GET' || operator.not.equals.method === 'DELETE') ? control : [""],
+                headers: [null],
+                body: (operator.not.equals.method === 'POST' || operator.not.equals.method === 'PUT') ? control : [""],
+              })
+            );
           } else {
             const predicate = {
               operator: keys[0],
@@ -141,9 +158,9 @@ export class AddDependencyComponent implements OnInit {
                 newPath: [""],
                 data: [""],
                 newOperator: [""],
-                query: [""],
+                query: (operator[keys[0]].method === 'GET' || operator[keys[0]].method === 'DELETE') ? control : [""],
                 headers: [null],
-                body: [""]
+                body: (operator[keys[0]].method === 'POST' || operator[keys[0]].method === 'PUT') ? control : [""],
               })
             );
           }
@@ -166,7 +183,7 @@ export class AddDependencyComponent implements OnInit {
               clientCode: [""],
               serverCode: [""],
               headers: [null],
-              body: ["", [jsonValidator()]],
+              body: ["", [Validators.required, jsonValidator()]],
             })
           );
         });
@@ -183,6 +200,7 @@ export class AddDependencyComponent implements OnInit {
       this.imposterService.setDefaultStubs();
       this.stubs = this.imposterService.onGetStubs();
     }
+    this.cdRef.detectChanges();
   }
 
   predicateUpdate(form: any) {
@@ -234,7 +252,7 @@ export class AddDependencyComponent implements OnInit {
             clientCode: [""],
             serverCode: [""],
             headers: [null],
-            body: ["", [jsonValidator()]],
+            body: ["", [Validators.required, jsonValidator()]],
           })
         ])
       })
@@ -242,6 +260,7 @@ export class AddDependencyComponent implements OnInit {
 
     this.imposterService.onAddStub();
     this.stubs = this.imposterService.onGetStubs(); // can be refactored to use a behaviour subject for a future enhancement
+    this.cdRef.detectChanges();
   }
 
   addPredicate(stubID: number, stubIndex: number) {
@@ -259,6 +278,7 @@ export class AddDependencyComponent implements OnInit {
       })
     );
     this.imposterService.onAddPredicate(stubID);
+    this.cdRef.detectChanges();
   }
 
   addResponse(stubID: number, stubIndex: number) {
@@ -271,25 +291,29 @@ export class AddDependencyComponent implements OnInit {
         clientCode: [""],
         serverCode: [""],
         headers: [null],
-        body: ["", [jsonValidator()]],
+        body: ["", [Validators.required, jsonValidator()]],
       })
     );
     this.imposterService.onAddResponse(stubID);
+    this.cdRef.detectChanges();
   }
 
   deleteStubUpdate(stubID: number, stubIndex: number) {
     (this.dependencyForm.get("stubs") as FormArray).removeAt(stubIndex);
     this.imposterService.onDeleteStub(stubID);
+    this.cdRef.detectChanges();
   }
 
   deletePredicateUpdate(predicateIndex: number, stubIndex: number) {
     ((this.dependencyForm.get("stubs") as FormArray).at(stubIndex).get("predicates") as FormArray).removeAt(predicateIndex);
     this.imposterService.onDeletePredicate(predicateIndex, stubIndex);
+    this.cdRef.detectChanges();
   }
 
   deleteResponseUpdate(responseIndex: number, stubIndex: number) {
     ((this.dependencyForm.get("stubs") as FormArray).at(stubIndex).get("responses") as FormArray).removeAt(responseIndex);
     this.imposterService.onDeleteResponse(responseIndex, stubIndex);
+    this.cdRef.detectChanges();
   }
 
   getPredicateFormGroup(stubIndex, predicateIndex) {
