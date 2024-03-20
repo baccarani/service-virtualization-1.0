@@ -10,9 +10,11 @@ import {
 } from "@angular/core";
 import { Predicate } from "../models/predicate";
 import { ImposterService } from "../services/imposter.service";
-import { FormBuilder } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { CommonService } from "../services/common.service";
+import { HEADERS } from "../models/constants";
+import { jsonValidator } from "../shared/json-validator";
 
 @Component({
   selector: "app-predicates",
@@ -30,6 +32,8 @@ export class PredicatesComponent implements OnInit {
     data: "",
     newOperator: "",
     query: "",
+    headers: null,
+    body: ""
   };
   @Input() showEdit: boolean = false;
   @Input() protocol: string;
@@ -37,8 +41,11 @@ export class PredicatesComponent implements OnInit {
   @Output() beneficiaryUpdate = new EventEmitter();
   @Output() editUpdate = new EventEmitter();
   @Output() deleteUpdate = new EventEmitter();
+  @Input() isEditImposter: boolean = false;
+  @Input() predicateForm: FormGroup;
 
   genericPath = ["/customer", "/user", "other"];
+  headers = HEADERS;
 
   operator = [
     { name: "equals" },
@@ -65,15 +72,17 @@ export class PredicatesComponent implements OnInit {
     { name: "inject" },
   ];
 
-  predicateForm = this.formBuilder.group({
-    operator: [""],
-    method: [""],
-    path: [""],
-    newPath: [""],
-    data: [""],
-    newOperator: [""],
-    query: [""],
-  });
+  // predicateForm = this.formBuilder.group({
+  //   operator: [""],
+  //   method: [""],
+  //   path: [""],
+  //   newPath: [""],
+  //   data: [""],
+  //   newOperator: [""],
+  //   query: [""],
+  //   headers: [null],
+  //   body: [""]
+  // });
 
   subPredicates: Predicate[] = [];
   showPredicates: boolean = false;
@@ -89,16 +98,20 @@ export class PredicatesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    let filteredGenericPath = this.genericPath.filter((path) => path !== 'other');
-    let newPath = filteredGenericPath.includes(this.predicate.path) ? '' : this.predicate.path;
-    let predicateObject = {
+    const filteredGenericPath = this.genericPath.filter((path) => path !== 'other');
+    const newPath = filteredGenericPath.includes(this.predicate.path) ? '' : this.predicate.path;
+    const headersValue = this.headers.filter(header => JSON.stringify(header.value) === JSON.stringify(this.predicate.headers))[0];
+
+    const predicateObject = {
       operator: this.predicate.operator,
       method: this.predicate.method,
       path: newPath ? 'other' : this.predicate.path,
       newPath: newPath,
-      query: this.predicate.query,
+      query: this.predicate.query ?? null,
       data: "",
       newOperator: "",
+      headers: headersValue?.id ?? null,
+      body: this.predicate.body ?? null,
     };
     this.predicateForm.setValue(predicateObject);
     this.subscription = this.predicateForm.valueChanges.subscribe(() => {
@@ -136,6 +149,8 @@ export class PredicatesComponent implements OnInit {
     const data = this.predicateForm.get("data").value;
     const newOperator = this.predicateForm.get("newOperator").value;
     const query = this.predicateForm.get("query").value;
+    const headersId = this.predicateForm.get("headers").value;
+    const body = this.predicateForm.get("body").value;
 
     this.predicate.operator = operator;
     this.predicate.method = method;
@@ -143,7 +158,21 @@ export class PredicatesComponent implements OnInit {
     this.predicate.newPath = newPath;
     this.predicate.data = data;
     this.predicate.newOperator = newOperator;
-    this.predicate.query = query;
+
+    switch(method) {
+      case('GET'):
+      case('DELETE'):
+        this.predicate.query = query;
+        this.predicate.headers = null;
+        this.predicate.body = null;
+        break;
+      case('POST'):
+      case('PUT'):
+        this.predicate.query = null;
+        this.predicate.headers = JSON.stringify(this.headers.filter(header => header.id === +headersId)[0]?.value ?? '');
+        this.predicate.body = body;
+        break;
+    }
   }
 
   selectHideData() {
@@ -165,5 +194,23 @@ export class PredicatesComponent implements OnInit {
 
   getFormatedQuery(queryValue) {
     return this.commonService.getFormatedQuery(queryValue);
+  }
+
+  onMethodChange(value: string) {
+    if (value === 'GET' || value === 'DELETE') {
+      this.predicateForm.patchValue({
+        headers: null
+      });
+      this.predicateForm.controls['query'].setValidators([Validators.required, jsonValidator()]);
+      this.predicateForm.controls['body'].clearValidators();
+      this.predicateForm.controls['query'].updateValueAndValidity();
+      this.predicateForm.controls['body'].updateValueAndValidity();
+    } else {
+      this.predicateForm.controls['body'].setValidators([Validators.required, jsonValidator()]);
+      this.predicateForm.controls['query'].clearValidators();
+      this.predicateForm.controls['query'].updateValueAndValidity();
+      this.predicateForm.controls['body'].updateValueAndValidity();
+    }
+    this.cdRef.detectChanges();
   }
 }

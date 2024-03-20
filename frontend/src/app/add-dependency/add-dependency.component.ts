@@ -1,18 +1,23 @@
 import { HttpClient } from "@angular/common/http";
 import {
+  ChangeDetectorRef,
   Component,
   Inject,
   Input,
   OnInit,
   Output,
+  ViewChild,
 } from "@angular/core";
-import { FormBuilder } from "@angular/forms";
+import { FormArray, FormBuilder, Validators } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
 import { Predicate } from "../models/predicate";
 import { Response } from "../models/response";
 import { ImposterService } from "../services/imposter.service";
 import { Stubs } from "../models/stubs";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { PredicatesComponent } from "../predicates/predicates.component";
+import { ResponsesComponent } from "../responses/responses.component";
+import { jsonValidator } from "../shared/json-validator";
 
 @Component({
   selector: "app-add-dependency",
@@ -20,6 +25,8 @@ import { MAT_DIALOG_DATA } from "@angular/material/dialog";
   styleUrls: ["./add-dependency.component.css"],
 })
 export class AddDependencyComponent implements OnInit {
+  @ViewChild("predicateComponent") predicateComponent: PredicatesComponent;
+  @ViewChild("responsesComponent") responsesComponent: ResponsesComponent;
   protocols = ["http", "https", "tcp"];
   methods = ["GET", "POST", "PUT"];
   stubs: Stubs[] = [];
@@ -34,6 +41,7 @@ export class AddDependencyComponent implements OnInit {
     private fb: FormBuilder,
     private matDialogRef: MatDialogRef<AddDependencyComponent>,
     private imposterService: ImposterService,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   @Input() index: number = 0;
@@ -45,6 +53,35 @@ export class AddDependencyComponent implements OnInit {
     name: [""],
     port: [null],
     protocol: [""],
+    stubs: this.fb.array([
+      this.fb.group({
+        predicates: this.fb.array([
+          this.fb.group({
+            operator: [""],
+            method: [""],
+            path: [""],
+            newPath: [""],
+            data: [""],
+            newOperator: [""],
+            query: [""],
+            headers: [null],
+            body: [""]
+          })
+        ]),
+        responses: this.fb.array([
+          this.fb.group({
+            statusCode: [""],
+            infoCode: [""],
+            successCode: [""],
+            redirectCode: [""],
+            clientCode: [""],
+            serverCode: [""],
+            headers: [null],
+            body: ["", [Validators.required, jsonValidator()]],
+          })
+        ])
+      })
+    ], Validators.required),
   });
 
   isEditImposter: boolean = false;
@@ -58,14 +95,23 @@ export class AddDependencyComponent implements OnInit {
         port: this.data.imposter.port,
         protocol: this.data.imposter.protocol,
       });
+      this.dependencyForm.controls.stubs.clear();
       this.dependencyForm.get('protocol').disable();
 
       this.imposterService.onResetStubs();
       this.stubs = this.imposterService.onGetStubs();
 
-      this.data.imposter.stubs.forEach((stub) => {
+      this.data.imposter.stubs.forEach((stub, stubIndex) => {
+        (this.dependencyForm.get("stubs") as FormArray).push(
+          this.fb.group({
+            predicates: this.fb.array([]),
+            responses: this.fb.array([])
+          })
+        );
+
         const tempPredicates = [];
         const tempResponses = [];
+        const control = ["", [Validators.required, jsonValidator()]];
         stub.predicates.forEach((operator) => {
           const keys = Object.keys(operator);
 
@@ -75,16 +121,48 @@ export class AddDependencyComponent implements OnInit {
               method: operator.not.equals.method,
               path: operator.not.equals.path,
               query: JSON.stringify(operator.not.equals.query),
+              headers: operator.not.equals.headers,
+              body: JSON.stringify(operator.not.equals.body)
             };
             tempPredicates.push(predicate);
+
+            ((this.dependencyForm.get("stubs") as FormArray).at(stubIndex).get("predicates") as FormArray).push(
+              this.fb.group({
+                operator: [""],
+                method: [""],
+                path: [""],
+                newPath: [""],
+                data: [""],
+                newOperator: [""],
+                query: (operator.not.equals.method === 'GET' || operator.not.equals.method === 'DELETE') ? control : [""],
+                headers: [null],
+                body: (operator.not.equals.method === 'POST' || operator.not.equals.method === 'PUT') ? control : [""],
+              })
+            );
           } else {
             const predicate = {
               operator: keys[0],
               method: operator[keys[0]].method,
               path: operator[keys[0]].path,
               query: JSON.stringify(operator[keys[0]].query), // turning into a string to display it in the form on the UI
+              headers: operator[keys[0]].headers,
+              body: JSON.stringify(operator[keys[0]].body)
             };
             tempPredicates.push(predicate);
+
+            ((this.dependencyForm.get("stubs") as FormArray).at(stubIndex).get("predicates") as FormArray).push(
+              this.fb.group({
+                operator: [""],
+                method: [""],
+                path: [""],
+                newPath: [""],
+                data: [""],
+                newOperator: [""],
+                query: (operator[keys[0]].method === 'GET' || operator[keys[0]].method === 'DELETE') ? control : [""],
+                headers: [null],
+                body: (operator[keys[0]].method === 'POST' || operator[keys[0]].method === 'PUT') ? control : [""],
+              })
+            );
           }
         });
 
@@ -95,6 +173,19 @@ export class AddDependencyComponent implements OnInit {
             body: JSON.stringify(data.is.body),
           };
           tempResponses.push(response);
+
+          ((this.dependencyForm.get("stubs") as FormArray).at(stubIndex).get("responses") as FormArray).push(
+            this.fb.group({
+              statusCode: [""],
+              infoCode: [""],
+              successCode: [""],
+              redirectCode: [""],
+              clientCode: [""],
+              serverCode: [""],
+              headers: [null],
+              body: ["", [Validators.required, jsonValidator()]],
+            })
+          );
         });
 
         const tempStubs = {
@@ -109,6 +200,7 @@ export class AddDependencyComponent implements OnInit {
       this.imposterService.setDefaultStubs();
       this.stubs = this.imposterService.onGetStubs();
     }
+    this.cdRef.detectChanges();
   }
 
   predicateUpdate(form: any) {
@@ -121,7 +213,13 @@ export class AddDependencyComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.dependencyForm.invalid) {
+      return;
+    }
     if (this.isEditImposter) {
+      this.predicateComponent.updatePredicates();
+      this.responsesComponent.updateResponses();
+      
       this.imposterService.onEditImposter(this.dependencyForm.value);
     } else {
       this.imposterService.onCreateImposter(this.dependencyForm.value);
@@ -130,27 +228,99 @@ export class AddDependencyComponent implements OnInit {
   }
 
   addStub() {
+    (this.dependencyForm.get("stubs") as FormArray).push(
+      this.fb.group({
+        predicates: this.fb.array([
+          this.fb.group({
+            operator: [""],
+            method: [""],
+            path: [""],
+            newPath: [""],
+            data: [""],
+            newOperator: [""],
+            query: [""],
+            headers: [null],
+            body: [""]
+          })
+        ]),
+        responses: this.fb.array([
+          this.fb.group({
+            statusCode: [""],
+            infoCode: [""],
+            successCode: [""],
+            redirectCode: [""],
+            clientCode: [""],
+            serverCode: [""],
+            headers: [null],
+            body: ["", [Validators.required, jsonValidator()]],
+          })
+        ])
+      })
+    );
+
     this.imposterService.onAddStub();
     this.stubs = this.imposterService.onGetStubs(); // can be refactored to use a behaviour subject for a future enhancement
+    this.cdRef.detectChanges();
   }
 
-  addPredicate(stubID: number) {
+  addPredicate(stubID: number, stubIndex: number) {
+    ((this.dependencyForm.get("stubs") as FormArray).at(stubIndex).get("predicates") as FormArray).push(
+      this.fb.group({
+        operator: [""],
+        method: [""],
+        path: [""],
+        newPath: [""],
+        data: [""],
+        newOperator: [""],
+        query: [""],
+        headers: [null],
+        body: [""]
+      })
+    );
     this.imposterService.onAddPredicate(stubID);
+    this.cdRef.detectChanges();
   }
 
-  addResponse(stubID: number) {
+  addResponse(stubID: number, stubIndex: number) {
+    ((this.dependencyForm.get("stubs") as FormArray).at(stubIndex).get("responses") as FormArray).push(
+      this.fb.group({
+        statusCode: [""],
+        infoCode: [""],
+        successCode: [""],
+        redirectCode: [""],
+        clientCode: [""],
+        serverCode: [""],
+        headers: [null],
+        body: ["", [Validators.required, jsonValidator()]],
+      })
+    );
     this.imposterService.onAddResponse(stubID);
+    this.cdRef.detectChanges();
   }
 
-  deleteStubUpdate(stubID: number) {
+  deleteStubUpdate(stubID: number, stubIndex: number) {
+    (this.dependencyForm.get("stubs") as FormArray).removeAt(stubIndex);
     this.imposterService.onDeleteStub(stubID);
+    this.cdRef.detectChanges();
   }
 
   deletePredicateUpdate(predicateIndex: number, stubIndex: number) {
+    ((this.dependencyForm.get("stubs") as FormArray).at(stubIndex).get("predicates") as FormArray).removeAt(predicateIndex);
     this.imposterService.onDeletePredicate(predicateIndex, stubIndex);
+    this.cdRef.detectChanges();
   }
 
   deleteResponseUpdate(responseIndex: number, stubIndex: number) {
+    ((this.dependencyForm.get("stubs") as FormArray).at(stubIndex).get("responses") as FormArray).removeAt(responseIndex);
     this.imposterService.onDeleteResponse(responseIndex, stubIndex);
+    this.cdRef.detectChanges();
+  }
+
+  getPredicateFormGroup(stubIndex, predicateIndex) {
+    return ((this.dependencyForm.get("stubs") as FormArray).at(stubIndex).get("predicates") as FormArray).at(predicateIndex);
+  }
+
+  getResponseFormGroup(stubIndex, responseIndex) {
+    return ((this.dependencyForm.get("stubs") as FormArray).at(stubIndex).get("responses") as FormArray).at(responseIndex);
   }
 }

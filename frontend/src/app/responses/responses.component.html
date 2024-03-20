@@ -41,8 +41,9 @@
           class="form-control"
           formControlName="statusCode"
           #code
+          (change)="onStatusCodeChange($event.target.value)"
         >
-          <option value="select option">Please select an option</option>
+          <option selected value="">Please select an option</option>
           <option *ngFor="let opt of statusCode" [value]="opt">
             {{ opt }}
           </option>
@@ -142,13 +143,12 @@
           name="headers"
           class="form-control"
           formControlName="headers"
-          #path
         >
           <option
             *ngFor="let header of headers"
-            [value]="isEditImposter ? header : (header | json)"
+            [value]="header.id"
           >
-            {{ header | json }}
+            {{ header.value | json }}
           </option>
         </select>
       </div>
@@ -166,7 +166,14 @@
           class="form-control"
           formControlName="body"
           style="resize: none"
+          placeholder="{}"
         ></textarea>
+        <br>
+        <p *ngIf="responseForm.get('body').errors && 
+                  responseForm.get('body').hasError('invalidJson')"
+          style="margin: 0; color:red;">
+          *Invalid JSON
+        </p>
         <br /><button (click)="clearTextarea()">Clear</button>
       </div>
     </div>

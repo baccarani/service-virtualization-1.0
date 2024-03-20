@@ -5,5 +5,7 @@ export interface Predicate {
   path: string;
   newPath?: string;
   newOperator?: string;
-  query: string;
+  query?: string;
+  headers?: string;
+  body?: string;
 }
