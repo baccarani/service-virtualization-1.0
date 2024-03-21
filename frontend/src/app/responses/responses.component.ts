@@ -187,6 +187,7 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.updateResponses();
     this.cdRef.detectChanges();
   }
 

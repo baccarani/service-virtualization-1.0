@@ -120,6 +120,7 @@ export class PredicatesComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+    this.updatePredicates();
     this.cdRef.detectChanges();
   }
 
