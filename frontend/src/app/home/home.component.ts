@@ -59,12 +59,15 @@ export class HomeComponent implements OnInit {
   }
 
   onAddImposter() {
-    this.matDialogModule.open(AddDependencyComponent);
+    this.matDialogModule.open(AddDependencyComponent, {
+      width: '60%',
+    });
   }
 
   onEditImposter(imposter) {
     this.matDialogModule.open(AddDependencyComponent, {
       data: { imposter: imposter },
+      width: '60%',
     });
   }
 
