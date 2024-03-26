@@ -10,6 +10,7 @@ import { Store } from "@ngrx/store";
 import { Clipboard } from "@angular/cdk/clipboard";
 import { switchMap } from "rxjs/operators";
 import { CommonService } from "../services/common.service";
+import { ConfirmationDialogComponent } from "../confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: "app-home",
@@ -34,7 +35,6 @@ export class HomeComponent implements OnInit {
     private store: Store<{ imposter: {} }>,
     private clipboard: Clipboard,
     private commonService: CommonService,
-
   ) {}
 
   ngOnInit() {
@@ -59,18 +59,26 @@ export class HomeComponent implements OnInit {
   }
 
   onAddImposter() {
-    this.matDialogModule.open(AddDependencyComponent);
+    this.matDialogModule.open(AddDependencyComponent, {
+      width: '60%',
+    });
   }
 
   onEditImposter(imposter) {
     this.matDialogModule.open(AddDependencyComponent, {
       data: { imposter: imposter },
+      width: '60%',
     });
   }
 
   onDeleteImposter(port, index) {
-    this.imposterService.onDeleteImposter(port, index);
-    this.viewDependency = "";
+    const dialogRef = this.matDialogModule.open(ConfirmationDialogComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.imposterService.onDeleteImposter(port, index);
+        this.viewDependency = "";
+      }
+    });
   }
 
   onCopyJSON() {

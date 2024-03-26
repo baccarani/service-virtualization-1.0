@@ -20,6 +20,7 @@ import { SubPredicatesComponent } from "./predicates/sub-predicates/sub-predicat
 import { MatMenuModule } from "@angular/material/menu";
 import { ResponsesComponent } from "./responses/responses.component";
 import { StubsComponent } from "./stubs/stubs.component";
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { StubsComponent } from "./stubs/stubs.component";
     SubPredicatesComponent,
     ResponsesComponent,
     StubsComponent,
+    ConfirmationDialogComponent,
   ],
   imports: [
     BrowserModule,
