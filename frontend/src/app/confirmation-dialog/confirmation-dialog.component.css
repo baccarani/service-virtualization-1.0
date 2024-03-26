@@ -1,3 +1,14 @@
-button {
+.dialogActionsButtons button {
   margin-right: 8px;
+}
+
+.headingContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+
+  h2 {
+    margin: 0;
+  }
 }
