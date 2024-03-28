@@ -1,33 +1,28 @@
 const mb = require('mountebank');
 const settings = require('./settings');
 const mbHelper = require('./mountebank-helper');
-const imposterJSON = require('./imposterinitdata.json');
-
-
+const mongodbServer = require('./mongodb-server');
 
 const mbServerInstance = mb.create({
-    port: settings.port,
-    origin: 'http://localhost:4200',
-    pidfile: '../mb.pid',
-    logfile: '../mb.log',
-    protofile: '../protofile.json',
-    ipWhitelist: ['*']
+  port: settings.port,
+  origin: 'http://localhost:4200',
+  pidfile: '../mb.pid',
+  logfile: '../mb.log',
+  protofile: '../protofile.json',
+  ipWhitelist: ['*']
 });
 
-
-mbServerInstance.then(function () {
-    return mbHelper.postImposter(imposterJSON, "PUT");
-
-    // idpService.addService();
-    // workday.addService();
-    // servicenow.addService();
-    // infinityconnect.addService();
-    // datalake.addService();
-    // dihService.addService();
-
-
-
-
+mbServerInstance.then(async function () {
+  //read from mongoDB
+  const mongodbServerObject = await mongodbServer.startMongodbServer();
+  const impostersList = await mongodbServerObject.imposters.find().toArray();
+  // console.log( {
+  //   "imposters": impostersList
+  // });
+  return mbHelper.postImposter(
+    {
+      "imposters": impostersList
+    }, 
+    "PUT"
+  );
 });
-
-
