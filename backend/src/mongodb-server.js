@@ -1,8 +1,21 @@
 const express = require('express');
+const cors = require('cors')
 const { MongoClient } = require('mongodb');
 const settings = require('./settings');
 const client = new MongoClient(settings.mongodbUri);
 const mbHelper = require('./mountebank-helper');
+
+/*
+NOTE:
+1. on add imposter, call / api  
+2. on edit imposter, call /updateImposter api
+2. on delete, call /deletedImposter api
+3. on restore deleted, call /restoreDeletedImposter api
+*/
+
+function errorHandler (err, req, res, next) {
+  res.status(500).send(err.message);
+}
 
 async function startMongodbServer() {
   await client.connect();
@@ -12,29 +25,29 @@ async function startMongodbServer() {
   const impostersDeleted = database.collection('ImpostersDeleted');
   const app = express();
   app.use(express.json());
-  app.use(express.urlencoded());
+  app.use(express.urlencoded({ extended: true }));
+  app.use(cors({
+    origin: 'http://localhost:4200'
+  }));
 
   //return all imposters json from imposter collection
-  app.get('/imposters', async (req, res) => {
+  app.get('/imposters', async (req, res, next) => {
     try {
       const impostersList = await imposters.find().toArray();
-      //console.log(impostersList);
       res.send(impostersList);
     } catch(err) {
-      res.send({ error: err.toString()});
+      next(err);
     }
   });
 
   //return a specific imposter json from imposter collection
-  app.post('/imposter', async (req, res) => {
-    //console.log(req.body);
+  app.post('/imposter', async (req, res, next) => {
     try {
       const query = { port: req.body.port };
       const imposter = await imposters.findOne(query);
-      //console.log(imposter);
       res.send(imposter);
     } catch(err) {
-      res.send({ error: err.toString()});
+      next(err);
     }
     // } finally {
     //   // Ensures that the client will close when you finish/error
@@ -43,71 +56,96 @@ async function startMongodbServer() {
   });
 
   //restore a specific imposter from backup collection to imposters collection
-  app.post('/restoreImposter', async (req, res) => {
-    //console.log(req.body);
+  app.post('/restoreImposter', async (req, res, next) => {
     try {
       const query = { port: req.body.port };
       const imposterFromBackup = await impostersBackup.findOne(query);
-      //console.log(imposterFromBackup);
       // insert into imposters collection
       const result = await imposters.insertOne(imposterFromBackup);
-      //console.log(result);
       res.send(result);
     } catch(err) {
-      res.send({ error: err.toString()});
+      next(err);
     }
   });
 
   //restore all imposters from backup collection to imposters collection
-  app.get('/restoreImposters', async (req, res) => {
+  app.get('/restoreImposters', async (req, res, next) => {
     try {
       // drop all records
       const impostersDroppedStatus = await imposters.deleteMany();
-      //console.log(impostersDroppedStatus);
       if (impostersDroppedStatus.acknowledged) {
         // insert into imposters collection
         const impostersFromBackup = await impostersBackup.find().toArray();
         const result = await imposters.insertMany(impostersFromBackup);
-        //console.log(result);
         res.send(result);
       } else {
-        res.send({ error: "failed to restore imposters"});
+        throw new Error("failed to restore imposters");
       }
     } catch(err) {
-      res.send({ error: err.toString()});
+      next(err);
+    }
+  });
+
+  //add a imposter to imposters collection
+  app.post('/addImposter', async (req, res, next) => {
+    try {
+      const result = await imposters.insertOne(req.body);
+      res.send(result);
+    } catch(err) {
+      next(err);
     }
   });
 
   //update a specific imposter in imposters collection
-  app.post('/updateImposter', async (req, res) => {
-    //console.log(req.body);
+  app.post('/updateImposter', async (req, res, next) => {
     try {
       const query = { port: req.body.port };
-      const result = await imposters.updateOne(query, { $set: req.body });
-      //console.log(result);
+      const updateStatus = await imposters.updateOne(query, { $set: req.body });          
+      if (updateStatus.acknowledged && updateStatus.modifiedCount === 1) {
+        //const impostersList = await imposters.find().toArray();
+        //res.send(impostersList);
+        res.send(updateStatus);
+      } else {
+        throw new Error('failed to update imposter');
+      }
+    } catch(err) {
+      next(err);
+    }
+  });
+
+  //update all imposters in imposters collection
+  app.post('/updateImposters', async (req, res) => {
+    try {      
+      //bulkwrite (update) all imposters
+      const impostersToUpdate = req.body.map( imposter => {
+        return {
+          updateOne: {
+            filter: { port: imposter.port },
+            update: { $set: imposter }
+          }
+        }
+      });
+      const result = await imposters.bulkWrite(impostersToUpdate, { ordered: false });
       res.send(result);
     } catch(err) {
-      res.send({ error: err.toString()});
+      next(err);
     }
   });
 
   //drop all imposters in collection and save all imposters from request body to imposters collection
   app.post('/saveImposters', async (req, res) => {
-    //console.log(req.body);
     try {
       // drop all records
       const impostersDroppedStatus = await imposters.deleteMany();
-      //console.log(impostersDroppedStatus);
       if (impostersDroppedStatus.acknowledged) {
         // insert into imposters collection
         const result = await imposters.insertMany(req.body);
-        //console.log(result);
         res.send(result);
       } else {
-        res.send({ error: "failed to save imposters"});
+        throw new Error("failed to save imposters");
       }
     } catch(err) {
-      res.send({ error: err.toString()});
+      next(err);
     }
   });
 
@@ -116,62 +154,57 @@ async function startMongodbServer() {
     try {
       // drop all records
       const impostersBackupDroppedStatus = await impostersBackup.deleteMany();
-      //console.log(impostersBackupDroppedStatus);
       if (impostersBackupDroppedStatus.acknowledged) {
         // insert into impostersBackup collection
         const impostersList = await imposters.find().toArray();
         const result = await impostersBackup.insertMany(impostersList);
-        //console.log(result);
         res.send(result);
       } else {
-        res.send({ error: "failed to update imposters backup"});
+        throw new Error("failed to update imposters backup");
       }
     } catch(err) {
-      res.send({ error: err.toString()});
+      next(err);
     }
   });
 
   //insert deleted imposter into impostersDeleted collection
   app.post('/deletedImposter', async (req, res) => {
-    //console.log(req.body);
     try {
-      // insert into impostersDeleted collection
-      const result = await impostersDeleted.insertOne(req.body);
-      //console.log(result);
-      res.send(result);
+      const query = { port: req.body.port };
+      const imposterDeleted = await impostersBackup.findOne(query);
+      // delete imposter from imposters collection
+      const result2 = await imposters.deleteOne(query);
+      if (result2.acknowledged && result2.deletedCount === 1) {
+        // insert into impostersDeleted collection
+        const result = await impostersDeleted.insertOne(imposterDeleted);
+        res.send(result2);
+      } else {
+        throw new Error('failed to delete imposter');
+      }
     } catch(err) {
-      res.send({ error: err.toString()});
+      next(err);
     }
   });
 
   //restore deleted imposter from impostersDeleted collection to imposters collection
   app.post('/restoreDeletedImposter', async (req, res) => {
-    //console.log(req.body);
     try {
       const query = { port: req.body.port };
       const imposterFromDeleted = await impostersDeleted.findOne(query);
-      console.log(imposterFromDeleted);
       // insert into imposters collection
       const result = await imposters.insertOne(imposterFromDeleted);
-      //console.log(result);
-
       // make post call to insert imposter into mountebank
       const response = await mbHelper.postImposter(imposterFromDeleted)
-      //console.log(response);
-
       // return imposterslist instead of result for UI to reflect changes
       const impostersList = await imposters.find().toArray();
       res.send(impostersList);
     } catch(err) {
-      res.send({ error: err.toString()});
+      next(err);
     }
   });
-  
-  //NOTE:
-  // 1. everytime adding or modifying imposter, has to call mongoDB api
-  // 2. on delete, call /deletedImposter api
-  // 3. on restore deleted, call /restoreDeletedImposter api
 
+  app.use(errorHandler);
+  
   app.listen(settings.mongodbPort, () => {
     console.log(`Mongo DB server listening on port ${settings.mongodbPort}`);
   });

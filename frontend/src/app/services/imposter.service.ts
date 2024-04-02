@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Subject, forkJoin } from "rxjs";
-import { mergeMap } from "rxjs/operators";
+import { Subject, forkJoin, throwError } from "rxjs";
+import { mergeMap, switchMap } from "rxjs/operators";
 // import { Predicate } from '../models/predicate';
 // import { Stubs } from '../models/stubs';
 
@@ -159,22 +159,33 @@ export class ImposterService {
   }
 
   onDeleteImposter(port, index) {
-    this.http
-      .delete(`http://localhost:5000/imposters/${port}`)
-      .subscribe(() => {
-        this.imposterArray.splice(index, 1);
-        this.updateImposterArray.next();
-      });
+    forkJoin([
+      this.http.delete(`http://localhost:5000/imposters/${port}`),
+      this.http.post('http://localhost:3000/deletedImposter', { port: port }),
+    ]).subscribe(() => {
+      this.imposterArray.splice(index, 1);
+      this.updateImposterArray.next();
+    });
   }
 
   onEditImposter(formValues: any) {
     const formattedImposterData = this.formatImposterData(formValues);
-    return this.http
-      .put(
+    return this.http.put(
         `http://localhost:5000/imposters/${formValues.port}/stubs`,
-        formattedImposterData,
-      )
-      .subscribe(
+        formattedImposterData, //this object should be a stub but is passing imposter ex. formattedImposterData.stubs
+      ).pipe(
+        switchMap((response) => {
+          //console.log(response); //name doesnt update because it is not inside stub, it is in imposter
+          if (response) {
+            return this.http.post(
+              'http://localhost:3000/updateImposter',
+              response //response returned is the imposter object from MB //formattedImposterData
+            );
+          } else {
+            return throwError(response);
+          }
+        })
+      ).subscribe(
         () => {
           this.updateImposterArray.next();
         },
