@@ -11,6 +11,7 @@ import { Clipboard } from "@angular/cdk/clipboard";
 import { switchMap } from "rxjs/operators";
 import { CommonService } from "../services/common.service";
 import { ConfirmationDialogComponent } from "../confirmation-dialog/confirmation-dialog.component";
+import { forkJoin } from "rxjs";
 
 @Component({
   selector: "app-home",
@@ -19,6 +20,7 @@ import { ConfirmationDialogComponent } from "../confirmation-dialog/confirmation
 })
 export class HomeComponent implements OnInit {
   imposterArray: any[] = [];
+  deletedImposters: any[] = [];
   viewDependency: any = "";
   isCopyAll = false;
   copyAllButtonText = "Copy All";
@@ -38,16 +40,25 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.imposterService.onGetImposter().subscribe((data) => {
-      this.imposterArray = data;
+    this.initData().subscribe(([imposters, deletedImposters]: [any, any]) => {
+      this.imposterArray = imposters;
+      this.deletedImposters = deletedImposters;
     });
     
-    this.imposterService.updateImposterArray
-      .pipe(switchMap(() => this.imposterService.onGetImposter()))
-      .subscribe((data: any) => {
-        this.imposterArray = data;
-        this.onViewImposter(this.viewDependency?.port || null);
-      });
+    this.imposterService.updateImposterArray.pipe(
+      switchMap(() => this.initData())
+    ).subscribe(([imposters, deletedImposters]: [any, any]) => {
+      this.imposterArray = imposters;
+      this.deletedImposters = deletedImposters;
+      this.onViewImposter(this.viewDependency?.port || null);
+    });
+  }
+
+  initData() {
+    return forkJoin([ 
+      this.imposterService.onGetImposter(),
+      this.imposterService.getDeletedImposters(),
+    ]);
   }
 
   onViewImposter(port) {
@@ -56,6 +67,10 @@ export class HomeComponent implements OnInit {
         this.viewDependency = responseData;
       });
     }
+  }
+
+  onViewDeletedImposter(deletedImposter) {
+    this.viewDependency = deletedImposter;
   }
 
   onAddImposter() {
@@ -79,6 +94,17 @@ export class HomeComponent implements OnInit {
         this.viewDependency = "";
       }
     });
+  }
+
+  onRestoreDeletedImposter(port: number) {
+    this.imposterService.onRestoreDeletedImposter(port).subscribe(
+      () => {
+        this.imposterService.updateImposterArray.next();
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   onCopyJSON() {

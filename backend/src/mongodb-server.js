@@ -90,7 +90,11 @@ async function startMongodbServer() {
   app.post('/addImposter', async (req, res, next) => {
     try {
       const result = await imposters.insertOne(req.body);
-      res.send(result);
+      if (result.acknowledged && result.insertedId) {
+        res.send(result);
+      } else {
+        throw new Error('failed to add imposter');
+      }
     } catch(err) {
       next(err);
     }
@@ -102,8 +106,6 @@ async function startMongodbServer() {
       const query = { port: req.body.port };
       const updateStatus = await imposters.updateOne(query, { $set: req.body });          
       if (updateStatus.acknowledged && updateStatus.modifiedCount === 1) {
-        //const impostersList = await imposters.find().toArray();
-        //res.send(impostersList);
         res.send(updateStatus);
       } else {
         throw new Error('failed to update imposter');
@@ -114,7 +116,7 @@ async function startMongodbServer() {
   });
 
   //update all imposters in imposters collection
-  app.post('/updateImposters', async (req, res) => {
+  app.post('/updateImposters', async (req, res, next) => {
     try {      
       //bulkwrite (update) all imposters
       const impostersToUpdate = req.body.map( imposter => {
@@ -133,7 +135,7 @@ async function startMongodbServer() {
   });
 
   //drop all imposters in collection and save all imposters from request body to imposters collection
-  app.post('/saveImposters', async (req, res) => {
+  app.post('/saveImposters', async (req, res, next) => {
     try {
       // drop all records
       const impostersDroppedStatus = await imposters.deleteMany();
@@ -150,7 +152,7 @@ async function startMongodbServer() {
   });
 
   //drop all imposters in backup collection and save all imposters from imposters collection to backup collection
-  app.get('/updateBackup', async (req, res) => {
+  app.get('/updateBackup', async (req, res, next) => {
     try {
       // drop all records
       const impostersBackupDroppedStatus = await impostersBackup.deleteMany();
@@ -167,8 +169,18 @@ async function startMongodbServer() {
     }
   });
 
+  //get all deleted imposters in impostersDeleted collection
+  app.get('/getAllDeletedImposters', async (req, res, next) => {
+    try {
+      const result = await impostersDeleted.find().toArray();
+      res.send(result);
+    } catch(err) {
+      next(err);
+    }
+  });
+
   //insert deleted imposter into impostersDeleted collection
-  app.post('/deletedImposter', async (req, res) => {
+  app.post('/deletedImposter', async (req, res, next) => {
     try {
       const query = { port: req.body.port };
       const imposterDeleted = await impostersBackup.findOne(query);
@@ -187,17 +199,21 @@ async function startMongodbServer() {
   });
 
   //restore deleted imposter from impostersDeleted collection to imposters collection
-  app.post('/restoreDeletedImposter', async (req, res) => {
+  app.post('/restoreDeletedImposter', async (req, res, next) => {
     try {
       const query = { port: req.body.port };
       const imposterFromDeleted = await impostersDeleted.findOne(query);
       // insert into imposters collection
-      const result = await imposters.insertOne(imposterFromDeleted);
-      // make post call to insert imposter into mountebank
-      const response = await mbHelper.postImposter(imposterFromDeleted)
-      // return imposterslist instead of result for UI to reflect changes
-      const impostersList = await imposters.find().toArray();
-      res.send(impostersList);
+      const restoreStatus = await imposters.insertOne(imposterFromDeleted);
+      if (restoreStatus.acknowledged && restoreStatus.insertedId) {
+        // delete imposted from impostersDeleted collection
+        const deleteStatus = await impostersDeleted.deleteOne(query);
+        // make post call to insert imposter into mountebank
+        const response = await mbHelper.postImposter(imposterFromDeleted)
+        res.send(response);
+      } else {
+        throw new Error('failed to restore deleted imposter');
+      }
     } catch(err) {
       next(err);
     }

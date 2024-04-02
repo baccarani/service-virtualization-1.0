@@ -96,7 +96,56 @@
       </tbody>
     </table>
   </div>
-  <br />
+  <hr>
+  <h3>Deleted Imposters</h3>
+  <div style="overflow-x: auto">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Protocol</th>
+          <th>Port</th>
+          <th># of Requests</th>
+          <th>More</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let deletedImposter of deletedImposters; let i = index">
+          <td>
+            <a
+              style="cursor: pointer"
+              (click)="onViewDeletedImposter(deletedImposter)"
+              >{{ deletedImposter.name }}</a
+            >
+          </td>
+          <td>{{ deletedImposter.protocol }}</td>
+          <td>{{ deletedImposter.port }}</td>
+          <td>{{ deletedImposter.numberOfRequests }}</td>
+          <td>
+            <div [matMenuTriggerFor]="menu">
+              <mat-icon
+                style="cursor: pointer"
+                class="dropdown-toggle"
+                role="button"
+                >more_horiz</mat-icon
+              >
+            </div>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="onViewDeletedImposter(deletedImposter)">
+                <mat-icon>visibility</mat-icon>
+                View
+              </button>
+              <button mat-menu-item (click)="onRestoreDeletedImposter(deletedImposter.port)">
+                <mat-icon>manage_history</mat-icon>
+                Restore
+              </button>
+            </mat-menu>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <hr>
   <div style="font-weight: bold; position: relative">
     <div style="padding-top: 7px">
       Imposter:

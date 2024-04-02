@@ -162,13 +162,19 @@ export class ImposterService {
     forkJoin([
       this.http.delete(`http://localhost:5000/imposters/${port}`),
       this.http.post('http://localhost:3000/deletedImposter', { port: port }),
-    ]).subscribe(() => {
-      this.imposterArray.splice(index, 1);
-      this.updateImposterArray.next();
-    });
+    ]).subscribe(
+      () => {
+        this.imposterArray.splice(index, 1);
+        this.updateImposterArray.next();
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
   }
 
   onEditImposter(formValues: any) {
+    //NOTE: adding two predicates doesnt work when matching
     const formattedImposterData = this.formatImposterData(formValues);
     return this.http.put(
         `http://localhost:5000/imposters/${formValues.port}/stubs`,
@@ -288,7 +294,10 @@ export class ImposterService {
 
   onCreateImposter(formValues) {
     const data = this.formatImposterData(formValues);
-    this.http.post(`http://localhost:5000/imposters`, data).subscribe(
+    forkJoin([
+      this.http.post(`http://localhost:5000/imposters`, data),
+      this.http.post('http://localhost:3000/addImposter', data),
+    ]).subscribe(
       () => {
         this.updateImposterArray.next();
       },
@@ -309,5 +318,13 @@ export class ImposterService {
       a.download = `imposter-${data}.json`;
       window.URL.revokeObjectURL(url);
     });
+  }
+
+  getDeletedImposters() {
+    return this.http.get(`http://localhost:3000/getAllDeletedImposters`);
+  }
+
+  onRestoreDeletedImposter(port: number) {
+    return this.http.post(`http://localhost:3000/restoreDeletedImposter`, { port: port });
   }
 }
