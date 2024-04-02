@@ -6,7 +6,7 @@ import { mergeMap, switchMap } from "rxjs/operators";
 // import { Stubs } from '../models/stubs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class ImposterService {
   private imposterArray: unknown[] = [];
@@ -33,7 +33,7 @@ export class ImposterService {
             newOperator: "",
             query: "",
             headers: null,
-            body: ""
+            body: "",
           },
         ],
         responses: [
@@ -74,7 +74,7 @@ export class ImposterService {
           newOperator: "",
           query: "",
           headers: null,
-          body: ""
+          body: "",
         },
       ],
       responses: [
@@ -96,7 +96,7 @@ export class ImposterService {
       newOperator: "",
       query: "",
       headers: null,
-      body: ""
+      body: "",
     });
   }
 
@@ -146,11 +146,11 @@ export class ImposterService {
         return forkJoin(
           imposterArray.map((imposter: any) => {
             return this.http.get(
-              `http://localhost:5000/imposters/${imposter.port}`,
+              `http://localhost:5000/imposters/${imposter.port}`
             );
-          }),
+          })
         );
-      }),
+      })
     );
   }
 
@@ -161,7 +161,7 @@ export class ImposterService {
   onDeleteImposter(port, index) {
     forkJoin([
       this.http.delete(`http://localhost:5000/imposters/${port}`),
-      this.http.post('http://localhost:3000/deletedImposter', { port: port }),
+      this.http.post("http://localhost:3000/deletedImposter", { port: port }),
     ]).subscribe(
       () => {
         this.imposterArray.splice(index, 1);
@@ -176,28 +176,31 @@ export class ImposterService {
   onEditImposter(formValues: any) {
     //NOTE: adding two predicates doesnt work when matching
     const formattedImposterData = this.formatImposterData(formValues);
-    return this.http.put(
+    return this.http
+      .put(
         `http://localhost:5000/imposters/${formValues.port}/stubs`,
-        formattedImposterData, //this object should be a stub but is passing imposter ex. formattedImposterData.stubs
-      ).pipe(
+        formattedImposterData //this object should be a stub but is passing imposter ex. formattedImposterData.stubs
+      )
+      .pipe(
         switchMap((response) => {
           //console.log(response); //name doesnt update because it is not inside stub, it is in imposter
           if (response) {
             return this.http.post(
-              'http://localhost:3000/updateImposter',
+              "http://localhost:3000/updateImposter",
               response //response returned is the imposter object from MB //formattedImposterData
             );
           } else {
             return throwError(response);
           }
         })
-      ).subscribe(
+      )
+      .subscribe(
         () => {
           this.updateImposterArray.next();
         },
         (error) => {
           console.error(error);
-        },
+        }
       );
   }
 
@@ -208,7 +211,7 @@ export class ImposterService {
         let query;
         try {
           query = JSON.parse(predicate.query);
-        } catch(error) {
+        } catch (error) {
           query = {};
         }
         let updatePath;
@@ -238,15 +241,17 @@ export class ImposterService {
               },
             },
           };
-          switch(predicate.method) {
-            case('GET'):
-            case('DELETE'):
-              predicateObj[operator].equals['query'] = query;
+          switch (predicate.method) {
+            case "GET":
+            case "DELETE":
+              predicateObj[operator].equals["query"] = query;
               break;
-            case('POST'):
-            case('PUT'):
-              predicateObj[operator].equals['headers'] = JSON.parse(predicate.headers) || {};
-              predicateObj[operator].equals['body'] =  JSON.parse(predicate.body) || {};
+            case "POST":
+            case "PUT":
+              predicateObj[operator].equals["headers"] =
+                JSON.parse(predicate.headers) || {};
+              predicateObj[operator].equals["body"] =
+                JSON.parse(predicate.body) || {};
               break;
           }
           return predicateObj;
@@ -257,15 +262,16 @@ export class ImposterService {
               path: updatePath,
             },
           };
-          switch(predicate.method) {
-            case('GET'):
-            case('DELETE'):
-              predicateObj[operator]['query'] = query;
+          switch (predicate.method) {
+            case "GET":
+            case "DELETE":
+              predicateObj[operator]["query"] = query;
               break;
-            case('POST'):
-            case('PUT'):
-              predicateObj[operator]['headers'] = JSON.parse(predicate.headers) || {};
-              predicateObj[operator]['body'] =  JSON.parse(predicate.body) || {};
+            case "POST":
+            case "PUT":
+              predicateObj[operator]["headers"] =
+                JSON.parse(predicate.headers) || {};
+              predicateObj[operator]["body"] = JSON.parse(predicate.body) || {};
               break;
           }
           return predicateObj;
@@ -296,14 +302,14 @@ export class ImposterService {
     const data = this.formatImposterData(formValues);
     forkJoin([
       this.http.post(`http://localhost:5000/imposters`, data),
-      this.http.post('http://localhost:3000/addImposter', data),
+      this.http.post("http://localhost:3000/addImposter", data),
     ]).subscribe(
       () => {
         this.updateImposterArray.next();
       },
       (error) => {
         console.error(error);
-      },
+      }
     );
   }
 
@@ -325,6 +331,8 @@ export class ImposterService {
   }
 
   onRestoreDeletedImposter(port: number) {
-    return this.http.post(`http://localhost:3000/restoreDeletedImposter`, { port: port });
+    return this.http.post(`http://localhost:3000/restoreDeletedImposter`, {
+      port: port,
+    });
   }
 }

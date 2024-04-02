@@ -96,7 +96,7 @@
       </tbody>
     </table>
   </div>
-  <hr>
+  <hr />
   <h3>Deleted Imposters</h3>
   <div style="overflow-x: auto">
     <table class="table table-striped">
@@ -131,11 +131,17 @@
               >
             </div>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="onViewDeletedImposter(deletedImposter)">
+              <button
+                mat-menu-item
+                (click)="onViewDeletedImposter(deletedImposter)"
+              >
                 <mat-icon>visibility</mat-icon>
                 View
               </button>
-              <button mat-menu-item (click)="onRestoreDeletedImposter(deletedImposter.port)">
+              <button
+                mat-menu-item
+                (click)="onRestoreDeletedImposter(deletedImposter.port)"
+              >
                 <mat-icon>manage_history</mat-icon>
                 Restore
               </button>
@@ -145,7 +151,7 @@
       </tbody>
     </table>
   </div>
-  <hr>
+  <hr />
   <div style="font-weight: bold; position: relative">
     <div style="padding-top: 7px">
       Imposter:
