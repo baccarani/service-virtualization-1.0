@@ -5,7 +5,7 @@ import { AddDependencyComponent } from "../add-dependency/add-dependency.compone
 import { ImposterService } from "../services/imposter.service";
 import { Store } from "@ngrx/store";
 import { Clipboard } from "@angular/cdk/clipboard";
-import { switchMap } from "rxjs/operators";
+import { switchMap, take } from "rxjs/operators";
 import { CommonService } from "../services/common.service";
 import { ConfirmationDialogComponent } from "../confirmation-dialog/confirmation-dialog.component";
 import { forkJoin } from "rxjs";
@@ -18,6 +18,7 @@ import { forkJoin } from "rxjs";
 export class HomeComponent implements OnInit {
   imposterArray: any[] = [];
   deletedImposters: any[] = [];
+  allImposters: any[] = [];
   viewDependency: any = "";
   isCopyAll = false;
   copyAllButtonText = "Copy All";
@@ -39,14 +40,22 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.initData().subscribe(([imposters, deletedImposters]: [any, any]) => {
       this.imposterArray = imposters;
-      this.deletedImposters = deletedImposters;
+      this.deletedImposters = deletedImposters.map((imposter) => {
+        imposter.deleted = true;
+        return imposter;
+      });
+      this.allImposters = [...this.imposterArray, ...this.deletedImposters];
     });
 
     this.imposterService.updateImposterArray
       .pipe(switchMap(() => this.initData()))
       .subscribe(([imposters, deletedImposters]: [any, any]) => {
         this.imposterArray = imposters;
-        this.deletedImposters = deletedImposters;
+        this.deletedImposters = deletedImposters.map((imposter) => {
+          imposter.deleted = true;
+          return imposter;
+        });
+        this.allImposters = [...this.imposterArray, ...this.deletedImposters];
         this.onViewImposter(this.viewDependency?.port || null);
       });
   }
@@ -58,17 +67,24 @@ export class HomeComponent implements OnInit {
     ]);
   }
 
-  onViewImposter(port) {
+  onViewImposter(port, deleted = false) {
     if (port) {
-      this.imposterService.onViewImposter(port).subscribe((responseData) => {
-        this.viewDependency = responseData;
-      });
+      if (deleted) {
+        const deletedImposter = this.deletedImposters.find((imposter) => imposter.port === port);
+        this.viewDependency = deletedImposter;
+      } else {
+        this.imposterService.onViewImposter(port).pipe(
+          take(1)
+        ).subscribe((responseData) => {
+          this.viewDependency = responseData;
+        });
+      }
     }
   }
 
-  onViewDeletedImposter(deletedImposter) {
-    this.viewDependency = deletedImposter;
-  }
+  // onViewDeletedImposter(deletedImposter) {
+  //   this.viewDependency = deletedImposter;
+  // }
 
   onAddImposter() {
     this.matDialogModule.open(AddDependencyComponent, {
@@ -83,7 +99,8 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  onDeleteImposter(port, index) {
+  onDeleteImposter(port) {
+    const index = this.imposterArray.findIndex((imposter) => imposter.port === port);
     const dialogRef = this.matDialogModule.open(ConfirmationDialogComponent);
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
