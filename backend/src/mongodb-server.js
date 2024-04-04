@@ -1,5 +1,6 @@
 const express = require('express');
-const cors = require('cors')
+const cors = require('cors');
+const compression = require("compression"); //middleware
 const { MongoClient } = require('mongodb');
 const settings = require('./settings');
 const client = new MongoClient(settings.mongodbUri);
@@ -29,6 +30,7 @@ async function startMongodbServer() {
   app.use(cors({
     origin: 'http://localhost:4200'
   }));
+  app.use(compression()); //compress responses for client to get it faster 
 
   //return all imposters json from imposter collection
   app.get('/imposters', async (req, res, next) => {
