@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Subject, forkJoin, throwError } from "rxjs";
+import { Subject, forkJoin, of, throwError } from "rxjs";
 import { mergeMap, switchMap } from "rxjs/operators";
 // import { Predicate } from '../models/predicate';
 // import { Stubs } from '../models/stubs';
@@ -143,13 +143,17 @@ export class ImposterService {
     return this.http.get(`http://localhost:5000/imposters`).pipe(
       mergeMap((responseData: any) => {
         const imposterArray = responseData.imposters;
-        return forkJoin(
-          imposterArray.map((imposter: any) => {
-            return this.http.get(
-              `http://localhost:5000/imposters/${imposter.port}`
-            );
-          })
-        );
+        if (imposterArray.length > 0) {
+          return forkJoin(
+            imposterArray.map((imposter: any) => {
+              return this.http.get(
+                `http://localhost:5000/imposters/${imposter.port}`
+              );
+            })
+          );
+        } else {
+          return of([]);
+        }
       })
     );
   }
@@ -300,17 +304,24 @@ export class ImposterService {
 
   onCreateImposter(formValues) {
     const data = this.formatImposterData(formValues);
-    forkJoin([
-      this.http.post(`http://localhost:5000/imposters`, data),
-      this.http.post("http://localhost:3000/addImposter", data),
-    ]).subscribe(
-      () => {
-        this.updateImposterArray.next();
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
+    this.http
+      .post(`http://localhost:5000/imposters`, data)
+      .pipe(
+        switchMap((imposterAdded) => {
+          return this.http.post(
+            "http://localhost:3000/addImposter",
+            imposterAdded
+          );
+        })
+      )
+      .subscribe(
+        () => {
+          this.updateImposterArray.next();
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
   }
 
   onExportImposter(data) {
