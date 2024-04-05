@@ -175,10 +175,14 @@
             style="text-decoration: underline; cursor: pointer"
             (click)="addStub()"
           >
-            Add Stub</a
-          >
-
+            Add Stub
+          </a>
           <br /><br /><br />
+          <p *ngIf="errorMessage" style="font-weight: bold;">
+            <mat-icon aria-label="error" style="vertical-align: middle; color: red">error</mat-icon>
+            Error: {{ errorMessage }}
+          </p>
+          <br>
           <button
             class="btn btn-primary"
             type="submit"

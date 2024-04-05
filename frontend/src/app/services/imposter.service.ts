@@ -173,14 +173,6 @@ export class ImposterService {
       .put(
         `http://localhost:5000/imposters/${formValues.port}/stubs`,
         formattedImposterData,
-      )
-      .subscribe(
-        () => {
-          this.updateImposterArray.next();
-        },
-        (error) => {
-          console.error(error);
-        },
       );
   }
 
@@ -279,14 +271,7 @@ export class ImposterService {
 
   onCreateImposter(formValues) {
     const data = this.formatImposterData(formValues);
-    this.http.post(`http://localhost:5000/imposters`, data).subscribe(
-      () => {
-        this.updateImposterArray.next();
-      },
-      (error) => {
-        console.error(error);
-      },
-    );
+    return this.http.post(`http://localhost:5000/imposters`, data);
   }
 
   onExportImposter(data) {

@@ -15,6 +15,7 @@ import { ImposterService } from "../services/imposter.service";
 import { Stubs } from "../models/stubs";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { jsonValidator } from "../shared/json-validator";
+import { take } from "rxjs/operators";
 
 @Component({
   selector: "app-add-dependency",
@@ -80,6 +81,7 @@ export class AddDependencyComponent implements OnInit {
   });
 
   isEditImposter: boolean = false;
+  errorMessage = '';
 
   ngOnInit() {
     if (this.data && this.data.imposter) {
@@ -204,19 +206,29 @@ export class AddDependencyComponent implements OnInit {
   }
 
   closeModal() {
+    this.errorMessage = '';
     this.matDialogRef.close();
   }
 
   onSubmit() {
+    this.errorMessage = '';
     if (this.dependencyForm.invalid) {
       return;
     }
-    if (this.isEditImposter) {
-      this.imposterService.onEditImposter(this.dependencyForm.value);
-    } else {
-      this.imposterService.onCreateImposter(this.dependencyForm.value);
-    }
-    this.matDialogRef.close();
+
+    const imposterChange$ = this.isEditImposter 
+      ? this.imposterService.onEditImposter(this.dependencyForm.value)
+      : this.imposterService.onCreateImposter(this.dependencyForm.value);
+    imposterChange$.pipe(take(1)).subscribe(
+      () => {
+        this.imposterService.updateImposterArray.next();
+        this.matDialogRef.close();
+      },
+      (error) => {
+        this.errorMessage = 'Failed to ' + (this.isEditImposter ? 'edit' : 'create') + ' imposter.';
+        console.error(error);
+      },
+    );
   }
 
   addStub() {
