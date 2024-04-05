@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Subject, forkJoin } from "rxjs";
-import { mergeMap } from "rxjs/operators";
+import { mergeMap, tap } from "rxjs/operators";
 // import { Predicate } from '../models/predicate';
 // import { Stubs } from '../models/stubs';
 
@@ -159,12 +159,16 @@ export class ImposterService {
   }
 
   onDeleteImposter(port, index) {
-    this.http
+    return this.http
       .delete(`http://localhost:5000/imposters/${port}`)
-      .subscribe(() => {
-        this.imposterArray.splice(index, 1);
-        this.updateImposterArray.next();
-      });
+      .pipe(
+        tap((result) => {
+          if (Object.keys(result).length > 0) {
+            this.imposterArray.splice(index, 1);
+            this.updateImposterArray.next();
+          }
+        })
+      );
   }
 
   onEditImposter(formValues: any) {
