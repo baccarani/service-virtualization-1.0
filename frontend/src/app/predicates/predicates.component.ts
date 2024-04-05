@@ -169,6 +169,7 @@ export class PredicatesComponent implements OnInit {
         break;
       case('POST'):
       case('PUT'):
+      case('PATCH'):
         this.predicate.query = null;
         this.predicate.headers = JSON.stringify(this.headers.filter(header => header.id === +headersId)[0]?.value ?? '');
         this.predicate.body = body;

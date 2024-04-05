@@ -68,8 +68,8 @@
           <option value="GET">GET</option>
           <option value="POST">POST</option>
           <option value="PUT">PUT</option>
-          <option value="DELETE">DELETE</option>
           <option value="PATCH">PATCH</option>
+          <option value="DELETE">DELETE</option>
         </select>
       </div>
       <br />
@@ -123,7 +123,7 @@
         </p>
       </div>
 
-      <div *ngIf="method.value === 'POST' || method.value === 'PUT'">
+      <div *ngIf="method.value === 'POST' || method.value === 'PUT' || method.value === 'PATCH'">
         <label>Headers:</label>
         <br /><select
           name="headers"
@@ -140,7 +140,7 @@
         <br>
       </div>
 
-      <div *ngIf="method.value === 'POST' || method.value === 'PUT'">
+      <div *ngIf="method.value === 'POST' || method.value === 'PUT' || method.value === 'PATCH'">
         <label>Body:</label>
         <input
           type="text"

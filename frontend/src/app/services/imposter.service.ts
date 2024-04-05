@@ -228,6 +228,7 @@ export class ImposterService {
               break;
             case('POST'):
             case('PUT'):
+            case('PATCH'):
               predicateObj[operator].equals['headers'] = JSON.parse(predicate.headers) || {};
               predicateObj[operator].equals['body'] =  JSON.parse(predicate.body) || {};
               break;
@@ -247,6 +248,7 @@ export class ImposterService {
               break;
             case('POST'):
             case('PUT'):
+            case('PATCH'):
               predicateObj[operator]['headers'] = JSON.parse(predicate.headers) || {};
               predicateObj[operator]['body'] =  JSON.parse(predicate.body) || {};
               break;

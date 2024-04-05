@@ -6,7 +6,6 @@ import {
   Input,
   OnInit,
   Output,
-  ViewChild,
 } from "@angular/core";
 import { FormArray, FormBuilder, Validators } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
@@ -24,7 +23,7 @@ import { jsonValidator } from "../shared/json-validator";
 })
 export class AddDependencyComponent implements OnInit {
   protocols = ["http", "https", "tcp"];
-  methods = ["GET", "POST", "PUT"];
+  //methods = ["GET", "POST", "PUT"]; //unused
   stubs: Stubs[] = [];
   predicates: Predicate[] = [];
   responses: Response[] = [];
@@ -132,7 +131,7 @@ export class AddDependencyComponent implements OnInit {
                 newOperator: [""],
                 query: (operator.not.equals.method === 'GET' || operator.not.equals.method === 'DELETE') ? control : [""],
                 headers: [null],
-                body: (operator.not.equals.method === 'POST' || operator.not.equals.method === 'PUT') ? control : [""],
+                body: (operator.not.equals.method === 'POST' || operator.not.equals.method === 'PUT' || operator.not.equals.method === 'PATCH') ? control : [""],
               })
             );
           } else {
@@ -156,7 +155,7 @@ export class AddDependencyComponent implements OnInit {
                 newOperator: [""],
                 query: (operator[keys[0]].method === 'GET' || operator[keys[0]].method === 'DELETE') ? control : [""],
                 headers: [null],
-                body: (operator[keys[0]].method === 'POST' || operator[keys[0]].method === 'PUT') ? control : [""],
+                body: (operator[keys[0]].method === 'POST' || operator[keys[0]].method === 'PUT' || operator[keys[0]].method === 'PATCH') ? control : [""],
               })
             );
           }
