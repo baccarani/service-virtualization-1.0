@@ -121,24 +121,23 @@
           {{ protocol }}://localhost:{{ port }}{{ path.value !== 'other' ? path.value : newPath.value }}{{ getFormatedQuery(query.value) }}
         </p>
       </div>
-
-      <div *ngIf="method.value === 'POST' || method.value === 'PUT'">
-        <label>Headers:</label>
-        <br /><select
-          name="headers"
-          class="form-control"
-          formControlName="headers"
-        >
-          <option
-            *ngFor="let header of headers"
-            [value]="header.id"
-          >
-            {{ header.value | json }}
-          </option>
-        </select>
-        <br>
-      </div>
-
+      <label>Headers:</label>
+      <br />
+      <textarea
+        name="body"
+        required
+        class="form-control"
+        formControlName="headers"
+        style="resize: none"
+        placeholder="{}"
+      ></textarea>
+      <br>
+      <p *ngIf="predicateForm.get('headers').errors && 
+              predicateForm.get('headers').hasError('invalidJson')"
+          style="margin: 0; color:red;">
+        *Invalid JSON
+      </p>
+      <br>
       <div *ngIf="method.value === 'POST' || method.value === 'PUT'">
         <label>Body:</label>
         <input

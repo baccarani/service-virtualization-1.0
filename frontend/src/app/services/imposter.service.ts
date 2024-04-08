@@ -224,6 +224,7 @@ export class ImposterService {
           switch(predicate.method) {
             case('GET'):
             case('DELETE'):
+              predicateObj[operator].equals['headers'] = JSON.parse(predicate.headers) || {};
               predicateObj[operator].equals['query'] = query;
               break;
             case('POST'):
@@ -243,6 +244,7 @@ export class ImposterService {
           switch(predicate.method) {
             case('GET'):
             case('DELETE'):
+              predicateObj[operator]['headers'] = JSON.parse(predicate.headers) || {};
               predicateObj[operator]['query'] = query;
               break;
             case('POST'):
