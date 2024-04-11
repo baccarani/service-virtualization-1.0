@@ -68,6 +68,7 @@
           <option value="GET">GET</option>
           <option value="POST">POST</option>
           <option value="PUT">PUT</option>
+          <option value="PATCH">PATCH</option>
           <option value="DELETE">DELETE</option>
         </select>
       </div>
@@ -138,17 +139,17 @@
         *Invalid JSON
       </p>
       <br>
-      <div *ngIf="method.value === 'POST' || method.value === 'PUT'">
+      <div *ngIf="method.value === 'POST' || method.value === 'PUT' || method.value === 'PATCH'">
         <label>Body:</label>
-        <input
-          type="text"
+        <textarea
           #query
           name="body"
           required
           class="form-control"
           formControlName="body"
+          style="resize: none"
           placeholder='ex. { "name": "John Doe" }'
-        />
+        ></textarea>
         <br>
         <p *ngIf="predicateForm.get('body').errors && 
                 predicateForm.get('body').hasError('invalidJson')"

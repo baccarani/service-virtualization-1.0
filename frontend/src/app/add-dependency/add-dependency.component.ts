@@ -6,7 +6,6 @@ import {
   Input,
   OnInit,
   Output,
-  ViewChild,
 } from "@angular/core";
 import { FormArray, FormBuilder, Validators } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
@@ -16,6 +15,7 @@ import { ImposterService } from "../services/imposter.service";
 import { Stubs } from "../models/stubs";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { jsonValidator } from "../shared/json-validator";
+import { take } from "rxjs/operators";
 
 @Component({
   selector: "app-add-dependency",
@@ -24,7 +24,7 @@ import { jsonValidator } from "../shared/json-validator";
 })
 export class AddDependencyComponent implements OnInit {
   protocols = ["http", "https", "tcp"];
-  methods = ["GET", "POST", "PUT"];
+  //methods = ["GET", "POST", "PUT"]; //unused
   stubs: Stubs[] = [];
   predicates: Predicate[] = [];
   responses: Response[] = [];
@@ -81,6 +81,7 @@ export class AddDependencyComponent implements OnInit {
   });
 
   isEditImposter: boolean = false;
+  errorMessage = '';
 
   ngOnInit() {
     if (this.data && this.data.imposter) {
@@ -132,7 +133,7 @@ export class AddDependencyComponent implements OnInit {
                 newOperator: [""],
                 query: (operator.not.equals.method === 'GET' || operator.not.equals.method === 'DELETE') ? control : [""],
                 headers: [null, [Validators.required, jsonValidator()]],
-                body: (operator.not.equals.method === 'POST' || operator.not.equals.method === 'PUT') ? control : [""],
+                body: (operator.not.equals.method === 'POST' || operator.not.equals.method === 'PUT' || operator.not.equals.method === 'PATCH') ? control : [""],
               })
             );
           } else {
@@ -156,7 +157,7 @@ export class AddDependencyComponent implements OnInit {
                 newOperator: [""],
                 query: (operator[keys[0]].method === 'GET' || operator[keys[0]].method === 'DELETE') ? control : [""],
                 headers: [null, [Validators.required, jsonValidator()]],
-                body: (operator[keys[0]].method === 'POST' || operator[keys[0]].method === 'PUT') ? control : [""],
+                body: (operator[keys[0]].method === 'POST' || operator[keys[0]].method === 'PUT' || operator[keys[0]].method === 'PATCH') ? control : [""],
               })
             );
           }
@@ -205,19 +206,29 @@ export class AddDependencyComponent implements OnInit {
   }
 
   closeModal() {
+    this.errorMessage = '';
     this.matDialogRef.close();
   }
 
   onSubmit() {
+    this.errorMessage = '';
     if (this.dependencyForm.invalid) {
       return;
     }
-    if (this.isEditImposter) {
-      this.imposterService.onEditImposter(this.dependencyForm.value);
-    } else {
-      this.imposterService.onCreateImposter(this.dependencyForm.value);
-    }
-    this.matDialogRef.close();
+
+    const imposterChange$ = this.isEditImposter 
+      ? this.imposterService.onEditImposter(this.dependencyForm.value)
+      : this.imposterService.onCreateImposter(this.dependencyForm.value);
+    imposterChange$.pipe(take(1)).subscribe(
+      () => {
+        this.imposterService.updateImposterArray.next();
+        this.matDialogRef.close();
+      },
+      (error) => {
+        this.errorMessage = 'Failed to ' + (this.isEditImposter ? 'edit' : 'create') + ' imposter.';
+        console.error(error);
+      },
+    );
   }
 
   addStub() {

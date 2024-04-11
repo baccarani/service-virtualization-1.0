@@ -7,8 +7,12 @@
 <br>
 <mat-dialog-content>
   <p>Are you sure you want to delete this imposter?</p>
+  <p *ngIf="error" style="font-weight: bold;">
+    <mat-icon aria-label="error" style="vertical-align: middle; color: red">error</mat-icon>
+    Error: Failed to delete imposter.
+  </p>
 </mat-dialog-content>
 <mat-dialog-actions align="center" class="dialogActionsButtons">
   <button mat-raised-button mat-dialog-close cdkFocusInitial>Cancel</button>
-  <button mat-raised-button color="warn" [mat-dialog-close]="true">Delete</button>
+  <button mat-raised-button color="warn" (click)="onDelete()">Delete</button>
 </mat-dialog-actions>

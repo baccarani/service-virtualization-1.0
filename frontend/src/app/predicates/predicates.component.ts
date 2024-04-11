@@ -166,6 +166,7 @@ export class PredicatesComponent implements OnInit {
         break;
       case('POST'):
       case('PUT'):
+      case('PATCH'):
         this.predicate.query = null;
         this.predicate.headers = headers;
         this.predicate.body = body;
