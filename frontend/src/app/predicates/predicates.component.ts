@@ -13,7 +13,6 @@ import { ImposterService } from "../services/imposter.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { CommonService } from "../services/common.service";
-import { HEADERS } from "../models/constants";
 import { jsonValidator } from "../shared/json-validator";
 
 @Component({
@@ -45,7 +44,6 @@ export class PredicatesComponent implements OnInit {
   @Input() predicateForm: FormGroup;
 
   genericPath = ["/customer", "/user", "other"];
-  headers = HEADERS;
 
   operator = [
     { name: "equals" },
@@ -100,7 +98,6 @@ export class PredicatesComponent implements OnInit {
   ngOnInit() {
     const filteredGenericPath = this.genericPath.filter((path) => path !== 'other');
     const newPath = filteredGenericPath.includes(this.predicate.path) ? '' : this.predicate.path;
-    const headersValue = this.headers.filter(header => JSON.stringify(header.value) === JSON.stringify(this.predicate.headers))[0];
 
     const predicateObject = {
       operator: this.predicate.operator,
@@ -110,7 +107,7 @@ export class PredicatesComponent implements OnInit {
       query: this.predicate.query ?? null,
       data: "",
       newOperator: "",
-      headers: headersValue?.id ?? null,
+      headers: this.predicate.headers ?? null,
       body: this.predicate.body ?? null,
     };
     this.predicateForm.setValue(predicateObject);
@@ -150,7 +147,7 @@ export class PredicatesComponent implements OnInit {
     const data = this.predicateForm.get("data").value;
     const newOperator = this.predicateForm.get("newOperator").value;
     const query = this.predicateForm.get("query").value;
-    const headersId = this.predicateForm.get("headers").value;
+    const headers = this.predicateForm.get("headers").value;
     const body = this.predicateForm.get("body").value;
 
     this.predicate.operator = operator;
@@ -164,14 +161,14 @@ export class PredicatesComponent implements OnInit {
       case('GET'):
       case('DELETE'):
         this.predicate.query = query;
-        this.predicate.headers = null;
+        this.predicate.headers = headers;
         this.predicate.body = null;
         break;
       case('POST'):
       case('PUT'):
       case('PATCH'):
         this.predicate.query = null;
-        this.predicate.headers = JSON.stringify(this.headers.filter(header => header.id === +headersId)[0]?.value ?? '');
+        this.predicate.headers = headers;
         this.predicate.body = body;
         break;
     }
@@ -200,9 +197,6 @@ export class PredicatesComponent implements OnInit {
 
   onMethodChange(value: string) {
     if (value === 'GET' || value === 'DELETE') {
-      this.predicateForm.patchValue({
-        headers: null
-      });
       this.predicateForm.controls['query'].setValidators([Validators.required, jsonValidator()]);
       this.predicateForm.controls['body'].clearValidators();
       this.predicateForm.controls['query'].updateValueAndValidity();
