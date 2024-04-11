@@ -37,7 +37,7 @@ export class ImposterService {
           },
         ],
         responses: [
-          { responseID: Date.now(), statusCode: "", headers: null, body: "" },
+          { responseID: Date.now(), statusCode: "", headers: null, body: "", proxy: false, proxyTo: [""] },
         ],
       };
       this.stubs.push(defaultStubs);
@@ -78,7 +78,7 @@ export class ImposterService {
         },
       ],
       responses: [
-        { responseID: Date.now(), statusCode: "", headers: null, body: "" },
+        { responseID: Date.now(), statusCode: "", headers: null, body: "", proxy: false, proxyTo: [""] },
       ],
     };
     this.stubs.push(newStub);
@@ -107,6 +107,8 @@ export class ImposterService {
       statusCode: "",
       headers: null,
       body: "",
+      proxy: false,
+      proxyTo: ""
     });
   }
 
@@ -258,10 +260,14 @@ export class ImposterService {
         const statusCode = response.statusCode;
         const headers = JSON.parse(response.headers) || {};
         const body = JSON.parse(response.body) || {};
-        return {
-          is: { statusCode: statusCode, headers: headers, body: body },
-        };
+        const proxy = response.proxy;
+        const proxyTo = response.proxyTo;
+
+        return proxy 
+          ? { proxy: { to: proxyTo } }
+          : { is: { statusCode: statusCode, headers: headers, body: body } };
       });
+
       return {
         predicates: predicates,
         responses: responses,

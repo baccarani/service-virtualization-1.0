@@ -6,7 +6,6 @@ import {
   Input,
   OnInit,
   Output,
-  ViewChild,
 } from "@angular/core";
 import { FormArray, FormBuilder, Validators } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
@@ -23,28 +22,18 @@ import { jsonValidator } from "../shared/json-validator";
   styleUrls: ["./add-dependency.component.css"],
 })
 export class AddDependencyComponent implements OnInit {
+  @Input() index: number = 0;
+  @Output() hideCloseButton: boolean = true;
   protocols = ["http", "https", "tcp"];
   methods = ["GET", "POST", "PUT"];
   stubs: Stubs[] = [];
   predicates: Predicate[] = [];
   responses: Response[] = [];
   showEdit: boolean[] = [];
-  @Output() hideCloseButton: boolean = true;
-
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private http: HttpClient,
-    private fb: FormBuilder,
-    private matDialogRef: MatDialogRef<AddDependencyComponent>,
-    private imposterService: ImposterService,
-    private cdRef: ChangeDetectorRef
-  ) {}
-
-  @Input() index: number = 0;
   indexStub: number = 0;
   indexPredicate: number = 0;
   indexResponse: number = 0;
-
+  isEditImposter: boolean = false;
   dependencyForm = this.fb.group({
     name: [""],
     port: [null],
@@ -66,7 +55,7 @@ export class AddDependencyComponent implements OnInit {
         ]),
         responses: this.fb.array([
           this.fb.group({
-            statusCode: [""],
+            statusCode: ["", [Validators.required]],
             infoCode: [""],
             successCode: [""],
             redirectCode: [""],
@@ -74,13 +63,22 @@ export class AddDependencyComponent implements OnInit {
             serverCode: [""],
             headers: [null],
             body: ["", [Validators.required, jsonValidator()]],
+            proxy: [false, [Validators.required]],
+            proxyTo: [""],
           })
         ])
       })
     ], Validators.required),
   });
 
-  isEditImposter: boolean = false;
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private http: HttpClient,
+    private fb: FormBuilder,
+    private matDialogRef: MatDialogRef<AddDependencyComponent>,
+    private imposterService: ImposterService,
+    private cdRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     if (this.data && this.data.imposter) {
@@ -164,26 +162,29 @@ export class AddDependencyComponent implements OnInit {
 
         stub.responses.forEach((data) => {
           const response = {
-            statusCode: data.is.statusCode,
-            headers: data.is.headers,
-            body: JSON.stringify(data.is.body),
+            statusCode: data.is?.statusCode || '',
+            headers: data.is?.headers || '',
+            body: JSON.stringify(data.is?.body),
+            proxy: !!data.proxy,
+            proxyTo: data.proxy?.to || ''
           };
           tempResponses.push(response);
-
+          
           ((this.dependencyForm.get("stubs") as FormArray).at(stubIndex).get("responses") as FormArray).push(
             this.fb.group({
-              statusCode: [""],
+              statusCode: ["", response.proxy ? [] : [Validators.required]],
               infoCode: [""],
               successCode: [""],
               redirectCode: [""],
               clientCode: [""],
               serverCode: [""],
               headers: [null],
-              body: ["", [Validators.required, jsonValidator()]],
+              body: ["",  response.proxy ? [] : [Validators.required, jsonValidator()]],
+              proxy: [response.proxy, response.proxy ? [Validators.required] : []],
+              proxyTo: [""],
             })
           );
         });
-
         const tempStubs = {
           stubID: Date.now(),
           predicates: tempPredicates,
@@ -238,7 +239,7 @@ export class AddDependencyComponent implements OnInit {
         ]),
         responses: this.fb.array([
           this.fb.group({
-            statusCode: [""],
+            statusCode: ["", [Validators.required]],
             infoCode: [""],
             successCode: [""],
             redirectCode: [""],
@@ -246,6 +247,8 @@ export class AddDependencyComponent implements OnInit {
             serverCode: [""],
             headers: [null],
             body: ["", [Validators.required, jsonValidator()]],
+            proxy: [false, [Validators.required]],
+            proxyTo: [""],
           })
         ])
       })
@@ -277,7 +280,7 @@ export class AddDependencyComponent implements OnInit {
   addResponse(stubID: number, stubIndex: number) {
     ((this.dependencyForm.get("stubs") as FormArray).at(stubIndex).get("responses") as FormArray).push(
       this.fb.group({
-        statusCode: [""],
+        statusCode: ["", [Validators.required]],
         infoCode: [""],
         successCode: [""],
         redirectCode: [""],
@@ -285,6 +288,8 @@ export class AddDependencyComponent implements OnInit {
         serverCode: [""],
         headers: [null],
         body: ["", [Validators.required, jsonValidator()]],
+        proxy: [false, [Validators.required]],
+        proxyTo: [""],
       })
     );
     this.imposterService.onAddResponse(stubID);
