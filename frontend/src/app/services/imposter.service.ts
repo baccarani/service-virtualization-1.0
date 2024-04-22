@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Subject, forkJoin, of, throwError } from "rxjs";
-import { mergeMap, switchMap } from "rxjs/operators";
+import { map, mergeMap, switchMap, tap } from "rxjs/operators";
 // import { Predicate } from '../models/predicate';
 // import { Stubs } from '../models/stubs';
 
@@ -163,17 +163,18 @@ export class ImposterService {
   }
 
   onDeleteImposter(port, index) {
-    forkJoin([
-      this.http.delete(`http://localhost:5000/imposters/${port}`),
-      this.http.post("http://localhost:3000/deletedImposter", { port: port }),
-    ]).subscribe(
-      () => {
-        this.imposterArray.splice(index, 1);
-        this.updateImposterArray.next();
-      },
-      (error: any) => {
-        console.log(error);
-      }
+    return this.http.delete(`http://localhost:5000/imposters/${port}`).pipe(
+      switchMap((mbResult) => {
+        if (Object.keys(mbResult).length > 0) {
+          this.imposterArray.splice(index, 1);
+          this.updateImposterArray.next();
+          return this.http.post("http://localhost:3000/deletedImposter", { port: port }).pipe(
+            map(() => mbResult)
+          );
+        } else {
+          return of({});
+        }
+      })
     );
   }
 
@@ -197,14 +198,6 @@ export class ImposterService {
             return throwError(response);
           }
         })
-      )
-      .subscribe(
-        () => {
-          this.updateImposterArray.next();
-        },
-        (error) => {
-          console.error(error);
-        }
       );
   }
 
@@ -245,17 +238,17 @@ export class ImposterService {
               },
             },
           };
-          switch (predicate.method) {
-            case "GET":
-            case "DELETE":
-              predicateObj[operator].equals["query"] = query;
+          switch(predicate.method) {
+            case('GET'):
+            case('DELETE'):
+              predicateObj[operator].equals['headers'] = JSON.parse(predicate.headers) || {};
+              predicateObj[operator].equals['query'] = query;
               break;
-            case "POST":
-            case "PUT":
-              predicateObj[operator].equals["headers"] =
-                JSON.parse(predicate.headers) || {};
-              predicateObj[operator].equals["body"] =
-                JSON.parse(predicate.body) || {};
+            case('POST'):
+            case('PUT'):
+            case('PATCH'):
+              predicateObj[operator].equals['headers'] = JSON.parse(predicate.headers) || {};
+              predicateObj[operator].equals['body'] =  JSON.parse(predicate.body) || {};
               break;
           }
           return predicateObj;
@@ -266,16 +259,17 @@ export class ImposterService {
               path: updatePath,
             },
           };
-          switch (predicate.method) {
-            case "GET":
-            case "DELETE":
-              predicateObj[operator]["query"] = query;
+          switch(predicate.method) {
+            case('GET'):
+            case('DELETE'):
+              predicateObj[operator]['headers'] = JSON.parse(predicate.headers) || {};
+              predicateObj[operator]['query'] = query;
               break;
-            case "POST":
-            case "PUT":
-              predicateObj[operator]["headers"] =
-                JSON.parse(predicate.headers) || {};
-              predicateObj[operator]["body"] = JSON.parse(predicate.body) || {};
+            case('POST'):
+            case('PUT'):
+            case('PATCH'):
+              predicateObj[operator]['headers'] = JSON.parse(predicate.headers) || {};
+              predicateObj[operator]['body'] =  JSON.parse(predicate.body) || {};
               break;
           }
           return predicateObj;
@@ -304,7 +298,7 @@ export class ImposterService {
 
   onCreateImposter(formValues) {
     const data = this.formatImposterData(formValues);
-    this.http
+    return this.http
       .post(`http://localhost:5000/imposters`, data)
       .pipe(
         switchMap((imposterAdded) => {
@@ -313,14 +307,6 @@ export class ImposterService {
             imposterAdded
           );
         })
-      )
-      .subscribe(
-        () => {
-          this.updateImposterArray.next();
-        },
-        (error) => {
-          console.error(error);
-        }
       );
   }
 

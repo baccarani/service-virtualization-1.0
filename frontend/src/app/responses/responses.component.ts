@@ -15,7 +15,6 @@ import { ImposterService } from "../services/imposter.service";
 import { Response } from "../models/response";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import Papa from "papaparse";
-import { HEADERS } from "../models/constants";
 import { Subscription } from "rxjs";
 
 @Component({
@@ -117,7 +116,6 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
     "511",
   ];
 
-  headers = HEADERS;
   // responseForm = this.formBuilder.group({
   //   statusCode: [""],
   //   infoCode: [""],
@@ -141,8 +139,6 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit() {
-    const headersValue = this.headers.filter(header => JSON.stringify(header.value) === JSON.stringify(this.response.headers))[0];
-
     const responseObject = {
       statusCode: "",
       infoCode: "",
@@ -150,7 +146,7 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
       redirectCode: "",
       clientCode: "",
       serverCode: "",
-      headers: headersValue?.id ?? null,
+      headers: this.response.headers ?? null,
       body: this.response.body ?? null,
     };
 
@@ -204,7 +200,7 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
     const redirectCode = Number(this.responseForm.get("redirectCode").value);
     const clientCode = Number(this.responseForm.get("clientCode").value);
     const serverCode = Number(this.responseForm.get("serverCode").value);
-    const headersId = this.responseForm.get("headers").value;
+    const headers = this.responseForm.get("headers").value;
     const body = this.responseForm.get("body").value;
 
     if (infoCode) {
@@ -222,7 +218,7 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
     if (serverCode) {
       this.response.statusCode = serverCode;
     }
-    this.response.headers = JSON.stringify(this.headers.filter(header => header.id === +headersId)[0]?.value ?? '');
+    this.response.headers = headers;
     this.response.body = body;
 
     // const index = this.imposterService

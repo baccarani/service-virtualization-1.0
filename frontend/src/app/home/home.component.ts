@@ -102,10 +102,15 @@ export class HomeComponent implements OnInit {
   onDeleteImposter(port) {
     const index = this.imposterArray.findIndex((imposter) => imposter.port === port);
     const dialogRef = this.matDialogModule.open(ConfirmationDialogComponent);
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.imposterService.onDeleteImposter(port, index);
+    dialogRef.componentInstance.deleteEventEmitter.pipe(
+      switchMap(() => this.imposterService.onDeleteImposter(port, index))
+    ).subscribe((result) => {
+      if (Object.keys(result).length > 0) {
         this.viewDependency = "";
+        dialogRef.close();
+      } else {
+        dialogRef.componentInstance.error = true;
+        console.error('Failed to delete imposter');
       }
     });
   }
