@@ -73,7 +73,8 @@
               code.value == 'Informational responses (100 to 199)' ? false : true
             "
           >
-            <br /><select
+            <br />
+            <select
               name="infoRes"
               class="form-control"
               formControlName="infoCode"
@@ -88,7 +89,8 @@
               code.value == 'Successful responses (200 to 299)' ? false : true
             "
           >
-            <br /><select
+            <br />
+            <select
               name="succRes"
               class="form-control"
               formControlName="successCode"
@@ -106,7 +108,8 @@
               code.value == 'Redirection messages (300 to 399)' ? false : true
             "
           >
-            <br /><select
+            <br />
+            <select
               name="redRes"
               class="form-control"
               formControlName="redirectCode"
@@ -124,7 +127,8 @@
               code.value == 'Client error responses (400 to 499)' ? false : true
             "
           >
-            <br /><select
+            <br />
+            <select
               name="cliRes"
               class="form-control"
               formControlName="clientCode"
@@ -142,7 +146,8 @@
               code.value == 'Server error responses (500 to 599)' ? false : true
             "
           >
-            <br /><select
+            <br />
+            <select
               name="serverRes"
               class="form-control"
               formControlName="serverCode"
@@ -159,27 +164,32 @@
         <br />
         <div>
           <label>Headers:</label>
-          <br /><select
-            name="headers"
+          <br />
+          <textarea
+            name="body"
+            required
             class="form-control"
             formControlName="headers"
-          >
-            <option
-              *ngFor="let header of headers"
-              [value]="header.id"
-            >
-              {{ header.value | json }}
-            </option>
-          </select>
+            style="resize: none"
+            placeholder="{}"
+          ></textarea>
+          <br>
+          <p *ngIf="responseForm.get('headers').errors && 
+                    responseForm.get('headers').hasError('invalidJson')"
+              style="margin: 0; color:red;">
+            *Invalid JSON
+          </p>
         </div>
         <br />
         <div>
           <label>Body:</label>
-          <br /><input
+          <br />
+          <input
             #file
             type="file"
             (change)="uploadFile($event.target.files)"
-          /><br />
+          />
+          <br />
           <textarea
             name="body"
             required
@@ -194,7 +204,8 @@
             style="margin: 0; color:red;">
             *Invalid JSON
           </p>
-          <br /><button (click)="clearTextarea()">Clear</button>
+          <br />
+          <button (click)="clearTextarea()">Clear</button>
         </div>
       </ng-template>
     </div>

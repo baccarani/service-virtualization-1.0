@@ -15,6 +15,7 @@ import { ImposterService } from "../services/imposter.service";
 import { Stubs } from "../models/stubs";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { jsonValidator } from "../shared/json-validator";
+import { take } from "rxjs/operators";
 
 @Component({
   selector: "app-add-dependency",
@@ -25,7 +26,7 @@ export class AddDependencyComponent implements OnInit {
   @Input() index: number = 0;
   @Output() hideCloseButton: boolean = true;
   protocols = ["http", "https", "tcp"];
-  methods = ["GET", "POST", "PUT"];
+  //methods = ["GET", "POST", "PUT"]; //unused
   stubs: Stubs[] = [];
   predicates: Predicate[] = [];
   responses: Response[] = [];
@@ -34,6 +35,7 @@ export class AddDependencyComponent implements OnInit {
   indexPredicate: number = 0;
   indexResponse: number = 0;
   isEditImposter: boolean = false;
+  errorMessage = '';
   dependencyForm = this.fb.group({
     name: [""],
     port: [null],
@@ -49,7 +51,7 @@ export class AddDependencyComponent implements OnInit {
             data: [""],
             newOperator: [""],
             query: [""],
-            headers: [null],
+            headers: [null, [Validators.required, jsonValidator()]],
             body: [""]
           })
         ]),
@@ -61,7 +63,7 @@ export class AddDependencyComponent implements OnInit {
             redirectCode: [""],
             clientCode: [""],
             serverCode: [""],
-            headers: [null],
+            headers: [null, [Validators.required, jsonValidator()]],
             body: ["", [Validators.required, jsonValidator()]],
             proxy: [false, [Validators.required]],
             proxyTo: [""],
@@ -115,7 +117,7 @@ export class AddDependencyComponent implements OnInit {
               method: operator.not.equals.method,
               path: operator.not.equals.path,
               query: JSON.stringify(operator.not.equals.query),
-              headers: operator.not.equals.headers,
+              headers: JSON.stringify(operator.not.equals.headers),
               body: JSON.stringify(operator.not.equals.body)
             };
             tempPredicates.push(predicate);
@@ -129,8 +131,8 @@ export class AddDependencyComponent implements OnInit {
                 data: [""],
                 newOperator: [""],
                 query: (operator.not.equals.method === 'GET' || operator.not.equals.method === 'DELETE') ? control : [""],
-                headers: [null],
-                body: (operator.not.equals.method === 'POST' || operator.not.equals.method === 'PUT') ? control : [""],
+                headers: [null, [Validators.required, jsonValidator()]],
+                body: (operator.not.equals.method === 'POST' || operator.not.equals.method === 'PUT' || operator.not.equals.method === 'PATCH') ? control : [""],
               })
             );
           } else {
@@ -139,7 +141,7 @@ export class AddDependencyComponent implements OnInit {
               method: operator[keys[0]].method,
               path: operator[keys[0]].path,
               query: JSON.stringify(operator[keys[0]].query), // turning into a string to display it in the form on the UI
-              headers: operator[keys[0]].headers,
+              headers: JSON.stringify(operator[keys[0]].headers),
               body: JSON.stringify(operator[keys[0]].body)
             };
             tempPredicates.push(predicate);
@@ -153,8 +155,8 @@ export class AddDependencyComponent implements OnInit {
                 data: [""],
                 newOperator: [""],
                 query: (operator[keys[0]].method === 'GET' || operator[keys[0]].method === 'DELETE') ? control : [""],
-                headers: [null],
-                body: (operator[keys[0]].method === 'POST' || operator[keys[0]].method === 'PUT') ? control : [""],
+                headers: [null, [Validators.required, jsonValidator()]],
+                body: (operator[keys[0]].method === 'POST' || operator[keys[0]].method === 'PUT' || operator[keys[0]].method === 'PATCH') ? control : [""],
               })
             );
           }
@@ -163,7 +165,7 @@ export class AddDependencyComponent implements OnInit {
         stub.responses.forEach((data) => {
           const response = {
             statusCode: data.is?.statusCode || '',
-            headers: data.is?.headers || '',
+            headers: JSON.stringify(data.is?.headers),
             body: JSON.stringify(data.is?.body),
             proxy: !!data.proxy,
             proxyTo: data.proxy?.to || ''
@@ -178,7 +180,7 @@ export class AddDependencyComponent implements OnInit {
               redirectCode: [""],
               clientCode: [""],
               serverCode: [""],
-              headers: [null],
+              headers: [null, [Validators.required, jsonValidator()]],
               body: ["",  response.proxy ? [] : [Validators.required, jsonValidator()]],
               proxy: [response.proxy, response.proxy ? [Validators.required] : []],
               proxyTo: [""],
@@ -206,19 +208,29 @@ export class AddDependencyComponent implements OnInit {
   }
 
   closeModal() {
+    this.errorMessage = '';
     this.matDialogRef.close();
   }
 
   onSubmit() {
+    this.errorMessage = '';
     if (this.dependencyForm.invalid) {
       return;
     }
-    if (this.isEditImposter) {
-      this.imposterService.onEditImposter(this.dependencyForm.value);
-    } else {
-      this.imposterService.onCreateImposter(this.dependencyForm.value);
-    }
-    this.matDialogRef.close();
+
+    const imposterChange$ = this.isEditImposter 
+      ? this.imposterService.onEditImposter(this.dependencyForm.value)
+      : this.imposterService.onCreateImposter(this.dependencyForm.value);
+    imposterChange$.pipe(take(1)).subscribe(
+      () => {
+        this.imposterService.updateImposterArray.next();
+        this.matDialogRef.close();
+      },
+      (error) => {
+        this.errorMessage = 'Failed to ' + (this.isEditImposter ? 'edit' : 'create') + ' imposter.';
+        console.error(error);
+      },
+    );
   }
 
   addStub() {
@@ -233,7 +245,7 @@ export class AddDependencyComponent implements OnInit {
             data: [""],
             newOperator: [""],
             query: [""],
-            headers: [null],
+            headers: [null, [Validators.required, jsonValidator()]],
             body: [""]
           })
         ]),
@@ -245,7 +257,7 @@ export class AddDependencyComponent implements OnInit {
             redirectCode: [""],
             clientCode: [""],
             serverCode: [""],
-            headers: [null],
+            headers: [null, [Validators.required, jsonValidator()]],
             body: ["", [Validators.required, jsonValidator()]],
             proxy: [false, [Validators.required]],
             proxyTo: [""],
@@ -269,7 +281,7 @@ export class AddDependencyComponent implements OnInit {
         data: [""],
         newOperator: [""],
         query: [""],
-        headers: [null],
+        headers: [null, [Validators.required, jsonValidator()]],
         body: [""]
       })
     );
@@ -286,7 +298,7 @@ export class AddDependencyComponent implements OnInit {
         redirectCode: [""],
         clientCode: [""],
         serverCode: [""],
-        headers: [null],
+        headers: [null, [Validators.required, jsonValidator()]],
         body: ["", [Validators.required, jsonValidator()]],
         proxy: [false, [Validators.required]],
         proxyTo: [""],

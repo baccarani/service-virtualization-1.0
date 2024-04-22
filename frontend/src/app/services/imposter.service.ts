@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Subject, forkJoin } from "rxjs";
-import { mergeMap } from "rxjs/operators";
+import { mergeMap, tap } from "rxjs/operators";
 // import { Predicate } from '../models/predicate';
 // import { Stubs } from '../models/stubs';
 
@@ -161,12 +161,16 @@ export class ImposterService {
   }
 
   onDeleteImposter(port, index) {
-    this.http
+    return this.http
       .delete(`http://localhost:5000/imposters/${port}`)
-      .subscribe(() => {
-        this.imposterArray.splice(index, 1);
-        this.updateImposterArray.next();
-      });
+      .pipe(
+        tap((result) => {
+          if (Object.keys(result).length > 0) {
+            this.imposterArray.splice(index, 1);
+            this.updateImposterArray.next();
+          }
+        })
+      );
   }
 
   onEditImposter(formValues: any) {
@@ -175,14 +179,6 @@ export class ImposterService {
       .put(
         `http://localhost:5000/imposters/${formValues.port}/stubs`,
         formattedImposterData,
-      )
-      .subscribe(
-        () => {
-          this.updateImposterArray.next();
-        },
-        (error) => {
-          console.error(error);
-        },
       );
   }
 
@@ -226,10 +222,12 @@ export class ImposterService {
           switch(predicate.method) {
             case('GET'):
             case('DELETE'):
+              predicateObj[operator].equals['headers'] = JSON.parse(predicate.headers) || {};
               predicateObj[operator].equals['query'] = query;
               break;
             case('POST'):
             case('PUT'):
+            case('PATCH'):
               predicateObj[operator].equals['headers'] = JSON.parse(predicate.headers) || {};
               predicateObj[operator].equals['body'] =  JSON.parse(predicate.body) || {};
               break;
@@ -245,10 +243,12 @@ export class ImposterService {
           switch(predicate.method) {
             case('GET'):
             case('DELETE'):
+              predicateObj[operator]['headers'] = JSON.parse(predicate.headers) || {};
               predicateObj[operator]['query'] = query;
               break;
             case('POST'):
             case('PUT'):
+            case('PATCH'):
               predicateObj[operator]['headers'] = JSON.parse(predicate.headers) || {};
               predicateObj[operator]['body'] =  JSON.parse(predicate.body) || {};
               break;
@@ -283,14 +283,7 @@ export class ImposterService {
 
   onCreateImposter(formValues) {
     const data = this.formatImposterData(formValues);
-    this.http.post(`http://localhost:5000/imposters`, data).subscribe(
-      () => {
-        this.updateImposterArray.next();
-      },
-      (error) => {
-        console.error(error);
-      },
-    );
+    return this.http.post(`http://localhost:5000/imposters`, data);
   }
 
   onExportImposter(data) {
