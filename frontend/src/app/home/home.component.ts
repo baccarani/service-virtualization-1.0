@@ -106,6 +106,7 @@ export class HomeComponent implements OnInit {
       switchMap(() => this.imposterService.onDeleteImposter(port, index))
     ).subscribe((result) => {
       if (Object.keys(result).length > 0) {
+        this.imposterService.updateImposterArray.next();
         this.viewDependency = "";
         dialogRef.close();
       } else {

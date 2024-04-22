@@ -167,7 +167,6 @@ export class ImposterService {
       switchMap((mbResult) => {
         if (Object.keys(mbResult).length > 0) {
           this.imposterArray.splice(index, 1);
-          this.updateImposterArray.next();
           return this.http.post("http://localhost:3000/deletedImposter", { port: port }).pipe(
             map(() => mbResult)
           );
