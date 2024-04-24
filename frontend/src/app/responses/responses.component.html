@@ -27,19 +27,13 @@
       </h3>
       <!-- <div *ngIf="!hideCloseButton"> -->
       <div>
-        <button mat-icon-button color="basic" (click)="onDelete()">
+        <button mat-icon-button color="basic" *ngIf="!isProxy" (click)="onDelete()">
           <mat-icon>close</mat-icon>
         </button>
       </div>
     </div>
     <div style="padding-bottom: 30px; padding-left: 30px; padding-right: 30px">
-      <div>
-        <mat-checkbox formControlName="proxy" color="primary" (change)="onProxyChange($event.checked)">
-          Set Proxy
-        </mat-checkbox>
-      </div>
-      <br>
-      <ng-container *ngIf="responseForm.get('proxy').value; else nonProxy">
+      <ng-container *ngIf="isProxy; else nonProxy">
         <div>
           <label>Proxy To:</label>
           <input
@@ -167,7 +161,6 @@
           <br />
           <textarea
             name="body"
-            required
             class="form-control"
             formControlName="headers"
             style="resize: none"
@@ -192,7 +185,6 @@
           <br />
           <textarea
             name="body"
-            required
             class="form-control"
             formControlName="body"
             style="resize: none"

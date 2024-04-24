@@ -10,13 +10,11 @@ import {
   Output,
   ViewChild,
 } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { ImposterService } from "../services/imposter.service";
 import { Response } from "../models/response";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import Papa from "papaparse";
 import { Subscription } from "rxjs";
-import { jsonValidator } from "../shared/json-validator";
+import { FormGroup } from "@angular/forms";
 
 @Component({
   selector: "app-responses",
@@ -31,10 +29,10 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
     statusCode: "",
     headers: null,
     body: "",
-    proxy: false,
     proxyTo: ""
   };
   @Input() responseForm: FormGroup;
+  @Input() isProxy: boolean = false;
   @Output() deleteUpdate = new EventEmitter();
   @Output() deleteResponseUpdate = new EventEmitter();
 
@@ -136,8 +134,6 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
   
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: unknown,
-    private formBuilder: FormBuilder,
-    private imposterService: ImposterService,
     private cdRef: ChangeDetectorRef,
   ) {}
 
@@ -151,7 +147,6 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
       serverCode: "",
       headers: this.response.headers ?? null,
       body: this.response.body ?? null,
-      proxy: false,
       proxyTo: ""
     };
 
@@ -181,7 +176,6 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
         break;
     }
 
-    responseObject.proxy = this.response.proxy;
     responseObject.proxyTo = this.response.proxyTo;
 
     this.responseForm.setValue(responseObject);
@@ -202,7 +196,6 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
   }
 
   updateResponses() {
-    //const statusCode = this.responseForm.get("statusCode").value;
     const infoCode = Number(this.responseForm.get("infoCode").value);
     const successCode = Number(this.responseForm.get("successCode").value);
     const redirectCode = Number(this.responseForm.get("redirectCode").value);
@@ -210,7 +203,6 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
     const serverCode = Number(this.responseForm.get("serverCode").value);
     const headers = this.responseForm.get("headers").value;
     const body = this.responseForm.get("body").value;
-    const proxy = this.responseForm.get("proxy").value;
     const proxyTo = this.responseForm.get("proxyTo").value;
 
     if (infoCode) {
@@ -230,7 +222,6 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
     }
     this.response.headers = headers;
     this.response.body = body;
-    this.response.proxy = proxy;
     this.response.proxyTo = proxyTo;
 
     // const index = this.imposterService
@@ -320,30 +311,5 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
         });
         break;
     }
-  }
-
-  onProxyChange(checked) {
-    if (checked) {
-      this.responseForm.controls['proxyTo'].setValidators([Validators.required]);
-      this.responseForm.controls['proxyTo'].updateValueAndValidity();
-
-      this.responseForm.controls['headers'].clearValidators();
-      this.responseForm.controls['body'].clearValidators();
-      this.responseForm.controls['statusCode'].clearValidators();
-      this.responseForm.controls['headers'].updateValueAndValidity();
-      this.responseForm.controls['body'].updateValueAndValidity();
-      this.responseForm.controls['statusCode'].updateValueAndValidity();
-    } else {
-      this.responseForm.controls['proxyTo'].clearValidators();
-      this.responseForm.controls['proxyTo'].updateValueAndValidity();
-
-      this.responseForm.controls['headers'].setValidators([Validators.required, jsonValidator()]);
-      this.responseForm.controls['body'].setValidators([Validators.required, jsonValidator()]);
-      this.responseForm.controls['statusCode'].setValidators([Validators.required]);
-      this.responseForm.controls['headers'].updateValueAndValidity();
-      this.responseForm.controls['body'].updateValueAndValidity();
-      this.responseForm.controls['statusCode'].updateValueAndValidity();
-    }
-    this.cdRef.detectChanges();
   }
 }
