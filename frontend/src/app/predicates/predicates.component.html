@@ -68,6 +68,7 @@
           <option value="GET">GET</option>
           <option value="POST">POST</option>
           <option value="PUT">PUT</option>
+          <option value="PATCH">PATCH</option>
           <option value="DELETE">DELETE</option>
         </select>
       </div>
@@ -121,35 +122,34 @@
           {{ protocol }}://localhost:{{ port }}{{ path.value !== 'other' ? path.value : newPath.value }}{{ getFormatedQuery(query.value) }}
         </p>
       </div>
-
-      <div *ngIf="method.value === 'POST' || method.value === 'PUT'">
-        <label>Headers:</label>
-        <br /><select
-          name="headers"
-          class="form-control"
-          formControlName="headers"
-        >
-          <option
-            *ngFor="let header of headers"
-            [value]="header.id"
-          >
-            {{ header.value | json }}
-          </option>
-        </select>
-        <br>
-      </div>
-
-      <div *ngIf="method.value === 'POST' || method.value === 'PUT'">
+      <label>Headers:</label>
+      <br />
+      <textarea
+        name="headers"
+        required
+        class="form-control"
+        formControlName="headers"
+        style="resize: none"
+        placeholder="{}"
+      ></textarea>
+      <br>
+      <p *ngIf="predicateForm.get('headers').errors && 
+              predicateForm.get('headers').hasError('invalidJson')"
+          style="margin: 0; color:red;">
+        *Invalid JSON
+      </p>
+      <br>
+      <div *ngIf="method.value === 'POST' || method.value === 'PUT' || method.value === 'PATCH'">
         <label>Body:</label>
-        <input
-          type="text"
+        <textarea
           #query
           name="body"
           required
           class="form-control"
           formControlName="body"
+          style="resize: none"
           placeholder='ex. { "name": "John Doe" }'
-        />
+        ></textarea>
         <br>
         <p *ngIf="predicateForm.get('body').errors && 
                 predicateForm.get('body').hasError('invalidJson')"

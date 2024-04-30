@@ -22,6 +22,7 @@
           <div>
             <label>Name:</label>
             <input
+              [readonly]="isEditImposter"
               type="text"
               name="name"
               required
@@ -128,13 +129,13 @@
                     >
                     </app-predicates>
                   </div>
-                  <a
+                  <!-- <a
                     style="text-decoration: underline; cursor: pointer"
                     (click)="addPredicate(stubs[stubIndex].stubID, stubIndex)"
                   >
                     Add Predicate</a
-                  >
-                  <br /><br /><br />
+                  > -->
+                  <br />
                   <div>
                     <h3 style="font-weight: bold">Responses</h3>
                   </div>
@@ -159,12 +160,12 @@
                     >
                     </app-responses>
                   </div>
-                  <a
+                  <!-- <a
                     style="text-decoration: underline; cursor: pointer"
                     (click)="addResponse(stubs[stubIndex].stubID, stubIndex)"
                   >
                     Add Response</a
-                  >
+                  > -->
                 </div>
               </div>
             </div>
@@ -174,10 +175,14 @@
             style="text-decoration: underline; cursor: pointer"
             (click)="addStub()"
           >
-            Add Stub</a
-          >
-
+            Add Stub
+          </a>
           <br /><br /><br />
+          <p *ngIf="errorMessage" style="font-weight: bold;">
+            <mat-icon aria-label="error" style="vertical-align: middle; color: red">error</mat-icon>
+            Error: {{ errorMessage }}
+          </p>
+          <br>
           <button
             class="btn btn-primary"
             type="submit"

@@ -139,18 +139,21 @@
       <br />
       <div>
         <label>Headers:</label>
-        <br /><select
-          name="headers"
+        <br />
+        <textarea
+          name="body"
+          required
           class="form-control"
           formControlName="headers"
-        >
-          <option
-            *ngFor="let header of headers"
-            [value]="header.id"
-          >
-            {{ header.value | json }}
-          </option>
-        </select>
+          style="resize: none"
+          placeholder="{}"
+        ></textarea>
+        <br>
+        <p *ngIf="responseForm.get('headers').errors && 
+                  responseForm.get('headers').hasError('invalidJson')"
+            style="margin: 0; color:red;">
+          *Invalid JSON
+        </p>
       </div>
       <br />
       <div>
