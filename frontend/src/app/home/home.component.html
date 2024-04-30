@@ -46,21 +46,24 @@
           <th>Protocol</th>
           <th>Port</th>
           <th># of Requests</th>
+          <th>Status</th>
           <th>More</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let imposter of imposterArray; let i = index">
+        <tr *ngFor="let imposter of allImposters; let i = index">
           <td>
             <a
               style="cursor: pointer"
-              (click)="onViewImposter(imposter.port)"
-              >{{ imposter.name }}</a
+              (click)="onViewImposter(imposter.port, imposter.deleted)"
             >
+              {{ imposter.name }}
+            </a>
           </td>
           <td>{{ imposter.protocol }}</td>
           <td>{{ imposter.port }}</td>
           <td>{{ imposter.numberOfRequests }}</td>
+          <td>{{ imposter.deleted ? "Deleted" : "Active" }}</td>
           <td>
             <div [matMenuTriggerFor]="menu">
               <mat-icon
@@ -71,20 +74,36 @@
               >
             </div>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="onViewImposter(imposter.port)">
+              <button
+                mat-menu-item
+                (click)="onViewImposter(imposter.port, imposter.deleted)"
+              >
                 <mat-icon>visibility</mat-icon>
                 View
               </button>
-              <button mat-menu-item (click)="onEditImposter(imposter)">
+              <button
+                *ngIf="!imposter.deleted"
+                mat-menu-item
+                (click)="onEditImposter(imposter)"
+              >
                 <mat-icon>edit</mat-icon>
                 Edit
               </button>
               <button
+                *ngIf="!imposter.deleted"
                 mat-menu-item
-                (click)="onDeleteImposter(imposter.port, i)"
+                (click)="onDeleteImposter(imposter.port)"
               >
                 <mat-icon>delete</mat-icon>
                 Delete
+              </button>
+              <button
+                *ngIf="imposter.deleted"
+                mat-menu-item
+                (click)="onRestoreDeletedImposter(imposter.port)"
+              >
+                <mat-icon>manage_history</mat-icon>
+                Restore
               </button>
               <!-- <button mat-menu-item (click)="openPostman(imposter.name)">
                 <mat-icon>open_in_new</mat-icon>
@@ -96,7 +115,7 @@
       </tbody>
     </table>
   </div>
-  <br />
+  <hr />
   <div style="font-weight: bold; position: relative">
     <div style="padding-top: 7px">
       Imposter:

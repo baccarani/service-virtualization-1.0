@@ -1,12 +1,12 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Subject, forkJoin } from "rxjs";
-import { mergeMap, tap } from "rxjs/operators";
+import { Subject, forkJoin, of, throwError } from "rxjs";
+import { map, mergeMap, switchMap, tap } from "rxjs/operators";
 // import { Predicate } from '../models/predicate';
 // import { Stubs } from '../models/stubs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class ImposterService {
   private imposterArray: unknown[] = [];
@@ -33,7 +33,7 @@ export class ImposterService {
             newOperator: "",
             query: "",
             headers: null,
-            body: ""
+            body: "",
           },
         ],
         responses: [
@@ -74,7 +74,7 @@ export class ImposterService {
           newOperator: "",
           query: "",
           headers: null,
-          body: ""
+          body: "",
         },
       ],
       responses: [
@@ -96,7 +96,7 @@ export class ImposterService {
       newOperator: "",
       query: "",
       headers: null,
-      body: ""
+      body: "",
     });
   }
 
@@ -143,14 +143,18 @@ export class ImposterService {
     return this.http.get(`http://localhost:5000/imposters`).pipe(
       mergeMap((responseData: any) => {
         const imposterArray = responseData.imposters;
-        return forkJoin(
-          imposterArray.map((imposter: any) => {
-            return this.http.get(
-              `http://localhost:5000/imposters/${imposter.port}`,
-            );
-          }),
-        );
-      }),
+        if (imposterArray.length > 0) {
+          return forkJoin(
+            imposterArray.map((imposter: any) => {
+              return this.http.get(
+                `http://localhost:5000/imposters/${imposter.port}`
+              );
+            })
+          );
+        } else {
+          return of([]);
+        }
+      })
     );
   }
 
@@ -159,24 +163,40 @@ export class ImposterService {
   }
 
   onDeleteImposter(port, index) {
-    return this.http
-      .delete(`http://localhost:5000/imposters/${port}`)
-      .pipe(
-        tap((result) => {
-          if (Object.keys(result).length > 0) {
-            this.imposterArray.splice(index, 1);
-            this.updateImposterArray.next();
-          }
-        })
-      );
+    return this.http.delete(`http://localhost:5000/imposters/${port}`).pipe(
+      switchMap((mbResult) => {
+        if (Object.keys(mbResult).length > 0) {
+          this.imposterArray.splice(index, 1);
+          return this.http.post("http://localhost:3000/deletedImposter", { port: port }).pipe(
+            map(() => mbResult)
+          );
+        } else {
+          return of({});
+        }
+      })
+    );
   }
 
   onEditImposter(formValues: any) {
+    //NOTE: adding two predicates doesnt work when matching
     const formattedImposterData = this.formatImposterData(formValues);
     return this.http
       .put(
         `http://localhost:5000/imposters/${formValues.port}/stubs`,
-        formattedImposterData,
+        formattedImposterData //this object should be a stub but is passing imposter ex. formattedImposterData.stubs
+      )
+      .pipe(
+        switchMap((response) => {
+          //console.log(response); //name doesnt update because it is not inside stub, it is in imposter
+          if (response) {
+            return this.http.post(
+              "http://localhost:3000/updateImposter",
+              response //response returned is the imposter object from MB //formattedImposterData
+            );
+          } else {
+            return throwError(response);
+          }
+        })
       );
   }
 
@@ -187,7 +207,7 @@ export class ImposterService {
         let query;
         try {
           query = JSON.parse(predicate.query);
-        } catch(error) {
+        } catch (error) {
           query = {};
         }
         let updatePath;
@@ -277,7 +297,16 @@ export class ImposterService {
 
   onCreateImposter(formValues) {
     const data = this.formatImposterData(formValues);
-    return this.http.post(`http://localhost:5000/imposters`, data);
+    return this.http
+      .post(`http://localhost:5000/imposters`, data)
+      .pipe(
+        switchMap((imposterAdded) => {
+          return this.http.post(
+            "http://localhost:3000/addImposter",
+            imposterAdded
+          );
+        })
+      );
   }
 
   onExportImposter(data) {
@@ -290,6 +319,16 @@ export class ImposterService {
       a.href = url;
       a.download = `imposter-${data}.json`;
       window.URL.revokeObjectURL(url);
+    });
+  }
+
+  getDeletedImposters() {
+    return this.http.get(`http://localhost:3000/getAllDeletedImposters`);
+  }
+
+  onRestoreDeletedImposter(port: number) {
+    return this.http.post(`http://localhost:3000/restoreDeletedImposter`, {
+      port: port,
     });
   }
 }
