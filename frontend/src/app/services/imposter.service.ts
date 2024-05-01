@@ -300,7 +300,7 @@ export class ImposterService {
         const proxyTo = response.proxyTo;
 
         return proxy 
-          ? { proxy: { to: proxyTo } }
+          ? { proxy: { to: proxyTo, mode: "proxyTransparent" } }
           : { is: { statusCode: statusCode, headers: headers, body: body } };
       });
       return stub.proxy 
