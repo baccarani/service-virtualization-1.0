@@ -1,16 +1,14 @@
-import {
-  Component,
-  OnInit,
-} from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { MatDialog } from "@angular/material/dialog";
 import { AddDependencyComponent } from "../add-dependency/add-dependency.component";
 import { ImposterService } from "../services/imposter.service";
 import { Store } from "@ngrx/store";
 import { Clipboard } from "@angular/cdk/clipboard";
-import { switchMap } from "rxjs/operators";
+import { switchMap, take } from "rxjs/operators";
 import { CommonService } from "../services/common.service";
 import { ConfirmationDialogComponent } from "../confirmation-dialog/confirmation-dialog.component";
+import { forkJoin } from "rxjs";
 
 @Component({
   selector: "app-home",
@@ -19,6 +17,8 @@ import { ConfirmationDialogComponent } from "../confirmation-dialog/confirmation
 })
 export class HomeComponent implements OnInit {
   imposterArray: any[] = [];
+  deletedImposters: any[] = [];
+  allImposters: any[] = [];
   viewDependency: any = "";
   isCopyAll = false;
   copyAllButtonText = "Copy All";
@@ -34,49 +34,79 @@ export class HomeComponent implements OnInit {
     private imposterService: ImposterService,
     private store: Store<{ imposter: {} }>,
     private clipboard: Clipboard,
-    private commonService: CommonService,
+    private commonService: CommonService
   ) {}
 
   ngOnInit() {
-    this.imposterService.onGetImposter().subscribe((data) => {
-      this.imposterArray = data;
+    this.initData().subscribe(([imposters, deletedImposters]: [any, any]) => {
+      this.imposterArray = imposters;
+      this.deletedImposters = deletedImposters.map((imposter) => {
+        imposter.deleted = true;
+        return imposter;
+      });
+      this.allImposters = [...this.imposterArray, ...this.deletedImposters];
     });
-    
+
     this.imposterService.updateImposterArray
-      .pipe(switchMap(() => this.imposterService.onGetImposter()))
-      .subscribe((data: any) => {
-        this.imposterArray = data;
+      .pipe(switchMap(() => this.initData()))
+      .subscribe(([imposters, deletedImposters]: [any, any]) => {
+        this.imposterArray = imposters;
+        this.deletedImposters = deletedImposters.map((imposter) => {
+          imposter.deleted = true;
+          return imposter;
+        });
+        this.allImposters = [...this.imposterArray, ...this.deletedImposters];
         this.onViewImposter(this.viewDependency?.port || null);
       });
   }
 
-  onViewImposter(port) {
+  initData() {
+    return forkJoin([
+      this.imposterService.onGetImposter(),
+      this.imposterService.getDeletedImposters(),
+    ]);
+  }
+
+  onViewImposter(port, deleted = false) {
     if (port) {
-      this.imposterService.onViewImposter(port).subscribe((responseData) => {
-        this.viewDependency = responseData;
-      });
+      if (deleted) {
+        const deletedImposter = this.deletedImposters.find((imposter) => imposter.port === port);
+        this.viewDependency = deletedImposter;
+      } else {
+        this.imposterService.onViewImposter(port).pipe(
+          take(1)
+        ).subscribe((responseData) => {
+          this.viewDependency = responseData;
+        });
+      }
     }
   }
 
+  // onViewDeletedImposter(deletedImposter) {
+  //   this.viewDependency = deletedImposter;
+  // }
+
   onAddImposter() {
     this.matDialogModule.open(AddDependencyComponent, {
-      width: '60%',
+      width: "60%",
     });
   }
 
   onEditImposter(imposter) {
     this.matDialogModule.open(AddDependencyComponent, {
       data: { imposter: imposter },
-      width: '60%',
+      width: "60%",
     });
   }
 
-  onDeleteImposter(port, index) {
+  onDeleteImposter(port) {
+    const index = this.imposterArray.findIndex((imposter) => imposter.port === port);
     const dialogRef = this.matDialogModule.open(ConfirmationDialogComponent);
     dialogRef.componentInstance.deleteEventEmitter.pipe(
       switchMap(() => this.imposterService.onDeleteImposter(port, index))
     ).subscribe((result) => {
       if (Object.keys(result).length > 0) {
+        this.imposterService.updateImposterArray.next();
         this.viewDependency = "";
         dialogRef.close();
       } else {
@@ -84,6 +114,17 @@ export class HomeComponent implements OnInit {
         console.error('Failed to delete imposter');
       }
     });
+  }
+
+  onRestoreDeletedImposter(port: number) {
+    this.imposterService.onRestoreDeletedImposter(port).subscribe(
+      () => {
+        this.imposterService.updateImposterArray.next();
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   onCopyJSON() {
