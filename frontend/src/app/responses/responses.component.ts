@@ -10,12 +10,11 @@ import {
   Output,
   ViewChild,
 } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
-import { ImposterService } from "../services/imposter.service";
 import { Response } from "../models/response";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import Papa from "papaparse";
 import { Subscription } from "rxjs";
+import { FormGroup } from "@angular/forms";
 
 @Component({
   selector: "app-responses",
@@ -30,10 +29,12 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
     statusCode: "",
     headers: null,
     body: "",
+    proxyTo: ""
   };
+  @Input() responseForm: FormGroup;
+  @Input() isProxy: boolean = false;
   @Output() deleteUpdate = new EventEmitter();
   @Output() deleteResponseUpdate = new EventEmitter();
-  @Input() responseForm: FormGroup;
 
   statusCode = [
     "Informational responses (100 to 199)",
@@ -133,8 +134,6 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
   
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: unknown,
-    private formBuilder: FormBuilder,
-    private imposterService: ImposterService,
     private cdRef: ChangeDetectorRef,
   ) {}
 
@@ -148,6 +147,7 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
       serverCode: "",
       headers: this.response.headers ?? null,
       body: this.response.body ?? null,
+      proxyTo: ""
     };
 
     const statusCode = this.response.statusCode;
@@ -176,6 +176,8 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
         break;
     }
 
+    responseObject.proxyTo = this.response.proxyTo;
+
     this.responseForm.setValue(responseObject);
     this.subscription = this.responseForm.valueChanges.subscribe(() => {
       this.updateResponses();
@@ -194,7 +196,6 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
   }
 
   updateResponses() {
-    //const statusCode = this.responseForm.get("statusCode").value;
     const infoCode = Number(this.responseForm.get("infoCode").value);
     const successCode = Number(this.responseForm.get("successCode").value);
     const redirectCode = Number(this.responseForm.get("redirectCode").value);
@@ -202,6 +203,7 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
     const serverCode = Number(this.responseForm.get("serverCode").value);
     const headers = this.responseForm.get("headers").value;
     const body = this.responseForm.get("body").value;
+    const proxyTo = this.responseForm.get("proxyTo").value;
 
     if (infoCode) {
       this.response.statusCode = infoCode;
@@ -220,6 +222,7 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
     }
     this.response.headers = headers;
     this.response.body = body;
+    this.response.proxyTo = proxyTo;
 
     // const index = this.imposterService
     //   .onGetResponses()
@@ -264,6 +267,8 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
   }
 
   onStatusCodeChange(statusCode) {
+    //add status code validation
+
     switch (statusCode) {
       case this.statusCode[0]:
         this.responseForm.patchValue({
@@ -306,6 +311,5 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
         });
         break;
     }
-
   }
 }

@@ -22,6 +22,7 @@ export class ImposterService {
     if (this.stubs.length === 0) {
       const defaultStubs = {
         stubID: Date.now(),
+        proxy: false,
         predicates: [
           {
             predicateID: Date.now(),
@@ -37,7 +38,7 @@ export class ImposterService {
           },
         ],
         responses: [
-          { responseID: Date.now(), statusCode: "", headers: null, body: "" },
+          { responseID: Date.now(), statusCode: "", headers: null, body: "", proxyTo: [""] },
         ],
       };
       this.stubs.push(defaultStubs);
@@ -63,6 +64,7 @@ export class ImposterService {
   onAddStub() {
     const newStub = {
       stubID: Date.now(),
+      proxy: false,
       predicates: [
         {
           predicateID: Date.now(),
@@ -78,7 +80,7 @@ export class ImposterService {
         },
       ],
       responses: [
-        { responseID: Date.now(), statusCode: "", headers: null, body: "" },
+        { responseID: Date.now(), statusCode: "", headers: null, body: "", proxyTo: [""] },
       ],
     };
     this.stubs.push(newStub);
@@ -107,7 +109,19 @@ export class ImposterService {
       statusCode: "",
       headers: null,
       body: "",
+      proxyTo: ""
     });
+  }
+
+  onProxyChange(stubID: number, isProxy: boolean) {
+    const index = this.stubs.findIndex((stub) => stub.stubID === stubID);
+    this.stubs[index].proxy = isProxy;
+    //clear all predicates and responses
+    this.stubs[index].predicates = [];
+    this.stubs[index].responses = [];
+    //add one predicate and response
+    this.onAddPredicate(stubID);
+    this.onAddResponse(stubID);
   }
 
   onResetPredicates() {
@@ -202,90 +216,99 @@ export class ImposterService {
 
   formatImposterData(formValues: any) {
     const stubs = this.stubs.map((stub) => {
-      const predicates = stub.predicates.map((predicate) => {
-        const operator = predicate.operator;
-        let query;
-        try {
-          query = JSON.parse(predicate.query);
-        } catch (error) {
-          query = {};
-        }
-        let updatePath;
-        if (predicate.path == "other") {
-          updatePath = predicate.newPath;
-        } else {
-          updatePath = predicate.path;
-        }
-        if (operator === "or" || operator === "and") {
-          return {
-            [operator]: [
-              {
-                [predicate.newOperator]: {
+      let predicates = [];
+      if (!stub.proxy) {
+        predicates = stub.predicates.map((predicate) => {
+          const operator = predicate.operator;
+          let query;
+          try {
+            query = JSON.parse(predicate.query);
+          } catch(error) {
+            query = {};
+          }
+          let updatePath;
+          if (predicate.path == "other") {
+            updatePath = predicate.newPath;
+          } else {
+            updatePath = predicate.path;
+          }
+          if (operator === "or" || operator === "and") {
+            return {
+              [operator]: [
+                {
+                  [predicate.newOperator]: {
+                    method: predicate.method,
+                    path: updatePath,
+                    data: predicate.data,
+                  },
+                },
+              ],
+            };
+          } else if (operator === "not") {
+            const predicateObj = {
+              [operator]: {
+                equals: {
                   method: predicate.method,
                   path: updatePath,
-                  data: predicate.data,
                 },
               },
-            ],
-          };
-        } else if (operator === "not") {
-          const predicateObj = {
-            [operator]: {
-              equals: {
+            };
+            switch(predicate.method) {
+              case('GET'):
+              case('DELETE'):
+                predicateObj[operator].equals['headers'] = JSON.parse(predicate.headers) || {};
+                predicateObj[operator].equals['query'] = query;
+                break;
+              case('POST'):
+              case('PUT'):
+              case('PATCH'):
+                predicateObj[operator].equals['headers'] = JSON.parse(predicate.headers) || {};
+                predicateObj[operator].equals['body'] =  JSON.parse(predicate.body) || {};
+                break;
+            }
+            return predicateObj;
+          } else {
+            const predicateObj = {
+              [operator]: {
                 method: predicate.method,
                 path: updatePath,
               },
-            },
-          };
-          switch(predicate.method) {
-            case('GET'):
-            case('DELETE'):
-              predicateObj[operator].equals['headers'] = JSON.parse(predicate.headers) || {};
-              predicateObj[operator].equals['query'] = query;
-              break;
-            case('POST'):
-            case('PUT'):
-            case('PATCH'):
-              predicateObj[operator].equals['headers'] = JSON.parse(predicate.headers) || {};
-              predicateObj[operator].equals['body'] =  JSON.parse(predicate.body) || {};
-              break;
+            };
+            switch(predicate.method) {
+              case('GET'):
+              case('DELETE'):
+                predicateObj[operator]['headers'] = JSON.parse(predicate.headers) || {};
+                predicateObj[operator]['query'] = query;
+                break;
+              case('POST'):
+              case('PUT'):
+              case('PATCH'):
+                predicateObj[operator]['headers'] = JSON.parse(predicate.headers) || {};
+                predicateObj[operator]['body'] =  JSON.parse(predicate.body) || {};
+                break;
+            }
+            return predicateObj;
           }
-          return predicateObj;
-        } else {
-          const predicateObj = {
-            [operator]: {
-              method: predicate.method,
-              path: updatePath,
-            },
-          };
-          switch(predicate.method) {
-            case('GET'):
-            case('DELETE'):
-              predicateObj[operator]['headers'] = JSON.parse(predicate.headers) || {};
-              predicateObj[operator]['query'] = query;
-              break;
-            case('POST'):
-            case('PUT'):
-            case('PATCH'):
-              predicateObj[operator]['headers'] = JSON.parse(predicate.headers) || {};
-              predicateObj[operator]['body'] =  JSON.parse(predicate.body) || {};
-              break;
-          }
-          return predicateObj;
-        }
-      });
+        });
+      }
+
       const responses = stub.responses.map((response) => {
         const statusCode = response.statusCode;
         const headers = JSON.parse(response.headers) || {};
-        const body = JSON.parse(response.body) || {};
-        return {
-          is: { statusCode: statusCode, headers: headers, body: body },
-        };
+        const body = response.body ? JSON.parse(response.body) : {};
+        const proxy = stub.proxy;
+        const proxyTo = response.proxyTo;
+
+        return proxy 
+          ? { proxy: { to: proxyTo, mode: "proxyTransparent" } }
+          : { is: { statusCode: statusCode, headers: headers, body: body } };
       });
-      return {
-        predicates: predicates,
-        responses: responses,
-      };
+      return stub.proxy 
+        ? { responses: responses }
+        : {
+          predicates: predicates,
+          responses: responses,
+        };
     });
     return {
       port: formValues.port,

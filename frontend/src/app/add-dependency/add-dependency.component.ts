@@ -23,34 +23,26 @@ import { take } from "rxjs/operators";
   styleUrls: ["./add-dependency.component.css"],
 })
 export class AddDependencyComponent implements OnInit {
+  @Input() index: number = 0;
+  @Output() hideCloseButton: boolean = true;
   protocols = ["http", "https", "tcp"];
   //methods = ["GET", "POST", "PUT"]; //unused
   stubs: Stubs[] = [];
   predicates: Predicate[] = [];
   responses: Response[] = [];
   showEdit: boolean[] = [];
-  @Output() hideCloseButton: boolean = true;
-
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private http: HttpClient,
-    private fb: FormBuilder,
-    private matDialogRef: MatDialogRef<AddDependencyComponent>,
-    private imposterService: ImposterService,
-    private cdRef: ChangeDetectorRef
-  ) {}
-
-  @Input() index: number = 0;
   indexStub: number = 0;
   indexPredicate: number = 0;
   indexResponse: number = 0;
-
+  isEditImposter: boolean = false;
+  errorMessage = '';
   dependencyForm = this.fb.group({
     name: [""],
     port: [null],
     protocol: [""],
     stubs: this.fb.array([
       this.fb.group({
+        proxy: [false, [Validators.required]],
         predicates: this.fb.array([
           this.fb.group({
             operator: [""],
@@ -66,7 +58,7 @@ export class AddDependencyComponent implements OnInit {
         ]),
         responses: this.fb.array([
           this.fb.group({
-            statusCode: [""],
+            statusCode: ["", [Validators.required]],
             infoCode: [""],
             successCode: [""],
             redirectCode: [""],
@@ -74,14 +66,21 @@ export class AddDependencyComponent implements OnInit {
             serverCode: [""],
             headers: [null, [Validators.required, jsonValidator()]],
             body: ["", [Validators.required, jsonValidator()]],
+            proxyTo: [""],
           })
         ])
       })
     ], Validators.required),
   });
 
-  isEditImposter: boolean = false;
-  errorMessage = '';
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private http: HttpClient,
+    private fb: FormBuilder,
+    private matDialogRef: MatDialogRef<AddDependencyComponent>,
+    private imposterService: ImposterService,
+    private cdRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     if (this.data && this.data.imposter) {
@@ -99,94 +98,98 @@ export class AddDependencyComponent implements OnInit {
       this.stubs = this.imposterService.onGetStubs();
 
       this.data.imposter.stubs.forEach((stub, stubIndex) => {
+        const isProxy = stub.responses.length > 0 && Object.prototype.hasOwnProperty.call(stub.responses[0], 'proxy');
         (this.dependencyForm.get("stubs") as FormArray).push(
           this.fb.group({
+            proxy: isProxy,
             predicates: this.fb.array([]),
             responses: this.fb.array([])
           })
         );
-
         const tempPredicates = [];
         const tempResponses = [];
         const control = ["", [Validators.required, jsonValidator()]];
-        stub.predicates.forEach((operator) => {
-          const keys = Object.keys(operator);
+        if (!isProxy) {
+          stub.predicates.forEach((operator) => {
+            const keys = Object.keys(operator);
+            if (keys.length > 0 && keys[0] === "not") {
+              const predicate = {
+                operator: "not",
+                method: operator.not.equals.method,
+                path: operator.not.equals.path,
+                query: JSON.stringify(operator.not.equals.query),
+                headers: JSON.stringify(operator.not.equals.headers),
+                body: JSON.stringify(operator.not.equals.body)
+              };
+              tempPredicates.push(predicate);
 
-          if (keys.length > 0 && keys[0] === "not") {
-            const predicate = {
-              operator: "not",
-              method: operator.not.equals.method,
-              path: operator.not.equals.path,
-              query: JSON.stringify(operator.not.equals.query),
-              headers: JSON.stringify(operator.not.equals.headers),
-              body: JSON.stringify(operator.not.equals.body)
-            };
-            tempPredicates.push(predicate);
+              ((this.dependencyForm.get("stubs") as FormArray).at(stubIndex).get("predicates") as FormArray).push(
+                this.fb.group({
+                  operator: [""],
+                  method: [""],
+                  path: [""],
+                  newPath: [""],
+                  data: [""],
+                  newOperator: [""],
+                  query: (operator.not.equals.method === 'GET' || operator.not.equals.method === 'DELETE') ? control : [""],
+                  headers: [null, [Validators.required, jsonValidator()]],
+                  body: (operator.not.equals.method === 'POST' || operator.not.equals.method === 'PUT' || operator.not.equals.method === 'PATCH') ? control : [""],
+                })
+              );
+            } else {
+              const predicate = {
+                operator: keys[0],
+                method: operator[keys[0]].method,
+                path: operator[keys[0]].path,
+                query: JSON.stringify(operator[keys[0]].query), // turning into a string to display it in the form on the UI
+                headers: JSON.stringify(operator[keys[0]].headers),
+                body: JSON.stringify(operator[keys[0]].body)
+              };
+              tempPredicates.push(predicate);
 
-            ((this.dependencyForm.get("stubs") as FormArray).at(stubIndex).get("predicates") as FormArray).push(
-              this.fb.group({
-                operator: [""],
-                method: [""],
-                path: [""],
-                newPath: [""],
-                data: [""],
-                newOperator: [""],
-                query: (operator.not.equals.method === 'GET' || operator.not.equals.method === 'DELETE') ? control : [""],
-                headers: [null, [Validators.required, jsonValidator()]],
-                body: (operator.not.equals.method === 'POST' || operator.not.equals.method === 'PUT' || operator.not.equals.method === 'PATCH') ? control : [""],
-              })
-            );
-          } else {
-            const predicate = {
-              operator: keys[0],
-              method: operator[keys[0]].method,
-              path: operator[keys[0]].path,
-              query: JSON.stringify(operator[keys[0]].query), // turning into a string to display it in the form on the UI
-              headers: JSON.stringify(operator[keys[0]].headers),
-              body: JSON.stringify(operator[keys[0]].body)
-            };
-            tempPredicates.push(predicate);
-
-            ((this.dependencyForm.get("stubs") as FormArray).at(stubIndex).get("predicates") as FormArray).push(
-              this.fb.group({
-                operator: [""],
-                method: [""],
-                path: [""],
-                newPath: [""],
-                data: [""],
-                newOperator: [""],
-                query: (operator[keys[0]].method === 'GET' || operator[keys[0]].method === 'DELETE') ? control : [""],
-                headers: [null, [Validators.required, jsonValidator()]],
-                body: (operator[keys[0]].method === 'POST' || operator[keys[0]].method === 'PUT' || operator[keys[0]].method === 'PATCH') ? control : [""],
-              })
-            );
-          }
-        });
+              ((this.dependencyForm.get("stubs") as FormArray).at(stubIndex).get("predicates") as FormArray).push(
+                this.fb.group({
+                  operator: [""],
+                  method: [""],
+                  path: [""],
+                  newPath: [""],
+                  data: [""],
+                  newOperator: [""],
+                  query: (operator[keys[0]].method === 'GET' || operator[keys[0]].method === 'DELETE') ? control : [""],
+                  headers: [null, [Validators.required, jsonValidator()]],
+                  body: (operator[keys[0]].method === 'POST' || operator[keys[0]].method === 'PUT' || operator[keys[0]].method === 'PATCH') ? control : [""],
+                })
+              );
+            }
+          });
+        }
 
         stub.responses.forEach((data) => {
           const response = {
-            statusCode: data.is.statusCode,
-            headers: JSON.stringify(data.is.headers),
-            body: JSON.stringify(data.is.body),
+            statusCode: data.is?.statusCode || '',
+            headers: JSON.stringify(data.is?.headers),
+            body: JSON.stringify(data.is?.body),
+            proxyTo: data.proxy?.to || ''
           };
           tempResponses.push(response);
-
+          
           ((this.dependencyForm.get("stubs") as FormArray).at(stubIndex).get("responses") as FormArray).push(
             this.fb.group({
-              statusCode: [""],
+              statusCode: ["", isProxy ? [] : [Validators.required]],
               infoCode: [""],
               successCode: [""],
               redirectCode: [""],
               clientCode: [""],
               serverCode: [""],
-              headers: [null, [Validators.required, jsonValidator()]],
-              body: ["", [Validators.required, jsonValidator()]],
+              headers: [null, isProxy ? [] : [Validators.required, jsonValidator()]],
+              body: ["",  isProxy ? [] : [Validators.required, jsonValidator()]],
+              proxyTo: ["", isProxy ? [Validators.required] : []],
             })
           );
         });
-
         const tempStubs = {
           stubID: Date.now(),
+          proxy: isProxy,
           predicates: tempPredicates,
           responses: tempResponses,
         };
@@ -234,6 +237,7 @@ export class AddDependencyComponent implements OnInit {
   addStub() {
     (this.dependencyForm.get("stubs") as FormArray).push(
       this.fb.group({
+        proxy: [false],
         predicates: this.fb.array([
           this.fb.group({
             operator: [""],
@@ -249,7 +253,7 @@ export class AddDependencyComponent implements OnInit {
         ]),
         responses: this.fb.array([
           this.fb.group({
-            statusCode: [""],
+            statusCode: ["", [Validators.required]],
             infoCode: [""],
             successCode: [""],
             redirectCode: [""],
@@ -257,6 +261,7 @@ export class AddDependencyComponent implements OnInit {
             serverCode: [""],
             headers: [null, [Validators.required, jsonValidator()]],
             body: ["", [Validators.required, jsonValidator()]],
+            proxyTo: [""],
           })
         ])
       })
@@ -288,7 +293,7 @@ export class AddDependencyComponent implements OnInit {
   addResponse(stubID: number, stubIndex: number) {
     ((this.dependencyForm.get("stubs") as FormArray).at(stubIndex).get("responses") as FormArray).push(
       this.fb.group({
-        statusCode: [""],
+        statusCode: ["", [Validators.required]],
         infoCode: [""],
         successCode: [""],
         redirectCode: [""],
@@ -296,6 +301,7 @@ export class AddDependencyComponent implements OnInit {
         serverCode: [""],
         headers: [null, [Validators.required, jsonValidator()]],
         body: ["", [Validators.required, jsonValidator()]],
+        proxyTo: [""],
       })
     );
     this.imposterService.onAddResponse(stubID);
@@ -326,5 +332,43 @@ export class AddDependencyComponent implements OnInit {
 
   getResponseFormGroup(stubIndex, responseIndex) {
     return ((this.dependencyForm.get("stubs") as FormArray).at(stubIndex).get("responses") as FormArray).at(responseIndex);
+  }
+
+  onProxyChange(checked: boolean, stubIndex: number, stubID: number) {
+    (this.dependencyForm.get('stubs') as FormArray).at(stubIndex).get("proxy").setValue(checked);
+    //clear all predicates and responses
+    ((this.dependencyForm.get('stubs') as FormArray).at(stubIndex).get("predicates") as FormArray).clear();
+    ((this.dependencyForm.get('stubs') as FormArray).at(stubIndex).get("responses") as FormArray).clear();
+    //add one predicate and response
+    if (!checked) {
+      ((this.dependencyForm.get("stubs") as FormArray).at(stubIndex).get("predicates") as FormArray).push(
+        this.fb.group({
+          operator: [""],
+          method: [""],
+          path: [""],
+          newPath: [""],
+          data: [""],
+          newOperator: [""],
+          query: [""],
+          headers: [null, [Validators.required, jsonValidator()]],
+          body: [""]
+        })
+      );
+    }
+    ((this.dependencyForm.get('stubs') as FormArray).at(stubIndex).get("responses") as FormArray).push(
+      this.fb.group({
+        statusCode: ["", checked ? [] : [Validators.required]],
+        infoCode: [""],
+        successCode: [""],
+        redirectCode: [""],
+        clientCode: [""],
+        serverCode: [""],
+        headers: [null, checked ? [] : [Validators.required]],
+        body: ["", checked ? [] : [Validators.required]],
+        proxyTo: ["", checked ? [Validators.required] : []],
+      })
+    );
+    this.imposterService.onProxyChange(stubID, checked);
+    this.cdRef.detectChanges();
   }
 }

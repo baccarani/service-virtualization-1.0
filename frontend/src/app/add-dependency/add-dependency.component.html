@@ -8,7 +8,7 @@
     "
   >
     Add Dependency
-    <button mat-icon-button class="close-button" (click)="closeModal()">
+    <button mat-icon-button (click)="closeModal()">
       <mat-icon aria-label="Close modal">close</mat-icon>
     </button>
   </h1>
@@ -22,6 +22,7 @@
           <div>
             <label>Name:</label>
             <input
+              cdkFocusInitial
               [readonly]="isEditImposter"
               type="text"
               name="name"
@@ -62,7 +63,7 @@
           <hr />
           <h2>Stubs</h2>
 
-          <div *ngIf="stubs.length > 0">
+          <div *ngIf="stubs.length > 0" formArrayName="stubs">
             <div
               style="
                 border: 1px solid #ccc;
@@ -75,6 +76,7 @@
                 let stubIndex = index;
                 trackBy: stubIndex
               "
+              [formGroupName]="stubIndex"
             >
               <span class="close-button" style="padding-bottom: 20px">
                 <h3
@@ -88,6 +90,7 @@
                   Stub {{ stubIndex + 1 }}
                 </h3>
                 <button
+                  type="button"
                   mat-icon-button
                   style="padding-top: 10px"
                   color="basic"
@@ -106,39 +109,46 @@
                 "
               >
                 <div>
-                  <div>
-                    <h3 style="font-weight: bold">Predicates</h3>
-                  </div>
-                  <div
-                    *ngFor="
-                      let predicate of stubs[stubIndex].predicates;
-                      let predicateIndex = index;
-                      trackBy: predicateIndex
-                    "
-                  >
-                    <app-predicates
-                      #predicateComponent
-                      (editUpdate)="editUpdate($event)"
-                      (deleteUpdate)="deletePredicateUpdate($event, stubIndex)"
-                      [predicateIndex]="predicateIndex"
-                      [predicate]="predicate"
-                      [protocol]="protocol.value"
-                      [port]="port.value"
-                      [isEditImposter]="isEditImposter"
-                      [predicateForm]="getPredicateFormGroup(stubIndex, predicateIndex)"
+                  <mat-checkbox formControlName="proxy" color="primary" (change)="onProxyChange($event.checked, stubIndex, stubs[stubIndex].stubID)">
+                    Set Proxy
+                  </mat-checkbox>
+                </div>
+                <div>
+                  <ng-container *ngIf="!stubs[stubIndex].proxy">
+                    <div>
+                      <h3 style="font-weight: bold">Predicates</h3>
+                    </div>
+                    <div
+                      *ngFor="
+                        let predicate of stubs[stubIndex].predicates;
+                        let predicateIndex = index;
+                        trackBy: predicateIndex
+                      "
                     >
-                    </app-predicates>
-                  </div>
-                  <!-- <a
-                    style="text-decoration: underline; cursor: pointer"
-                    (click)="addPredicate(stubs[stubIndex].stubID, stubIndex)"
-                  >
-                    Add Predicate</a
-                  > -->
-                  <br />
-                  <div>
-                    <h3 style="font-weight: bold">Responses</h3>
-                  </div>
+                      <app-predicates
+                        #predicateComponent
+                        (editUpdate)="editUpdate($event)"
+                        (deleteUpdate)="deletePredicateUpdate($event, stubIndex)"
+                        [predicateIndex]="predicateIndex"
+                        [predicate]="predicate"
+                        [protocol]="protocol.value"
+                        [port]="port.value"
+                        [isEditImposter]="isEditImposter"
+                        [predicateForm]="getPredicateFormGroup(stubIndex, predicateIndex)"
+                      >
+                      </app-predicates>
+                    </div>
+                    <!-- <a
+                      style="text-decoration: underline; cursor: pointer"
+                      (click)="addPredicate(stubs[stubIndex].stubID, stubIndex)"
+                    >
+                      Add Predicate</a
+                    > -->
+                    <br />
+                    <div>
+                      <h3 style="font-weight: bold">Responses</h3>
+                    </div>
+                  </ng-container>
                   <div
                     *ngFor="
                       let response of stubs[stubIndex].responses;
@@ -157,10 +167,11 @@
                       [hideCloseButton]="hideCloseButton"
                       [isEditImposter]="isEditImposter"
                       [responseForm]="getResponseFormGroup(stubIndex, responseIndex)"
+                      [isProxy]="stubs[stubIndex].proxy"
                     >
                     </app-responses>
                   </div>
-                  <!-- <a
+                  <!-- <a *ngIf="!stubs[stubIndex].proxy"
                     style="text-decoration: underline; cursor: pointer"
                     (click)="addResponse(stubs[stubIndex].stubID, stubIndex)"
                   >

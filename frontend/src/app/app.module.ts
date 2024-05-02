@@ -20,7 +20,8 @@ import { SubPredicatesComponent } from "./predicates/sub-predicates/sub-predicat
 import { MatMenuModule } from "@angular/material/menu";
 import { ResponsesComponent } from "./responses/responses.component";
 import { StubsComponent } from "./stubs/stubs.component";
-import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogComponent } from "./confirmation-dialog/confirmation-dialog.component";
+import { MatCheckboxModule } from "@angular/material/checkbox";
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     ReactiveFormsModule,
     StoreModule.forRoot({ imposter: imposterReducer }),
     MatMenuModule,
+    MatCheckboxModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
