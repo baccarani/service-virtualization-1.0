@@ -14,7 +14,7 @@ import { Response } from "../models/response";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import Papa from "papaparse";
 import { Subscription } from "rxjs";
-import { FormGroup } from "@angular/forms";
+import { FormGroup, Validators } from "@angular/forms";
 
 @Component({
   selector: "app-responses",
@@ -267,8 +267,12 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
   }
 
   onStatusCodeChange(statusCode) {
-    //add status code validation
-
+    this.responseForm.controls['infoCode'].clearValidators();
+    this.responseForm.controls['successCode'].clearValidators();
+    this.responseForm.controls['redirectCode'].clearValidators();
+    this.responseForm.controls['clientCode'].clearValidators();
+    this.responseForm.controls['serverCode'].clearValidators();
+    
     switch (statusCode) {
       case this.statusCode[0]:
         this.responseForm.patchValue({
@@ -277,6 +281,7 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
           clientCode: null,
           serverCode: null
         });
+        this.responseForm.controls['infoCode'].setValidators([Validators.required]);
         break;
       case this.statusCode[1]:
         this.responseForm.patchValue({
@@ -285,6 +290,7 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
           clientCode: null,
           serverCode: null
         });
+        this.responseForm.controls['successCode'].setValidators([Validators.required]);
         break;
       case this.statusCode[2]:
         this.responseForm.patchValue({
@@ -293,6 +299,7 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
           clientCode: null,
           serverCode: null,
         });
+        this.responseForm.controls['redirectCode'].setValidators([Validators.required]);
         break;
       case this.statusCode[3]:
         this.responseForm.patchValue({
@@ -301,6 +308,7 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
           redirectCode: null,
           serverCode: null
         });
+        this.responseForm.controls['clientCode'].setValidators([Validators.required]);
         break;
       case this.statusCode[4]:
         this.responseForm.patchValue({
@@ -309,7 +317,14 @@ export class ResponsesComponent implements OnInit, AfterViewInit {
           redirectCode: null,
           clientCode: null
         });
+        this.responseForm.controls['serverCode'].setValidators([Validators.required]);
         break;
     }
+
+    this.responseForm.controls['infoCode'].updateValueAndValidity();
+    this.responseForm.controls['successCode'].updateValueAndValidity();
+    this.responseForm.controls['redirectCode'].updateValueAndValidity();
+    this.responseForm.controls['clientCode'].updateValueAndValidity();
+    this.responseForm.controls['serverCode'].updateValueAndValidity();
   }
 }
