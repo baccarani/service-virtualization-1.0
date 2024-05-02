@@ -8,7 +8,7 @@
     "
   >
     Add Dependency
-    <button mat-icon-button class="close-button" (click)="closeModal()">
+    <button mat-icon-button (click)="closeModal()">
       <mat-icon aria-label="Close modal">close</mat-icon>
     </button>
   </h1>
@@ -22,6 +22,7 @@
           <div>
             <label>Name:</label>
             <input
+              cdkFocusInitial
               [readonly]="isEditImposter"
               type="text"
               name="name"
@@ -89,6 +90,7 @@
                   Stub {{ stubIndex + 1 }}
                 </h3>
                 <button
+                  type="button"
                   mat-icon-button
                   style="padding-top: 10px"
                   color="basic"
