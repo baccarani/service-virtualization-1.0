@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Subject, forkJoin, of, throwError } from "rxjs";
-import { map, mergeMap, switchMap, tap } from "rxjs/operators";
+import { mergeMap, switchMap } from "rxjs/operators";
 // import { Predicate } from '../models/predicate';
 // import { Stubs } from '../models/stubs';
 
@@ -177,13 +177,19 @@ export class ImposterService {
   }
 
   onDeleteImposter(port, index) {
-    return this.http.delete(`http://localhost:5000/imposters/${port}`).pipe(
-      switchMap((mbResult) => {
-        if (Object.keys(mbResult).length > 0) {
-          this.imposterArray.splice(index, 1);
-          return this.http.post("http://localhost:3000/deletedImposter", { port: port }).pipe(
-            map(() => mbResult)
-          );
+    return this.http.post("http://localhost:3000/deletedImposter", { port: port }).pipe(
+      switchMap((mongoResult) => {
+        if (mongoResult && Object.keys(mongoResult).length > 0) {
+          return this.http.delete(`http://localhost:5000/imposters/${port}`).pipe(
+            switchMap((mbResult) => {
+              if (Object.keys(mbResult).length > 0) {
+                this.imposterArray.splice(index, 1);
+                return of(mbResult);
+              } else {
+                return of({});
+              }
+            })
+          )
         } else {
           return of({});
         }
